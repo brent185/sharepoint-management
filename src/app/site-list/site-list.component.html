@@ -1,0 +1,8 @@
+<ul>
+  <li *ngFor="let site of sites" (click)="onSelect(site)">
+    <span>{{site.url}}</span>
+  </li>
+</ul>
+<div>
+  <label *ngIf="selectedSite">{{selectedSite.url}}</label>
+</div>

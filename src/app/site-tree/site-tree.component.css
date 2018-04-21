@@ -1,0 +1,16 @@
+.site>div{
+    width: 100%;
+    display: inline-flex;
+}
+
+.site>div>div:nth-child(1){
+    width: 100%;
+}
+
+.userContainer{
+    display: inline-flex;
+}
+
+.userContainer div{
+    Width: 100px;
+} 
