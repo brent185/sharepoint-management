@@ -1,19 +1,23 @@
 
 <div>
     <ng-template #recursiveList let-list>
-        <div *ngFor="let item of list;
-            let isOdd = odd;
-            let i=index;"            
+        <div *ngFor="let item of list
+            let i=index;"  
             class="site">
-            <div>
-                <div [style.margin-left]="getWidth(item.level)" (click)="toggleChildren($event, item.id)">{{item.url}}</div>
+            <div class="b">
+                <div [style.margin-left]="getWidth(item.level)" (click)="toggleChildren($event, item.id)">
+                        <!-- <i class="fas fa-angle-right"></i> -->
+                        <i *ngIf="item.children.length > 0 && item.isOpen" class="fas fa-angle-down"></i>
+                        <i *ngIf="item.children.length > 0 && !item.isOpen" class="fas fa-angle-right"></i>
+                         {{item.url}} - {{ item.flatPosition}}
+                </div>
                 <div class="userContainer">
                     <div> {{ item.owner }}</div>
                     <div> Primary</div>
                     <div> Secondary</div>
                 </div>
             </div>      
-        <div *ngIf="item.children.length > 0 && item.isOpen">
+        <div *ngIf="item.children.length > 0 && item.isOpen" class="b">
             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"></ng-container>
         </div>
         </div>
