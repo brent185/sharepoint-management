@@ -33,6 +33,7 @@ export class SiteTreeComponent {
               level: 3,
               isOpen: true,
               isEven: false,
+              isSelected: true
             }
           ]}
       ],
@@ -79,29 +80,6 @@ export class SiteTreeComponent {
       //this.showChildren(x);
     }
     //this.setEvenOdd(1);
-  }
-
-  setEvenOdd(i) {
-      this.list.forEach(s => {
-        if (s.isVisible) {
-          if (this.isOdd(i)) {
-            s.isEven = false;
-          }
-          i++;
-          s.children.forEach
-        }
-      });
-
-      parent.children.forEach(c => {
-        c.isVisible = false;
-        if (c.children) {
-          this.hideChildren(c);
-        }
-      });
-  }
-
-  isOdd(num) {
-    return num % 2;
   }
 
   hideChildren(parent) {

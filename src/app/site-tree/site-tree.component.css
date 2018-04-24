@@ -11,10 +11,27 @@
     display: inline-flex;
 }
 
-.userContainer div{
-    Width: 100px;
+.userContainer>div{
+    Width: 180px;
 } 
 
 .site{
     cursor: pointer;
+}
+
+.b:hover{
+    background-color: #e6e6e6;
+}
+
+.flipped {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+.selected{
+    background-color: rgba(0, 123, 255, 0.18);
 }

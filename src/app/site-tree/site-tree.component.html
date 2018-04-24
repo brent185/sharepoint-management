@@ -1,23 +1,38 @@
 
 <div>
+    <div class="site" >
+        <div>
+                <div>Url</div>
+                <div class="userContainer">
+                    <div>Inheritance</div>
+                    <div>Owner</div>
+                    <div>Primary Administrator</div>
+                    <div>Secondary Administrator</div>
+                </div>
+        </div>
+
+    </div>
     <ng-template #recursiveList let-list>
         <div *ngFor="let item of list
             let i=index;"  
             class="site">
-            <div class="b">
+            <div class="b" [class.selected]="item.isSelected">
                 <div [style.margin-left]="getWidth(item.level)" (click)="toggleChildren($event, item.id)">
                         <!-- <i class="fas fa-angle-right"></i> -->
                         <i *ngIf="item.children.length > 0 && item.isOpen" class="fas fa-angle-down"></i>
                         <i *ngIf="item.children.length > 0 && !item.isOpen" class="fas fa-angle-right"></i>
-                         {{item.url}} - {{ item.flatPosition}}
+                         {{item.url}}
                 </div>
                 <div class="userContainer">
-                    <div> {{ item.owner }}</div>
-                    <div> Primary</div>
+                    <div><i class="fas fa-external-link-square-alt flipped"></i>&nbsp;<i class="fas fa-users"></i> </div>
+                    <div>{{ item.owner }}</div>
+                    <div>
+                        <app-people-picker></app-people-picker>
+                    </div>
                     <div> Secondary</div>
                 </div>
             </div>      
-        <div *ngIf="item.children.length > 0 && item.isOpen" class="b">
+        <div *ngIf="item.children.length > 0 && item.isOpen">
             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"></ng-container>
         </div>
         </div>
