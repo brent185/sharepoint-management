@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {DialogOverviewExampleDialog} from './site-tree-modal.component';
 
 @Component({
   selector: 'app-site-tree',
@@ -60,7 +62,23 @@ export class SiteTreeComponent {
     },
   ];
 
-  constructor() { }
+  animal: string;
+  name: string;
+
+  constructor(public dialog: MatDialog) {}
+
+  openDialog(): void {
+    let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '500px',
+      height: '500px',
+      data: { name: this.name, animal: this.animal }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
 
   getWidth(level) {
     const newLevel = level * 20;

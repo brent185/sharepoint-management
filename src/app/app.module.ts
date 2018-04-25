@@ -9,8 +9,13 @@ import { WelcomeUserComponent } from './welcome-user/welcome-user.component';
 import { SiteListComponent } from './site-list/site-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SiteTreeComponent } from './site-tree/site-tree.component';
+import {DialogOverviewExampleDialog} from './site-tree/site-tree-modal.component';
 import { PeoplePickerComponent } from './people-picker/people-picker.component';
-import { MatAutocompleteModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { 
+  MatAutocompleteModule, 
+  MatFormFieldModule, 
+  MatInputModule, 
+  MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -22,12 +27,14 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
     WelcomeUserComponent,
     SiteListComponent,
     SiteTreeComponent,
-    PeoplePickerComponent
+    PeoplePickerComponent,
+    DialogOverviewExampleDialog
   ],
   imports: [
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDialogModule,
     BrowserModule,
     AlertModule.forRoot(),
     TabsModule.forRoot(),
@@ -41,6 +48,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
   // ],
   providers: [
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogOverviewExampleDialog]
 })
 export class AppModule { }

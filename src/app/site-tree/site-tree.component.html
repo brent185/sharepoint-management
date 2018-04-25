@@ -27,9 +27,11 @@
                     <div><i class="fas fa-external-link-square-alt flipped"></i>&nbsp;<i class="fas fa-users"></i> </div>
                     <div>{{ item.owner }}</div>
                     <div>
-                        <app-people-picker></app-people-picker>
+                        
                     </div>
-                    <div> Secondary</div>
+                    <div>
+                        <!-- <dialog-overview-example-dialog></dialog-overview-example-dialog> -->
+                    </div>
                 </div>
             </div>      
         <div *ngIf="item.children.length > 0 && item.isOpen">
@@ -39,5 +41,19 @@
     </ng-template>
     <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: list }"></ng-container>
 </div>
-
+<div>
+        <ol>
+                <li>
+                  <mat-form-field>
+                    <input matInput [(ngModel)]="name" placeholder="What's your name?">
+                  </mat-form-field>
+                </li>
+                <li>
+                  <button mat-raised-button (click)="openDialog()">Pick one</button>
+                </li>
+                <li *ngIf="animal">
+                  You chose: <i>{{animal}}</i>
+                </li>
+              </ol>
+</div>
 
