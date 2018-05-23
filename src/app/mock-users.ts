@@ -1,0 +1,22 @@
+export const users: any[] = [
+    {"ID":0,
+    "Status":0,
+    "NominatedByLoginName":"ms\\jackhandy",
+    "NominatedByDisplayName":"Jack Handy",
+    "NominatedDate":"2018-03-21T15:13:28.4",
+    "ConfirmedByLoginName":null,
+    "ConfirmedByDisplayName":null,
+    "ConfirmedDate":"2018-03-21T15:13:28.4",
+    "SiteID":1552,"Url":null,
+    "User":{
+        "LoginName":"basplun1",
+        "EID":null,
+        "EmailAddress":null,
+        "DisplayName":"Asplund, Brent",
+        "FirstName":null,
+        "LastName":null,
+        "IsPrimaryAccount":false,
+        "SearchName":null,
+        "JobTitle":null,
+        "DivisionDecription":null},
+    "Role":{"ID":1,"Name":null}}];

@@ -1,3 +1,8 @@
-export class Site{
-    url: string;
+export class Site {
+    Url: string;
+    SubSites: any[];
+    SiteID: number;
+    PLMSiteID: number;
+    SPID: string;
+    SPParentID: string;
 }

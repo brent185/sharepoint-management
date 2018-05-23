@@ -1,3 +1,12 @@
-<div>
-        <app-people-picker></app-people-picker>
+<div class="peoplePickerModal">
+        <div>{{data.site.Url}}</div>
+        <div [ngSwitch]="data.user.Role.ID">
+                <div *ngSwitchCase="siteRole.Owner">Select an Owner</div>
+                <div *ngSwitchCase="siteRole.Primary">Select a Primary Admin</div>
+                <div *ngSwitchCase="siteRole.Secondary">Select a Secondary Admin</div>
+        </div>
+        <div *ngIf="data.user.User.LoginName">
+                Selected user is: {{data.user.User.LoginName}}
+        </div>
+        <app-people-picker (onUserSelected)="userSelected($event)"></app-people-picker>
 </div>

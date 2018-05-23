@@ -28,10 +28,10 @@
     ],
     "interface-over-type-literal": true,
     "label-position": true,
-    "max-line-length": [
-      true,
-      140
-    ],
+    // "max-line-length": [
+    //   true,
+    //   140
+    // ],
     "member-access": false,
     "member-ordering": [
       true,
@@ -112,10 +112,10 @@
     "whitespace": [
       true,
       "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-separator",
-      "check-type"
+      //"check-decl",
+      //"check-operator",
+      //"check-separator",
+      //"check-type"
     ],
     "directive-selector": [
       true,

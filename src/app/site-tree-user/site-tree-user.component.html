@@ -1,0 +1,17 @@
+<!-- <div *ngIf="!inheritFromParent" class="peoplePickerLaunch" (click)="openPeoplePicker(item)">Select Owner</div> -->
+<div [ngSwitch]="siteRole">
+  <div *ngSwitchCase="role.Owner">
+      <div *ngIf="inheritFromParent">{{contextUser.User.DisplayName}}</div>  
+      <div *ngIf="!inheritFromParent && !contextUser.User.LoginName" class="peoplePickerLaunch" (click)="openPeoplePicker(site, contextUser)">Select Owner</div>
+      <div *ngIf="!inheritFromParent && contextUser.User.LoginName" (click)="openPeoplePicker(site, contextUser)">X - {{contextUser.User.DisplayName}}</div>
+  </div>
+  <div *ngSwitchCase="role.Primary">
+      <div *ngIf="inheritFromParent">{{contextUser.User.DisplayName}}</div>  
+      <div *ngIf="!inheritFromParent && !contextUser.User.LoginName" class="peoplePickerLaunch" (click)="openPeoplePicker(site, contextUser)">Select Primary</div>
+      <div *ngIf="!inheritFromParent && contextUser.User.LoginName" (click)="openPeoplePicker(site, contextUser)">X - {{contextUser.User.DisplayName}}</div>
+  </div>
+  <div *ngSwitchCase="role.Secondary">
+        <div *ngIf="inheritFromParent">{{contextUser.User.DisplayName}}</div>  
+        <div *ngIf="!inheritFromParent" class="peoplePickerLaunch" (click)="openPeoplePicker(site, contextUser)">Select Secondary Admin</div>
+    </div>
+</div>

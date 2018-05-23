@@ -9,4 +9,11 @@
   .example-full-width {
     width: 100%;
   }
+
+  mat-form-field{
+    margin-top: 10px;
+  }
   
+  .brentTest{
+    width: 100%;
+  }

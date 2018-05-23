@@ -1,9 +1,9 @@
-.site>div{
+.site{
     width: 100%;
     display: inline-flex;
 }
 
-.site>div>div:nth-child(1){
+.site>div:nth-child(1){
     width: 100%;
 }
 
@@ -12,14 +12,20 @@
 }
 
 .userContainer>div{
-    Width: 180px;
+    Width: 200px;
 } 
+
+.userContainer>div:nth-child(1){
+    width: 40px;
+}
 
 .site{
     cursor: pointer;
+    margin-bottom: 5px;
+    height: 26px;
 }
 
-.b:hover{
+.site:hover{
     background-color: #e6e6e6;
 }
 
@@ -34,4 +40,25 @@
 
 .selected{
     background-color: rgba(0, 123, 255, 0.18);
+}
+
+span.empty{
+    width: 9px; 
+    display: inline-block;
+}
+
+.peoplePickerLaunchButton{
+    height: 18px;
+    display: inline-block;
+}
+
+.peoplePickerLaunch{
+    border: 1px solid;
+    width: 180px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.peoplePickerModal>div{
+    margin-top: 10px;
 }

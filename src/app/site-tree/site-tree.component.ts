@@ -1,77 +1,140 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {DialogOverviewExampleDialog} from './site-tree-modal.component';
+import { Sites } from './../mock-sites';
+import { users } from './../mock-users';
+import { AppService } from './../globaldata.service';
+import { SiteRole } from './../enums';
+import { IAppState } from './../state';
+import { Observable } from "rxjs/Rx"
+import { Site } from './../site';
+import { Store } from '@ngrx/store';
+import { User } from './../user';
 
 @Component({
   selector: 'app-site-tree',
   templateUrl: './site-tree.component.html',
   styleUrls: ['./site-tree.component.css']
+    //providers: [AppService]
 })
 
-export class SiteTreeComponent {
+export class SiteTreeComponent implements OnInit {
+  
+  contextUser: Observable<User>;
+  sites: Observable<Site[]>;
 
   private i = 0;
-
-  public list = [
-    {
-      id: 1,
-      url: '1a',
-      isVisible: true,
-      isEven: false,
-      children: [
-        {
-          id: 3,
-          url: '1b',
-          level: 2,
-          isOpen: true,
-          isVisible: true,
-          isEven: false,
-          children: [
-            {
-              id: 10,
-              isVisible: true,
-              url: '1c',
-              children: [],
-              level: 3,
-              isOpen: true,
-              isEven: false,
-              isSelected: true
-            }
-          ]}
-      ],
-      level: 1,
-      isOpen: true
-    },
-    {
-      id: 2,
-      url: '2a',
-      level: 1,
-      isVisible: true,
-      isOpen: true,
-      isEven: false,
-      children: [
-        {
-          id: 30,
-          url: '2b',
-          level: 2,
-          isVisible: true,
-          isOpen: true,
-          isEven: false,
-          children: []}
-      ]
-    },
-  ];
+  public list = Sites;
+  public users = users;
+  public siteRole = SiteRole;
 
   animal: string;
   name: string;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(private appService: AppService, public dialog: MatDialog, private store:Store<IAppState>) {
+    
+
+  }
+
+  ngOnInit() {
+    //this.contextUser$.subscribe(contextUser => this.contextUser = contextUser);
+    //this.siteHierarchy$.subscribe(siteState => this.sites = siteState);
+    //this.initSites(this.sites, 1);
+    //this.setSelectedSite(1611);
+    //this.appService.setSites(this.list);
+    this.sites = this.store.select(state => state.siteHierarchy)
+    this.contextUser = this.store.select(state => state.contextUser)
+    this.appService.Users = this.users;
+  }
+
+  // initSites(site, level) {
+  //   site.forEach(s => {
+  //     s.isSelected = false;
+  //     s.level = level;
+  //     s.inheritOwnerAdmins = true;
+
+  //     if(level === 1){
+  //       s.inheritOwnerAdmins = false;
+  //     }
+
+  //     if(level === 2){
+  //       s.isOpen = false;
+  //     }else{
+  //       s.isOpen = true;
+  //     }
+      
+  //     if(s.SubSites){
+  //         this.initSites(s.SubSites, level + 1);
+  //     }
+  //   });
+  //   this.setInheritance(this.list, null);
+  // }
+
+  // setInheritance(sites, inheritFromSiteId){
+  //   sites.forEach(s => {
+  //     if(!inheritFromSiteId){
+  //       s.inheritFromSiteId = s.SiteID
+  //     }
+  //     if(s.inheritOwnerAdmins){
+  //       s.inheritFromSiteId = inheritFromSiteId;
+  //     }else{
+  //       s.inheritFromSiteId = s.SiteID
+  //     }
+  //     if(s.SubSites.length > 0){
+  //       this.setInheritance(s.SubSites, s.inheritFromSiteId)
+  //     }
+  //   });
+  // }
+
+  toggleInheritance(site){
+    if(site.inheritOwnerAdmins){
+      site.inheritOwnerAdmins = false;
+    }else{
+      site.inheritOwnerAdmins = true;
+    }
+    
+    //this.setInheritance(this.list, null);
+  }
+
+  setSelectedSite(siteId){
+    const x = this.findDFS(this.list, siteId);
+    x.isSelected = true;
+  }
+
+  openParent(parentSPID){
+
+  }
+
+  getParents(childSPID){
+    const parents = [];
+    const context = this.getSiteBySPID(this.list, childSPID);
+    
+    let i;
+
+    for(i=context.length; i > 0; i--){
+      let parent = this.getSiteBySPID(this.list, childSPID);
+    }
+  }
 
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       width: '500px',
       height: '500px',
       data: { name: this.name, animal: this.animal }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
+
+  openPeoplePicker(item): void {
+    console.log(item);
+    let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '500px',
+      height: '500px',
+      data: { site: item }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -88,7 +151,7 @@ export class SiteTreeComponent {
 
   toggleChildren(event, siteId) {
     // const x = this.list.find(a => a.id === siteId);
-    const x = this.findById(this.list, siteId);
+    const x = this.findDFS(this.list, siteId);
 
     if (x.isOpen) {
       x.isOpen = false;
@@ -101,10 +164,10 @@ export class SiteTreeComponent {
   }
 
   hideChildren(parent) {
-    if (parent.children) {
-      parent.children.forEach(c => {
+    if (parent.SubSites) {
+      parent.SubSites.forEach(c => {
         c.isVisible = false;
-        if (c.children) {
+        if (c.SubSites) {
           this.hideChildren(c);
         }
       });
@@ -112,30 +175,30 @@ export class SiteTreeComponent {
   }
 
   showChildren(parent) {
-    if (parent.children) {
-      parent.children.forEach(c => {
+    if (parent.SubSites) {
+      parent.SubSites.forEach(c => {
         c.isVisible = true;
-        if (c.children) {
+        if (c.SubSites) {
           this.hideChildren(c);
         }
       });
     }
   }
 
-  findById(o, id) {
-    if (o.id === id ) {
-      return o;
+  findDFS(objects, id) {
+    for (let o of objects || []) {
+      if (o.SiteID == id) return o
+      const o_ = this.findDFS(o.SubSites, id);
+      if (o_) return o_
     }
-    let result, p;
+  }
 
-    for (p in o) {
-        if ( o.hasOwnProperty(p) && typeof o[p] === 'object' ) {
-            result = this.findById(o[p], id);
-            if (result) {
-                return result;
-            }
-        }
+  public getSiteBySPID(objects, id) {
+    for (let o of objects || []) {
+      if (o.SPID == id) return o
+      const o_ = this.findDFS(o.SubSites, id);
+      if (o_) return o_
     }
-    return result;
- }
+  }
+
 }
