@@ -24,12 +24,14 @@ export class SiteTreeUserComponent implements OnInit {
 
   contextSite: Observable<any>;
   site = null;
+  url = null;
   role = SiteRole;
 
   //private contextSite;
   private contextUser;
 
   constructor(private appService: AppService, public dialog: MatDialog) { 
+
   }
 
   openPeoplePicker(item, user): void {
@@ -46,12 +48,23 @@ export class SiteTreeUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.contextSite = this.ngRedux.select(state => state.flatSites.find(s=>s.SiteID === this.siteId));
-    //const users = this.appService.getUsersBySPId(null, this.contextSite.inheritFromSiteId);
+
     if(!this.contextUser){
       this.contextUser = new SiteUser();
       this.contextUser.Role.ID = this.siteRole;
     }
-  }
+
+    // this.appService.getFlatSites().find(s => s.SiteID === this.siteId).subscribe(x => {
+    //   console.info('FU: ' + x);
+    //   this.url = x.Url;
+    // });
+
+    this.appService.getSiteById(this.siteId).subscribe((s) => this.site = s);
+
+    // this.appService.getFlatSites().forEach(n => {
+    //   console.info('test' + n);
+    // });
+    //this.site = this.appService.getSiteBySpId(this.siteId);
+  } 
 
 }

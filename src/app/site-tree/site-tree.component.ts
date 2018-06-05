@@ -5,7 +5,6 @@ import { Sites } from './../mock-sites';
 import { users } from './../mock-users';
 import { AppService } from './../globaldata.service';
 import { SiteRole } from './../enums';
-import { IAppState } from './../state';
 import { Observable } from "rxjs/Rx"
 import { Site } from './../site';
 import { Store } from '@ngrx/store';
@@ -21,70 +20,30 @@ import { User } from './../user';
 export class SiteTreeComponent implements OnInit {
   
   contextUser: Observable<User>;
-  sites: Observable<Site[]>;
+  list: Site[];
 
   private i = 0;
-  public list = Sites;
+  //public list = Sites;
   public users = users;
   public siteRole = SiteRole;
-
+  firstName: string;
   animal: string;
   name: string;
 
-  constructor(private appService: AppService, public dialog: MatDialog, private store:Store<IAppState>) {
+  constructor(private appService: AppService, public dialog: MatDialog) {
     
-
+    this.appService.getLoggedInUser().subscribe(u => { this.firstName = u.LoginName})
+    this.appService.getSite().subscribe(s => { 
+      console.info(console.info(s));
+      this.list = s;
+    });
+    // this.initSites(Sites, 1);
+    // this.list = Sites;
   }
 
   ngOnInit() {
-    //this.contextUser$.subscribe(contextUser => this.contextUser = contextUser);
-    //this.siteHierarchy$.subscribe(siteState => this.sites = siteState);
-    //this.initSites(this.sites, 1);
-    //this.setSelectedSite(1611);
-    //this.appService.setSites(this.list);
-    this.sites = this.store.select(state => state.siteHierarchy)
-    this.contextUser = this.store.select(state => state.contextUser)
-    this.appService.Users = this.users;
+
   }
-
-  // initSites(site, level) {
-  //   site.forEach(s => {
-  //     s.isSelected = false;
-  //     s.level = level;
-  //     s.inheritOwnerAdmins = true;
-
-  //     if(level === 1){
-  //       s.inheritOwnerAdmins = false;
-  //     }
-
-  //     if(level === 2){
-  //       s.isOpen = false;
-  //     }else{
-  //       s.isOpen = true;
-  //     }
-      
-  //     if(s.SubSites){
-  //         this.initSites(s.SubSites, level + 1);
-  //     }
-  //   });
-  //   this.setInheritance(this.list, null);
-  // }
-
-  // setInheritance(sites, inheritFromSiteId){
-  //   sites.forEach(s => {
-  //     if(!inheritFromSiteId){
-  //       s.inheritFromSiteId = s.SiteID
-  //     }
-  //     if(s.inheritOwnerAdmins){
-  //       s.inheritFromSiteId = inheritFromSiteId;
-  //     }else{
-  //       s.inheritFromSiteId = s.SiteID
-  //     }
-  //     if(s.SubSites.length > 0){
-  //       this.setInheritance(s.SubSites, s.inheritFromSiteId)
-  //     }
-  //   });
-  // }
 
   toggleInheritance(site){
     if(site.inheritOwnerAdmins){

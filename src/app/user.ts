@@ -20,15 +20,15 @@ export class SiteUser {
 
 export class User {
     LoginName: string;
-    EID: string;
-    EmailAddress: string;
-    DisplayName: string;
-    FirstName: string;
-    LastName: string;
-    IsPrimarAccount: boolean;
-    SearchName: string;
-    JobTitle: string;
-    DivisionDescription: string;
+    EID?: string;
+    EmailAddress?: string;
+    DisplayName?: string;
+    FirstName?: string;
+    LastName?: string;
+    IsPrimarAccount?: boolean;
+    SearchName?: string;
+    JobTitle?: string;
+    DivisionDescription?: string;
 }
 
 export class Role {

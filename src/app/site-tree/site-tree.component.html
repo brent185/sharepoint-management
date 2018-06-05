@@ -5,7 +5,8 @@
                 <div>Url</div>
                 <div class="userContainer">
                     <div></div>
-                    <div>{{ contextUser.LoginName }}</div>
+                    <!-- <div>{{ contextUser.LoginName }}</div> -->
+                    <div>{{ firstName }}</div>
                     <div>Primary Administrator</div>
                     <div>Secondary Administrator</div>
                 </div>
@@ -13,9 +14,9 @@
 
     </div>
     <ng-template #recursiveList let-list>
-        <div *ngFor="let item of sites | async
+        <div *ngFor="let item of list
             let i=index;">
-            <div class="site" [class.selected]="item.isSelected">
+            <div class="site" [class.selected]="item.isSelected">                
                 <div [style.margin-left]="getWidth(item.level)" (click)="toggleChildren($event, item.SiteID)">
                         <i *ngIf="item.SubSites.length > 0 && item.isOpen" class="fas fa-angle-down"></i>
                         <i *ngIf="item.SubSites.length > 0 && !item.isOpen" class="fas fa-angle-right"></i>
@@ -52,8 +53,8 @@
                     </div>
                 </div>
             </div>      
-        <!-- <div *ngIf="item.SubSites.length > 0"> -->
-                <div *ngIf="item.SubSites.length > 0 && item.isOpen">
+        <div *ngIf="item.SubSites.length > 0">
+                <!-- <div *ngIf="item.SubSites.length > 0 && item.isOpen"> -->
             <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.SubSites }"></ng-container>
         </div>
         </div>

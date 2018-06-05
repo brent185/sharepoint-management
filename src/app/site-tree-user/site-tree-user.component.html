@@ -1,4 +1,5 @@
 <!-- <div *ngIf="!inheritFromParent" class="peoplePickerLaunch" (click)="openPeoplePicker(item)">Select Owner</div> -->
+x:{{ site.Url}}
 <div [ngSwitch]="siteRole">
   <div *ngSwitchCase="role.Owner">
       <div *ngIf="inheritFromParent">{{contextUser.User.DisplayName}}</div>  

@@ -21,11 +21,11 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { SiteTreeUserComponent } from './site-tree-user/site-tree-user.component';
 import { AppService } from './globaldata.service';
 import { Ng2CompleterModule } from 'ng2-completer';
-import { StoreModule, combineReducers, MetaReducer } from '@ngrx/store';
+// import { StoreModule, combineReducers, MetaReducer } from '@ngrx/store';
 //import { logger, createLogger } from 'redux-logger';
-import { IAppState, rootReducer, INITIAL_STATE, metaReducers } from './state';
+// import { IAppState, rootReducer, INITIAL_STATE, metaReducers } from './state';
 //import { storeLogger } from 'ngrx-store-logger';
-import { ActionReducer } from 'ngx-bootstrap/mini-ngrx';
+// import { ActionReducer } from 'ngx-bootstrap/mini-ngrx';
 import { environment } from '../environments/environment';
 
 // export function logger(reducer: ActionReducer<IAppState>): ActionReducer<IAppState>{
@@ -63,8 +63,7 @@ import { environment } from '../environments/environment';
     ReactiveFormsModule,
     HttpClientModule,
     NoopAnimationsModule,
-    Ng2CompleterModule,
-    StoreModule.forRoot(rootReducer, {metaReducers})
+    Ng2CompleterModule
   ],
   // exports: [
   //   MatAutocompleteModule
