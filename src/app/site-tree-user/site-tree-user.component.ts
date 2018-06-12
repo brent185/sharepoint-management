@@ -8,8 +8,9 @@ import { SiteRole } from './../enums';
 import { SiteUser } from './../user';
 import { Site } from './../site';
 import { IAppState } from './../store';
-import { Observable } from "rxjs/Rx"
-import { createSelector } from 'reselect'
+import { Observable } from "rxjs/Rx";
+import { createSelector } from 'reselect';
+import { SiteUserStatus } from './../enums';
 
 @Component({
   selector: 'app-site-tree-user',
@@ -23,23 +24,31 @@ export class SiteTreeUserComponent implements OnInit {
   @Input() siteId: number;
 
   contextSite: Observable<any>;
-  site = null;
+  site: Site = null;
   url = null;
   role = SiteRole;
-
-  //private contextSite;
   private contextUser;
+  private contextSiteUsersSiteId;
+  siteUserStatus = SiteUserStatus;
+
 
   constructor(private appService: AppService, public dialog: MatDialog) { 
 
   }
 
-  openPeoplePicker(item, user): void {
-    console.log(item);
+  openPeoplePicker(site, user): void {
+
+    if(!user){
+      user = new SiteUser;
+  
+      user.Role.ID = this.siteRole;
+    }
+
+    console.log(site);
     let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '500px',
-      height: '500px',
-      data: { site: item, user: user }
+      width: '800px',
+      height: '650px',
+      data: { site: site, user: user }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -54,17 +63,22 @@ export class SiteTreeUserComponent implements OnInit {
       this.contextUser.Role.ID = this.siteRole;
     }
 
-    // this.appService.getFlatSites().find(s => s.SiteID === this.siteId).subscribe(x => {
-    //   console.info('FU: ' + x);
-    //   this.url = x.Url;
-    // });
+    this.appService.getSiteById(this.siteId).subscribe((s) => {
+      this.site = s;
+      this.contextSiteUsersSiteId = this.siteId;
 
-    this.appService.getSiteById(this.siteId).subscribe((s) => this.site = s);
+      if(this.site.InheritOwnerAdmins){
+        this.contextSiteUsersSiteId = this.site.InheritFromSiteId;
+      }
 
-    // this.appService.getFlatSites().forEach(n => {
-    //   console.info('test' + n);
-    // });
-    //this.site = this.appService.getSiteBySpId(this.siteId);
-  } 
-
+      this.appService.getSiteUsersBySiteId(this.contextSiteUsersSiteId, this.siteRole).subscribe((u) => {      
+        this.contextUser = u;
+      });
+    });
+  }
+  
+  testfunc(siteId: number){
+    console.info("YO: " + siteId);
+    this.appService.setTest(this.site);
+  }
 }

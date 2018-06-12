@@ -1,14 +1,19 @@
 
 <div>
+    <div>Show Full Url
+        <mat-slide-toggle
+            color="primary" (change)="toggleFullUrls($event)">
+        </mat-slide-toggle>
+    </div>
     <div>
         <div class="site">
                 <div>Url</div>
                 <div class="userContainer">
                     <div></div>
-                    <!-- <div>{{ contextUser.LoginName }}</div> -->
-                    <div>{{ firstName }}</div>
-                    <div>Primary Administrator</div>
-                    <div>Secondary Administrator</div>
+                    <div class="siteUserColumn">Business Owner</div>
+                    <div class="siteUserColumn">Site Owner</div>
+                    <div class="siteUserColumn">Primary Administrator</div>
+                    <div class="siteUserColumn">Secondary Administrator</div>
                 </div>
         </div>
 
@@ -17,39 +22,44 @@
         <div *ngFor="let item of list
             let i=index;">
             <div class="site" [class.selected]="item.isSelected">                
-                <div [style.margin-left]="getWidth(item.level)" (click)="toggleChildren($event, item.SiteID)">
+                <div [style.margin-left]="getWidth(item.level)" (click)="toggleChildren($event, item.SiteID)"
+                tooltip="{{ item.Url }}" [delay]="500">
                         <i *ngIf="item.SubSites.length > 0 && item.isOpen" class="fas fa-angle-down"></i>
                         <i *ngIf="item.SubSites.length > 0 && !item.isOpen" class="fas fa-angle-right"></i>
-                        <span *ngIf="item.SubSites.length === 0" class="empty"></span>                
-                         {{item.Url}}
+                        <span *ngIf="item.SubSites.length === 0" class="empty"></span>   
+                        <ng-container *ngIf="showFullUrls">{{item.Url}}</ng-container>             
+                        <ng-container *ngIf="!showFullUrls">{{item.displayUrl}}</ng-container> 
                 </div>
                 <div class="userContainer">
                     <div>
-                        <i *ngIf="item.inheritOwnerAdmins" (click)="toggleInheritance(item)" class="fas fa-external-link-square-alt flipped"
+                        <i *ngIf="item.InheritOwnerAdmins" (click)="toggleInheritance(item)" class="fas fa-external-link-square-alt flipped"
                         tooltip="This site inherits its Owner and Admins from its parent site. Click to break inheritance." [delay]="500"></i>
-                        <i *ngIf="!item.inheritOwnerAdmins" (click)="toggleInheritance(item)" class="fas fa-users"
-                        tooltip="This site does not inherit its Owner and Admins. Click to inherit from its parent site." [delay]="500"></i> </div>
-                    <div>
+                        <i *ngIf="!item.InheritOwnerAdmins" (click)="toggleInheritance(item)" class="fas fa-users"
+                        tooltip="This site does not inherit its Owner and Admins. Click to inherit from its parent site." [delay]="500"></i>
+                    </div>
+                    <div class="siteUserColumn">
                         <app-site-tree-user 
                             [siteId]="item.SiteID"
-                            [siteRole]="siteRole.Owner">
+                            [siteRole]="siteRole.BusinessOwner">
+                        </app-site-tree-user>                          
+                    </div>
+                    <div class="siteUserColumn">
+                        <app-site-tree-user 
+                            [siteId]="item.SiteID"
+                            [siteRole]="siteRole.SiteOwner">
                         </app-site-tree-user>                           
                     </div>
-                    <div>
-                        <!-- <app-site-tree-user 
-                            [site]="item"
-                            [inheritFromParent]="item.inheritOwnerAdmins"
-                            [inheritFromSiteId]="item.inheritFromSiteId"
-                            [siteRole]="siteRole.Primary">
-                        </app-site-tree-user>                            -->
+                    <div class="siteUserColumn">
+                        <app-site-tree-user 
+                            [siteId]="item.SiteID"
+                            [siteRole]="siteRole.PrimaryAdmin">
+                        </app-site-tree-user>                           
                     </div>
-                    <div>
-                        <!-- <app-site-tree-user 
-                            [site]="item"
-                            [inheritFromParent]="item.inheritOwnerAdmins"
-                            [inheritFromSiteId]="item.inheritFromSiteId"
-                            [siteRole]="siteRole.Secondary">
-                        </app-site-tree-user>    -->
+                    <div class="siteUserColumn">
+                            <app-site-tree-user 
+                            [siteId]="item.SiteID"
+                            [siteRole]="siteRole.SecondaryAdmin">
+                        </app-site-tree-user>   
                     </div>
                 </div>
             </div>      

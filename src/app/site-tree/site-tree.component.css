@@ -62,3 +62,33 @@ span.empty{
 .peoplePickerModal>div{
     margin-top: 10px;
 }
+
+.siteUserColumn{
+    min-width: 200px;
+    margin-left: 10px;
+}
+
+.inline{
+    display: inline-flex;
+}
+
+.removeButton{
+    margin-top: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.deleteButton{
+    height: 34px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.fieldTitle{
+    color: gray;
+    font-size: 13px;
+}
+
+.mat-form-field-infix {
+    width: 100% !important;
+ }

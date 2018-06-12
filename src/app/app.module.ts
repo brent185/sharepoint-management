@@ -10,22 +10,22 @@ import { SiteListComponent } from './site-list/site-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SiteTreeComponent } from './site-tree/site-tree.component';
 import {DialogOverviewExampleDialog} from './site-tree/site-tree-modal.component';
+import { ErrorDialog } from './api/errorModal';
 import { PeoplePickerComponent } from './people-picker/people-picker.component';
 import { 
   MatAutocompleteModule, 
   MatFormFieldModule, 
-  MatInputModule, 
+  MatInputModule,
+  MatSlideToggleModule,
   MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { SiteTreeUserComponent } from './site-tree-user/site-tree-user.component';
 import { AppService } from './globaldata.service';
+import { SharePointApi } from './api/sharePointApi';
 import { Ng2CompleterModule } from 'ng2-completer';
-// import { StoreModule, combineReducers, MetaReducer } from '@ngrx/store';
-//import { logger, createLogger } from 'redux-logger';
-// import { IAppState, rootReducer, INITIAL_STATE, metaReducers } from './state';
-//import { storeLogger } from 'ngrx-store-logger';
-// import { ActionReducer } from 'ngx-bootstrap/mini-ngrx';
+import { HttpInterceptor } from './api/interceptor';
+import {MatButtonModule} from '@angular/material/button';
 import { environment } from '../environments/environment';
 
 // export function logger(reducer: ActionReducer<IAppState>): ActionReducer<IAppState>{
@@ -46,6 +46,7 @@ import { environment } from '../environments/environment';
     SiteTreeComponent,
     PeoplePickerComponent,
     DialogOverviewExampleDialog,
+    ErrorDialog,
     SiteTreeUserComponent
   ],
   imports: [
@@ -55,6 +56,8 @@ import { environment } from '../environments/environment';
     TooltipModule,
     MatInputModule,
     MatDialogModule,
+    MatButtonModule,
+    MatSlideToggleModule,
     BrowserModule,
     AlertModule.forRoot(),
     TabsModule.forRoot(),
@@ -69,10 +72,15 @@ import { environment } from '../environments/environment';
   //   MatAutocompleteModule
   // ],
   providers: [
-    AppService
+    AppService,
+    SharePointApi,
+    HttpInterceptor
   ],
   bootstrap: [AppComponent],
-  entryComponents: [DialogOverviewExampleDialog]
+  entryComponents: [
+    DialogOverviewExampleDialog,
+    ErrorDialog
+  ]
 })
 export class AppModule {
 constructor(){

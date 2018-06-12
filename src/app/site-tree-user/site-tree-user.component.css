@@ -2,5 +2,46 @@
     border: 1px solid;
     width: 180px;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 5px;
+}
+
+.inherited{
+    color: gray;
+}
+
+.inherited>div:nth-child(2){
+    margin-left: 30px;
+}
+
+.warningButton{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    background-color: #fff8d7;
+    display: inline-flex;
+}
+
+.okButton{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    background-color: #d8efca;
+    display: inline-flex;
+}
+
+.confirmPendingButton{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    background-color: #d1ecff;
+    display: inline-flex;
+}
+
+i {
+    margin-right: 5px;
+}
+
+.red{
+    color: red;
+}
+
+.darkGreen{
+    color: #2c7300;
 }

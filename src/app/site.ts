@@ -5,4 +5,6 @@ export class Site {
     PLMSiteID: number;
     SPID: string;
     SPParentID: string;
+    InheritOwnerAdmins?: boolean;
+    InheritFromSiteId?: number;
 }

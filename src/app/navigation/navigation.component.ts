@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import { TabsModule } from 'ngx-bootstrap';
+import { AppService } from './../globaldata.service';
 
 @Component({
   selector: 'app-navigation',
@@ -8,7 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  private isAdmin: boolean = false;
+  
+  constructor(private appService: AppService) {
+
+    this.appService.getLoggedInUser().subscribe(u => { 
+      if(u){
+        this.isAdmin = u.IsAdmin;
+      }      
+    });
+  }
+   
 
   ngOnInit() {
   }

@@ -16,4 +16,23 @@
   
   .brentTest{
     width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid gray;
+  }
+
+  mat-form-field{
+    margin-top: 0 !important;
+  }
+
+  .completer-row {
+    padding: 0px !important;
+    /* margin-bottom: 4px; */
+    clear: both;
+    display: inline-block;
+    width: 103%;
+}
+
+  .completer-selected-row{
+    background-color: red;
   }

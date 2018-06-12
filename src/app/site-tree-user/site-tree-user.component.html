@@ -1,18 +1,36 @@
-<!-- <div *ngIf="!inheritFromParent" class="peoplePickerLaunch" (click)="openPeoplePicker(item)">Select Owner</div> -->
-x:{{ site.Url}}
-<div [ngSwitch]="siteRole">
-  <div *ngSwitchCase="role.Owner">
-      <div *ngIf="inheritFromParent">{{contextUser.User.DisplayName}}</div>  
-      <div *ngIf="!inheritFromParent && !contextUser.User.LoginName" class="peoplePickerLaunch" (click)="openPeoplePicker(site, contextUser)">Select Owner</div>
-      <div *ngIf="!inheritFromParent && contextUser.User.LoginName" (click)="openPeoplePicker(site, contextUser)">X - {{contextUser.User.DisplayName}}</div>
-  </div>
-  <div *ngSwitchCase="role.Primary">
-      <div *ngIf="inheritFromParent">{{contextUser.User.DisplayName}}</div>  
-      <div *ngIf="!inheritFromParent && !contextUser.User.LoginName" class="peoplePickerLaunch" (click)="openPeoplePicker(site, contextUser)">Select Primary</div>
-      <div *ngIf="!inheritFromParent && contextUser.User.LoginName" (click)="openPeoplePicker(site, contextUser)">X - {{contextUser.User.DisplayName}}</div>
-  </div>
-  <div *ngSwitchCase="role.Secondary">
-        <div *ngIf="inheritFromParent">{{contextUser.User.DisplayName}}</div>  
-        <div *ngIf="!inheritFromParent" class="peoplePickerLaunch" (click)="openPeoplePicker(site, contextUser)">Select Secondary Admin</div>
-    </div>
-</div>
+
+
+
+            <div *ngIf="!site.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Confirmed" class="peoplePickerLaunch okButton" (click)="openPeoplePicker(site, contextUser)">
+                <div>
+                    <i class="fas fa-check-circle darkGreen"></i>
+                </div>
+                <div>
+                    {{contextUser.User.DisplayName}}
+                </div>
+            </div>
+            <div *ngIf="!site.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Nominated" class="peoplePickerLaunch confirmPendingButton" (click)="openPeoplePicker(site, contextUser)">
+                    <div>
+                        <i class="fas fa-exclamation-circle red"></i>
+                    </div>
+                    <div>
+                        {{contextUser.User.DisplayName}}
+                    </div>
+            </div>
+            <div *ngIf="!site.InheritOwnerAdmins && contextUser.Status === siteUserStatus.NotSelected" class="peoplePickerLaunch warningButton" (click)="openPeoplePicker(site, contextUser)">
+                    <div>
+                        <i class="fas fa-exclamation-circle red"></i>
+                    </div>
+                    <div>
+                        Select a User
+                    </div>
+            </div>
+            <div *ngIf="site.InheritOwnerAdmins && (contextUser.Status === siteUserStatus.Nominated || contextUser.Status === siteUserStatus.Confirmed)" class="inherited">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        {{contextUser.User.DisplayName}}
+                    </div>
+            </div>              
+

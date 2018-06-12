@@ -1,13 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {DialogOverviewExampleDialog} from './site-tree-modal.component';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { DialogOverviewExampleDialog } from './site-tree-modal.component';
 import { Sites } from './../mock-sites';
 import { users } from './../mock-users';
 import { AppService } from './../globaldata.service';
 import { SiteRole } from './../enums';
 import { Observable } from "rxjs/Rx"
 import { Site } from './../site';
-import { Store } from '@ngrx/store';
 import { User } from './../user';
 
 @Component({
@@ -22,23 +21,25 @@ export class SiteTreeComponent implements OnInit {
   contextUser: Observable<User>;
   list: Site[];
 
+  showFullUrls = false;
+
   private i = 0;
-  //public list = Sites;
   public users = users;
   public siteRole = SiteRole;
-  firstName: string;
+  firstName: string = null;
   animal: string;
   name: string;
 
   constructor(private appService: AppService, public dialog: MatDialog) {
     
-    this.appService.getLoggedInUser().subscribe(u => { this.firstName = u.LoginName})
-    this.appService.getSite().subscribe(s => { 
-      console.info(console.info(s));
-      this.list = s;
+    this.appService.getLoggedInUser().subscribe(u => { 
+      if(u){
+        this.firstName = u.DisplayName;
+        this.appService.getSite().subscribe(s => {           
+          this.list = s;
+        });
+      }      
     });
-    // this.initSites(Sites, 1);
-    // this.list = Sites;
   }
 
   ngOnInit() {
@@ -58,6 +59,14 @@ export class SiteTreeComponent implements OnInit {
   setSelectedSite(siteId){
     const x = this.findDFS(this.list, siteId);
     x.isSelected = true;
+  }
+
+  toggleFullUrls(e){
+    if(e.checked){
+      this.showFullUrls = true;
+    }else{
+      this.showFullUrls = false;
+    }
   }
 
   openParent(parentSPID){

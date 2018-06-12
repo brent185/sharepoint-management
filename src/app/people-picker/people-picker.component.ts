@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { CompleterService, CompleterData, RemoteData, CompleterItem } from 'ng2-completer';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
-//import { EventEmitter } from 'events';
+import { RequestOptions } from '@angular/http';
+//import { }
 
 @Component({
   selector: 'app-people-picker',
@@ -21,12 +22,15 @@ export class PeoplePickerComponent {
   public actorDS: RemoteData;
 
   constructor(private http: HttpClient, completerService: CompleterService) {
-    this.actorDS = completerService.remote(null, 'name', 'name');
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    this.actorDS = completerService.remote(null, 'DisplayName', 'DisplayName');
+    this.actorDS.requestOptions(requestOptions);
     this.actorDS.urlFormater(term => {
-            return `https://api.themoviedb.org/3/search/person?api_key=36bf560f8967672b5e428038340f0065&language=en-US&query=${term}&page=1&include_adult=false`;
+            //return `https://api.themoviedb.org/3/search/person?api_key=36bf560f8967672b5e428038340f0065&language=en-US&query=${term}&page=1&include_adult=false`;
+            return `http://sharepointapi-test.mhars1.optum.com/v1/sharepoint/user/search/${term}`;
+            
         });
-    this.actorDS.dataField('results');
-    
+    this.actorDS.dataField('');
   }
 
   public onActorSelected(selectedItem: CompleterItem) {

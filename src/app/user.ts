@@ -1,13 +1,16 @@
+import { SiteUserStatus } from './enums';
+
 export class SiteUser {
     Url: string;
     ID: number;
-    Status: number
+    Status: SiteUserStatus = SiteUserStatus.NotSelected;
     NominatedByLoginName: string;
     NominatedByDisplayName: string;
     NominatedDate: Date;
     ConfirmedByLoginName: string;
     ConfirmedByDisplayName: string;
     ConfirmedDate: Date;
+    UserIsInvalid: boolean;
     SiteID: number;
     User: User;
     Role: Role;
@@ -15,7 +18,6 @@ export class SiteUser {
         this.User = new User();
         this.Role = new Role();
     }
-
 }
 
 export class User {
@@ -29,6 +31,7 @@ export class User {
     SearchName?: string;
     JobTitle?: string;
     DivisionDescription?: string;
+    IsAdmin: boolean;
 }
 
 export class Role {

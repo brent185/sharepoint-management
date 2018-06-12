@@ -1,5 +1,11 @@
 <div>
-    <label></label>
-    <ng2-completer [inputClass]="'brentTest'" [(ngModel)]="actor" [pause]="200" [datasource]="actorDS" [minSearchLength]="0" (selected)="onActorSelected($event)"></ng2-completer>
-    <p>selected actor: {{actor}}</p>
+    <ng2-completer 
+    [inputClass]="'brentTest'" 
+    [placeholder]="'Begin typing...'"
+    [(ngModel)]="actor" 
+    [pause]="200" 
+    [datasource]="actorDS" 
+    [minSearchLength]="2"     
+    [autofocus]="true"
+    (selected)="onActorSelected($event)"></ng2-completer>
   </div>

@@ -1,12 +1,54 @@
 <div class="peoplePickerModal">
-        <div>{{data.site.Url}}</div>
-        <div [ngSwitch]="data.user.Role.ID">
-                <div *ngSwitchCase="siteRole.Owner">Select an Owner</div>
-                <div *ngSwitchCase="siteRole.Primary">Select a Primary Admin</div>
-                <div *ngSwitchCase="siteRole.Secondary">Select a Secondary Admin</div>
+        <div>
+                <mat-form-field style="width: 100%" class="example-full-width">
+                        <input matInput readonly placeholder="Site Collection Url" value="{{ data.site.Url }}">
+                </mat-form-field>
         </div>
-        <div *ngIf="data.user.User.LoginName">
-                Selected user is: {{data.user.User.LoginName}}
+        <div class="inline">
+                <div>
+                        <mat-form-field style="width: 270px;" class="example-full-width">
+                                <input matInput readonly placeholder="Role" value="{{ data.user.Role.Name }}">
+                        </mat-form-field>
+                </div>
+                <div>
+                        <mat-form-field style="width: 450px;">
+                                <input *ngIf="draftUser" matInput readonly placeholder="Status" value="User must be Saved">
+                                <input *ngIf="!draftUser" matInput readonly placeholder="Status" value="{{ data.user.StatusName }}">
+                        </mat-form-field>
+                </div>
         </div>
-        <app-people-picker (onUserSelected)="userSelected($event)"></app-people-picker>
+
+        <div *ngIf="draftUser" class="inline">
+                <mat-form-field  style="width: 350px;" class="example-full-width">
+                                <input matInput readonly placeholder="User" value="{{ draftUser.DisplayName }}">                        
+                </mat-form-field>        
+                <div *ngIf="draftUser" class="removeButton" (click)="removeSelectedUser()">
+                                <i class="fas fa-times-circle"></i>
+                </div>
+        </div>
+        <div *ngIf="data.user.Status==status.Nominated || data.user.Status==status.Confirmed" class="inline">
+                        <mat-form-field  style="width: 350px;" class="example-full-width">
+                                        <input matInput readonly placeholder="User" value="{{ data.user.User.DisplayName }}">                        
+                        </mat-form-field>
+                        <button class="deleteButton" (click)="DeleteSelectedUser()" mat-raised-button>Delete</button>
+
+                </div>
+        <div>
+                <div *ngIf="!draftUser && data.user.Status==status.NotSelected">
+                        <div class="fieldTitle">Search for User</div>
+                        <app-people-picker (onUserSelected)="userSelected($event)"></app-people-picker>
+                </div>
+                <div *ngIf="draftUser">
+                        <button color="primary" mat-raised-button (click)="SaveUser()">Save</button>
+                </div>
+        </div>
+        <div *ngIf="data.user.Status==status.Nominated && data.user.User.LoginName === loggedInUserLoginName">
+                <div class="red">CONFIRMATION REQUIRED</div>
+                <div *ngIf="data.user.Role.ID === siteRole.SecondaryAdmin">
+                        As a Secondary Admin, I agree to do Secondary Admin stuff for the rest of my life, and love it.
+                </div>
+                <div>
+                        <button color="primary" mat-raised-button (click)="ConfirmUser()">Agree and Confirm</button>
+                </div>
+        </div>
 </div>
