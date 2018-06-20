@@ -1,6 +1,6 @@
 .peoplePickerLaunch{
     border: 1px solid;
-    width: 180px;
+    width: 215px;
     text-align: center;
     border-radius: 5px;
 }
@@ -13,10 +13,10 @@
     margin-left: 30px;
 }
 
-.warningButton{
+.warningRed{
     padding: 0px 8px 0 8px;
     min-width: 200px;
-    background-color: #fff8d7;
+    background-color: #fffe00;
     display: inline-flex;
 }
 
@@ -30,7 +30,8 @@
 .confirmPendingButton{
     padding: 0px 8px 0 8px;
     min-width: 200px;
-    background-color: #d1ecff;
+    background-color: #ddf4ff;
+    /* #ddf4ff */
     display: inline-flex;
 }
 

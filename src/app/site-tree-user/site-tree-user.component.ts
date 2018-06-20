@@ -5,7 +5,7 @@ import { AppService } from './../globaldata.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {DialogOverviewExampleDialog} from './../site-tree/site-tree-modal.component';
 import { SiteRole } from './../enums';
-import { SiteUser } from './../user';
+import { AttestationUser } from './../user';
 import { Site } from './../site';
 import { IAppState } from './../store';
 import { Observable } from "rxjs/Rx";
@@ -20,11 +20,13 @@ import { SiteUserStatus } from './../enums';
 })
 export class SiteTreeUserComponent implements OnInit {
 
-  @Input() siteRole: SiteRole;
-  @Input() siteId: number;
+  // @Input() siteRole: SiteRole;
+  // @Input() siteId: number;
+  @Input() user: AttestationUser;
+  @Input() site: Site;
 
-  contextSite: Observable<any>;
-  site: Site = null;
+  // contextSite: Observable<any>;
+  contextSite: Site = null;
   url = null;
   role = SiteRole;
   private contextUser;
@@ -38,11 +40,11 @@ export class SiteTreeUserComponent implements OnInit {
 
   openPeoplePicker(site, user): void {
 
-    if(!user){
-      user = new SiteUser;
+    // if(!user){
+    //   user = new AttestationUser;
   
-      user.Role.ID = this.siteRole;
-    }
+    //   user.Role.ID = this.siteRole;
+    // }
 
     console.log(site);
     let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -58,23 +60,35 @@ export class SiteTreeUserComponent implements OnInit {
 
   ngOnInit() {
 
-    if(!this.contextUser){
-      this.contextUser = new SiteUser();
-      this.contextUser.Role.ID = this.siteRole;
-    }
+    // if(!this.contextUser){
+      this.contextUser = this.user;
+      this.contextSite = this.site;
+    //   this.contextUser.Role = this.siteRole;
+    // }
 
-    this.appService.getSiteById(this.siteId).subscribe((s) => {
-      this.site = s;
-      this.contextSiteUsersSiteId = this.siteId;
+    // this.appService.getSiteById(this.siteId).subscribe((s) => {
+    //   if(s){
+    //     this.site = s;
+    //     this.contextSiteUsersSiteId = this.siteId;
+  
+    //     if(this.site.InheritOwnerAdmins){
+    //       this.contextSiteUsersSiteId = this.site.InheritFromSiteId;
+    //     }
+    //   }
+    // });
 
-      if(this.site.InheritOwnerAdmins){
-        this.contextSiteUsersSiteId = this.site.InheritFromSiteId;
-      }
-
-      this.appService.getSiteUsersBySiteId(this.contextSiteUsersSiteId, this.siteRole).subscribe((u) => {      
-        this.contextUser = u;
-      });
-    });
+    // this.appService.attestationUsers.subscribe((u) => {
+    //   if(u){
+    //     //console.info("UHIT: " + console.info(u));
+    //     this.contextUser = u.find(x => x.Role == this.siteRole);
+    //     // this.appService.getSiteUsersBySiteId(this.contextSiteUsersSiteId, this.siteRole).subscribe((u) => {      
+    //     //   if(u){
+    //     //     this.contextUser = u;
+    //     //     console.info("U: " + this.contextUser);
+    //     //   }      
+    //     // });
+    //   }
+    // });
   }
   
   testfunc(siteId: number){

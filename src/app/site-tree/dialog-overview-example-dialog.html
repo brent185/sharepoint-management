@@ -7,7 +7,7 @@
         <div class="inline">
                 <div>
                         <mat-form-field style="width: 270px;" class="example-full-width">
-                                <input matInput readonly placeholder="Role" value="{{ data.user.Role.Name }}">
+                                <input matInput readonly placeholder="Role" value="{{ data.user.RoleName }}">
                         </mat-form-field>
                 </div>
                 <div>
@@ -42,7 +42,7 @@
                         <button color="primary" mat-raised-button (click)="SaveUser()">Save</button>
                 </div>
         </div>
-        <div *ngIf="data.user.Status==status.Nominated && data.user.User.LoginName === loggedInUserLoginName">
+        <div class="confirmContainer" *ngIf="data.user.Status==status.Nominated && data.user.User.LoginName === loggedInUserLoginName">
                 <div class="red">CONFIRMATION REQUIRED</div>
                 <div *ngIf="data.user.Role.ID === siteRole.SecondaryAdmin">
                         As a Secondary Admin, I agree to do Secondary Admin stuff for the rest of my life, and love it.
@@ -50,5 +50,8 @@
                 <div>
                         <button color="primary" mat-raised-button (click)="ConfirmUser()">Agree and Confirm</button>
                 </div>
+        </div>
+        <div *ngIf="data.user.Status==status.Nominated && data.user.User.LoginName != loggedInUserLoginName" class="red">
+                The nominated user must visit this site to confirm their nomination. Only the nominated user can confirm a nomination.
         </div>
 </div>

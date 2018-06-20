@@ -1,6 +1,6 @@
 import { SiteUserStatus } from './enums';
 
-export class SiteUser {
+export class AttestationUser {
     Url: string;
     ID: number;
     Status: SiteUserStatus = SiteUserStatus.NotSelected;
@@ -11,12 +11,12 @@ export class SiteUser {
     ConfirmedByDisplayName: string;
     ConfirmedDate: Date;
     UserIsInvalid: boolean;
-    SiteID: number;
+    SiteID?: number;
     User: User;
-    Role: Role;
+    Role: number;
     constructor(){
         this.User = new User();
-        this.Role = new Role();
+       // this.Role = new Role();
     }
 }
 
@@ -38,3 +38,4 @@ export class Role {
     ID: number;
     Name: string;
 }
+

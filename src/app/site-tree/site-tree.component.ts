@@ -2,12 +2,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogOverviewExampleDialog } from './site-tree-modal.component';
 import { Sites } from './../mock-sites';
-import { users } from './../mock-users';
+// import { users } from './../mock-users';
 import { AppService } from './../globaldata.service';
 import { SiteRole } from './../enums';
 import { Observable } from "rxjs/Rx"
-import { Site } from './../site';
-import { User } from './../user';
+import { Site, SiteAttestation } from './../site';
+import { User, AttestationUser } from './../user';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-site-tree',
@@ -20,30 +21,64 @@ export class SiteTreeComponent implements OnInit {
   
   contextUser: Observable<User>;
   list: Site[];
-
+  siteContext: SiteAttestation;
+  // attestationUsers;
+  businessOwner: AttestationUser;
+  siteOwner: AttestationUser;
+  primaryAdmin: AttestationUser;
+  secondaryAdmin: AttestationUser;
   showFullUrls = false;
-
+  showModalOnLoad = false;
+  showModalUserRoleID = null;
   private i = 0;
-  public users = users;
+  //public users = users;
   public siteRole = SiteRole;
   firstName: string = null;
   animal: string;
   name: string;
 
-  constructor(private appService: AppService, public dialog: MatDialog) {
+  constructor(private appService: AppService, public dialog: MatDialog, private route: ActivatedRoute) {
     
-    this.appService.getLoggedInUser().subscribe(u => { 
-      if(u){
-        this.firstName = u.DisplayName;
-        this.appService.getSite().subscribe(s => {           
-          this.list = s;
-        });
-      }      
-    });
+
   }
 
   ngOnInit() {
+    this.route.params.subscribe(
+      params => {
+          console.info("PARAMS-FROM-SITE-TREEE: " + console.info(params));
+          const spId = params['siteCollectionSpId'];
+          const id = params['siteCollectionId'];
+          const confirm = params['confirm'];
+          //this.getMovie(id);
+          if(id){
+            this.Init(spId, id);
+          }          
+          if(params['confirmRole']){
+            this.showModalOnLoad = true;
+            this.showModalUserRoleID = params['confirmRole'];
+          }
+      }
+    );
+  }
 
+  Init(spId: string, id: number){
+
+    this.appService.GetSiteAttestation(spId, id).subscribe(attestation => {
+      if(attestation){
+        this.siteContext = attestation;
+        this.list = attestation.Hierarchy;
+        this.businessOwner = attestation.AttestationUsers.find(u => u.Role === 1);
+        this.siteOwner = attestation.AttestationUsers.find(u => u.Role === 2);
+        this.primaryAdmin = attestation.AttestationUsers.find(u => u.Role === 3);
+        this.secondaryAdmin = attestation.AttestationUsers.find(u => u.Role === 4);
+        console.info("ATTEST!: " + console.info(attestation));
+        if(this.showModalOnLoad){
+          let u = attestation.AttestationUsers.find(u => u.Role == this.showModalUserRoleID);
+          this.openPeoplePicker(this.siteContext.Hierarchy[0], u);
+        }
+        
+      }
+    });
   }
 
   toggleInheritance(site){
@@ -97,12 +132,12 @@ export class SiteTreeComponent implements OnInit {
     });
   }
 
-  openPeoplePicker(item): void {
-    console.log(item);
+  openPeoplePicker(site, user): void {
+    //console.log(item);
     let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '500px',
-      height: '500px',
-      data: { site: item }
+      width: '800px',
+      height: '650px',
+      data: { site: site, user: user }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -123,10 +158,10 @@ export class SiteTreeComponent implements OnInit {
 
     if (x.isOpen) {
       x.isOpen = false;
-      //this.hideChildren(x);
+      this.hideChildren(x);
     } else {
       x.isOpen = true;
-      //this.showChildren(x);
+      this.showChildren(x);
     }
     //this.setEvenOdd(1);
   }
@@ -147,7 +182,7 @@ export class SiteTreeComponent implements OnInit {
       parent.SubSites.forEach(c => {
         c.isVisible = true;
         if (c.SubSites) {
-          this.hideChildren(c);
+          this.showChildren(c);
         }
       });
     }
@@ -155,7 +190,7 @@ export class SiteTreeComponent implements OnInit {
 
   findDFS(objects, id) {
     for (let o of objects || []) {
-      if (o.SiteID == id) return o
+      if (o.ID == id) return o
       const o_ = this.findDFS(o.SubSites, id);
       if (o_) return o_
     }

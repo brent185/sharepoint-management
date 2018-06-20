@@ -3,7 +3,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { SiteRole } from './../enums';
 import { AppService } from './../globaldata.service';
 import { SiteUserStatus } from './../enums';
-import { SiteUser} from './../user';
+import { AttestationUser} from './../user';
 
 @Component({
     selector: 'dialog-overview-example-dialog',
@@ -26,18 +26,18 @@ import { SiteUser} from './../user';
 
         this.user = data.user;
 
-        switch(data.user.Role.ID){
+        switch(data.user.Role){
           case 1:
-            data.user.Role.Name = "Business Owner";
+            data.user.RoleName = "Business Owner";
           break;
           case 2:
-            data.user.Role.Name = "Site Owner";
+            data.user.RoleName = "Site Owner";
           break;            
           case 3:
-            data.user.Role.Name = "Primary Administrator";
+            data.user.RoleName = "Primary Administrator";
           break;
           case 4:
-            data.user.Role.Name = "Secondary Administrator";
+            data.user.RoleName = "Secondary Administrator";
           break;                        
         }
 

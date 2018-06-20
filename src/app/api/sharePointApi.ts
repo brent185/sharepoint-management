@@ -22,4 +22,23 @@ export class SharePointApi {
     return this.http.get(constants.sharePointApiRootUrl + '/sharepoint/user/search/' + term, requestOptions)
     .map((res:Response) => res.json());
   }
+
+  GetWebHierarchyByWebUrl(url: string){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/webhierarchy?url=${url}`, requestOptions)
+    .map((res:Response) => res.json());
+  }
+
+  GetWebHierarchyBySiteSpId(spId: string){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/webhierarchy/${spId}`, requestOptions)
+    .map((res:Response) => res.json());
+  }
+
+
+  GetAttestationUsersBySiteId(id: number){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/SiteCollectionAttestationUsers/${id}`, requestOptions)
+    .map((res:Response) => res.json());
+  }
 }

@@ -1,7 +1,7 @@
 
 
 
-            <div *ngIf="!site.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Confirmed" class="peoplePickerLaunch okButton" (click)="openPeoplePicker(site, contextUser)">
+            <div *ngIf="!contextSite.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Confirmed" class="peoplePickerLaunch okButton" (click)="openPeoplePicker(contextSite, contextUser)">
                 <div>
                     <i class="fas fa-check-circle darkGreen"></i>
                 </div>
@@ -9,7 +9,7 @@
                     {{contextUser.User.DisplayName}}
                 </div>
             </div>
-            <div *ngIf="!site.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Nominated" class="peoplePickerLaunch confirmPendingButton" (click)="openPeoplePicker(site, contextUser)">
+            <div *ngIf="!contextSite.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Nominated" class="peoplePickerLaunch confirmPendingButton" (click)="openPeoplePicker(contextSite, contextUser)">
                     <div>
                         <i class="fas fa-exclamation-circle red"></i>
                     </div>
@@ -17,15 +17,15 @@
                         {{contextUser.User.DisplayName}}
                     </div>
             </div>
-            <div *ngIf="!site.InheritOwnerAdmins && contextUser.Status === siteUserStatus.NotSelected" class="peoplePickerLaunch warningButton" (click)="openPeoplePicker(site, contextUser)">
+            <div *ngIf="!contextSite.InheritOwnerAdmins && contextUser.Status === siteUserStatus.NotSelected" class="peoplePickerLaunch warningRed" (click)="openPeoplePicker(contextSite, contextUser)">
                     <div>
                         <i class="fas fa-exclamation-circle red"></i>
                     </div>
                     <div>
-                        Select a User
+                        NOT SELECTED
                     </div>
             </div>
-            <div *ngIf="site.InheritOwnerAdmins && (contextUser.Status === siteUserStatus.Nominated || contextUser.Status === siteUserStatus.Confirmed)" class="inherited">
+            <div *ngIf="contextSite.InheritOwnerAdmins && (contextUser.Status === siteUserStatus.Nominated || contextUser.Status === siteUserStatus.Confirmed)" class="inherited">
                     <div>
                         
                     </div>

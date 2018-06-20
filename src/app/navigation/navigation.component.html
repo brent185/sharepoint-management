@@ -1,8 +1,9 @@
-<tabset>
-    <tab heading="Attestation" id="tab1">
-        <app-site-tree></app-site-tree>
-    </tab>
-    <tab style="display: none" *ngIf="isAdmin" heading="Site Metrics">
-    </tab>
-
-  </tabset>
+<div style="position:absolute;right:0;margin-right:30px;">
+        <app-welcome-user></app-welcome-user>
+</div>
+<div class="tabContainer">
+    <div routerLink="mymessages" [routerLinkActive]="['tabActive']">My Messages ({{myMessagesCount}})</div>
+    <div routerLink="mysites" [routerLinkActive]="['tabActive']">My Sites</div>
+    <div routerLink="attestation" [routerLinkActive]="['tabActive']">Attestation</div>
+</div>
+<router-outlet></router-outlet>
