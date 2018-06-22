@@ -4,6 +4,7 @@ import { SiteRole } from './../enums';
 import { AppService } from './../globaldata.service';
 import { SiteUserStatus } from './../enums';
 import { AttestationUser} from './../user';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'dialog-overview-example-dialog',
@@ -22,7 +23,7 @@ import { AttestationUser} from './../user';
 
     constructor(private appService: AppService,
       public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-      @Inject(MAT_DIALOG_DATA) public data: any) {         
+      @Inject(MAT_DIALOG_DATA) public data: any, private datePipe: DatePipe) {         
 
         this.user = data.user;
 
@@ -57,15 +58,15 @@ import { AttestationUser} from './../user';
       let status = 'ERROR';
 
       if(this.data.user.Status === SiteUserStatus.NotSelected){
-          status = 'User not selected';
+          status = 'No user selected';
           return status;
       }
       if(this.data.user.Status === SiteUserStatus.Nominated){
-        status = 'User Nominated on ' + user.NominatedDate;
+        status = 'Nominated on ' + this.datePipe.transform(user.NominatedDate, 'MM/dd/yy') + ' by ' + 'Asplund, Brent'; //user.NominatedByDisplayName;
         return status;
       }
       if(this.data.user.Status === SiteUserStatus.Confirmed){
-        status = 'User Confirmed on ' + user.ConfirmedDate;
+        status = 'Confirmed on ' + this.datePipe.transform(user.ConfirmedDate, 'MM/dd/yy') + ' by ' + 'Asplund, Brent'; //user.NominatedByDisplayName;
         return status;
       }
     return status;
@@ -93,7 +94,8 @@ import { AttestationUser} from './../user';
       this.draftUser = null;
       this.appService.SaveUser(this.data.user);
       if(this.data.user.User.LoginName != this.loggedInUserLoginName){
-        this.dialogRef.close();
+        // this.dialogRef.close();
+        this.onNoClick();
       } 
     }
 
@@ -102,7 +104,8 @@ import { AttestationUser} from './../user';
       this.data.user.StatusName = this.GetStatusName(this.data.user);
       this.data.user.ConfirmedDate = new Date();
       this.appService.ConfirmUser(this.data.user);
-      this.dialogRef.close();
+      // this.dialogRef.close();
+      this.onNoClick();
     }
   
   }

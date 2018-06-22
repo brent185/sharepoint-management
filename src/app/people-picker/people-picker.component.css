@@ -21,6 +21,10 @@
     border-bottom: 1px solid gray;
   }
 
+  .brentTest:focus {
+    outline: none;
+  }
+
   mat-form-field{
     margin-top: 0 !important;
   }
@@ -36,3 +40,7 @@
   .completer-selected-row{
     background-color: red;
   }
+
+  /* textarea:focus, input:focus{
+    outline: none;
+} */

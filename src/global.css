@@ -1,0 +1,84 @@
+.dataHeader{    
+    width: 100%;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid;
+    font-weight: bold;
+}
+
+.mySitesHeader>div:nth-child(1) {
+    width: 100%;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.mySitesHeader>div:nth-child(n+1) {
+    min-width: 250px;
+    margin-right: 20px;
+}
+
+.mySitesItem{
+    display: inline-flex;
+    width: 100%;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.mySitesItem>div:nth-child(1){
+    width: 100%;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.mySitesItem>div:nth-child(n+1){
+    min-width: 250px;
+    /* margin-right: 20px; */
+}
+
+i {
+    margin-right: 5px;
+}
+
+.red{
+    color: red;
+}
+
+.darkGreen{
+    color: #2c7300;
+}
+
+.dataHeader>div {
+    text-align: center;
+}
+
+.userStatusButton{
+    border: 1px solid;
+    width: 215px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.userNotSelected{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    background-color: #fffe00;
+    display: inline-flex;
+}
+
+.userConfirmed{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    background-color: #d8efca;
+    display: inline-flex;
+}
+
+.userNominated{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    background-color: #ddf4ff;
+    /* #ddf4ff */
+    display: inline-flex;
+}

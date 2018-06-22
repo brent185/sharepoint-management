@@ -30,6 +30,7 @@ export class SiteTreeComponent implements OnInit {
   showFullUrls = false;
   showModalOnLoad = false;
   showModalUserRoleID = null;
+  modalHasLoaded = false;
   private i = 0;
   //public users = users;
   public siteRole = SiteRole;
@@ -72,8 +73,9 @@ export class SiteTreeComponent implements OnInit {
         this.primaryAdmin = attestation.AttestationUsers.find(u => u.Role === 3);
         this.secondaryAdmin = attestation.AttestationUsers.find(u => u.Role === 4);
         console.info("ATTEST!: " + console.info(attestation));
-        if(this.showModalOnLoad){
+        if(this.showModalOnLoad && !this.modalHasLoaded){
           let u = attestation.AttestationUsers.find(u => u.Role == this.showModalUserRoleID);
+          this.modalHasLoaded = true;
           this.openPeoplePicker(this.siteContext.Hierarchy[0], u);
         }
         
@@ -142,7 +144,8 @@ export class SiteTreeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.animal = result;
+      dialogRef = null;
+      //this.animal = result;
     });
   }
 

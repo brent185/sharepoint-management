@@ -1,3 +1,4 @@
+<div class="modalCloseButton" (click)="onNoClick()">X</div>
 <div class="peoplePickerModal">
         <div>
                 <mat-form-field style="width: 100%" class="example-full-width">
@@ -43,7 +44,7 @@
                 </div>
         </div>
         <div class="confirmContainer" *ngIf="data.user.Status==status.Nominated && data.user.User.LoginName === loggedInUserLoginName">
-                <div class="red">CONFIRMATION REQUIRED</div>
+                <div class="red">CONFIRMATION REQUIRED (more verbiage to come...)</div>
                 <div *ngIf="data.user.Role.ID === siteRole.SecondaryAdmin">
                         As a Secondary Admin, I agree to do Secondary Admin stuff for the rest of my life, and love it.
                 </div>

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AlertModule, TabsModule, ButtonsModule, TooltipModule } from 'ngx-bootstrap';
@@ -60,10 +61,11 @@ import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import { RouterModule, Routes } from '@angular/router';
 import {MatTableDataSource} from '@angular/material';
+import { MySitesComponent } from './my-sites/my-sites.component';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'mymessages', pathMatch: 'full'},
-  {path: 'mysites', component: MyMessagesComponent},
+  {path: 'mysites', component: MySitesComponent},
   {path: 'mymessages', component: MyMessagesComponent},
   // {path: 'attestation/:id', component: SiteTreeComponent},
   {path: 'attestation', component: SiteTreeComponent},
@@ -86,7 +88,8 @@ const appRoutes: Routes = [
     SiteTreeUserComponent,
     // MatPaginatorModule,
     MyMessagesComponent,
-    BulkEditComponent
+    BulkEditComponent,
+    MySitesComponent
   ],
   imports: [
     MatAutocompleteModule,
@@ -148,7 +151,8 @@ const appRoutes: Routes = [
     AppService,
     SharePointApi,
     HttpInterceptor,
-    RouterModule
+    RouterModule,
+    DatePipe
   ],
   bootstrap: [AppComponent],
   entryComponents: [

@@ -121,6 +121,7 @@ export class AppService{
                 user.FirstName = data.FirstName;
                 user.LastName = data.LastName;
                 user.DisplayName = user.FirstName + ' ' + user.LastName;
+                user.LoginName = data.LoginName;
                 user.IsAdmin = true;
                 this._profile = user;
                 this.profile.next(this._profile);
@@ -220,25 +221,26 @@ export class AppService{
         return this.webs.asObservable();
     }
 
-    SaveUser(user: AttestationUser){
-        let selectedUser = this._attestationUsers.find(u => u.Role === user.Role);
+    SaveUser(user: AttestationUser){        
+        let selectedUser = this._siteAttestation.AttestationUsers.find(u => u.Role === user.Role);
         selectedUser.User.LoginName = user.User.LoginName;
         selectedUser.User.DisplayName = user.User.DisplayName;
+        selectedUser.NominatedByLoginName = this._profile.LoginName;
+        selectedUser.NominatedByDisplayName = this._profile.DisplayName;
         selectedUser.Status = SiteUserStatus.Nominated;
         selectedUser.NominatedDate = new Date();
-        this.attestationUsers.next(this._attestationUsers);
-        //console.info("USERS: " + console.info(users));
+        this.siteAttestation.next(this._siteAttestation);        
     }
 
     ConfirmUser(user: AttestationUser){
-        let selectedUser = this._attestationUsers.find(u => u.Role === user.Role);
+        let selectedUser = this._siteAttestation.AttestationUsers.find(u => u.Role === user.Role);
         selectedUser.Status = SiteUserStatus.Confirmed;
         selectedUser.ConfirmedDate = new Date();
-        this.attestationUsers.next(this._attestationUsers);
+        this.siteAttestation.next(this._siteAttestation);
     }
     
     DeleteUser(user: AttestationUser){
-        let selectedUser = this._attestationUsers.find(u => u.Role === user.Role);
+        let selectedUser = this._siteAttestation.AttestationUsers.find(u => u.Role === user.Role);
         if(selectedUser){
             selectedUser.Status = SiteUserStatus.NotSelected;
             selectedUser.NominatedByLoginName = null;
@@ -250,7 +252,7 @@ export class AppService{
             selectedUser.User = new User;
         }
         
-        this.attestationUsers.next(this._attestationUsers);
+        this.siteAttestation.next(this._siteAttestation);
     }
 
     getSiteById<T>(siteId: number): Observable<Web> {

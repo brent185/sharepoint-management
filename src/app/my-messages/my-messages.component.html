@@ -34,8 +34,9 @@
           <!-- Color Column -->
           <ng-container matColumnDef="Action">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row">                 
-                <span routerLink="{{row.ActionUrl}}">{{row.Action}} </span>  
+            <mat-cell *matCellDef="let row">               
+                <!-- <span routerLink="{{row.ActionUrl}}">{{row.Action}} </span>   -->
+                <button routerLink="{{row.ActionUrl}}">Confirm</button>  
             </mat-cell>
           </ng-container>
       
@@ -44,7 +45,7 @@
           </mat-row>
         </mat-table>
       
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
       </div>
       
       

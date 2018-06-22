@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { LOGIN_USER, INIT_SITES } from './actions';
 import { SharePointApi } from './api/sharePointApi';
 import { Sites } from './mock-sites';

@@ -16,8 +16,8 @@ export class MyMessagesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   messages: UserMessage[] = [
-    {MessageType: 'Attestation', ActionUrl: '/attestation/88D79697-147F-46B8-8C3F-777E75173CF1/2/2', SiteUrl: 'http://it100/deploy/subsite1', Message: 'Primary Administrator confirmation is required.', Action: 'click'},
-    {MessageType: 'Attestation', ActionUrl: '/attestation/DD1885B9-69AF-469E-8BAE-819EE213DE66/1/4', SiteUrl: 'http://it100/deploy/testsitecollection', Message: 'Secondary Administrator confirmation is required.', Action: 'click'}
+    {MessageType: 'Attestation', ActionUrl: '/attestation/88D79697-147F-46B8-8C3F-777E75173CF1/2', SiteUrl: 'http://it100/deploy/subsite1', Message: 'Primary Administrator confirmation is required.', Action: 'click'},
+    {MessageType: 'Attestation', ActionUrl: '/attestation/DD1885B9-69AF-469E-8BAE-819EE213DE66/1', SiteUrl: 'http://it100/deploy/testsitecollection', Message: 'Secondary Administrator confirmation is required.', Action: 'click'}
   ];
 
   constructor() {

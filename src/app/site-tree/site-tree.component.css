@@ -13,11 +13,13 @@
 
 .siteHeader{
     width: 100%;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
-    color: white;
-    background-color: #333333;
     border-radius: 5px;
     margin-bottom: 10px;
+    border-bottom: 1px solid;
+    font-weight: bold;
 }
 
 .siteHeader>div:nth-child(1){
@@ -135,4 +137,12 @@ span.empty{
     width: 75px;
     min-width: 75px;
     max-width: 255px;
+  }
+
+  .modalCloseButton{
+    float: right;
+    cursor: pointer;
+    position: relative;
+    top: -5px;
+
   }

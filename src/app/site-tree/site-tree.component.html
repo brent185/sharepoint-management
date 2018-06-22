@@ -33,9 +33,9 @@
                 <div class="userContainer">
                     <div>
                         <i *ngIf="item.InheritOwnerAdmins" (click)="toggleInheritance(item)" class="fas fa-external-link-square-alt flipped"
-                        tooltip="This site inherits its Owner and Admins from its parent site. Click to break inheritance." [delay]="500"></i>
+                        tooltip="This site inherits its Owner and Admins from the Site Collection" [delay]="500"></i>
                         <i *ngIf="!item.InheritOwnerAdmins" (click)="toggleInheritance(item)" class="fas fa-users"
-                        tooltip="This site does not inherit its Owner and Admins. Click to inherit from its parent site." [delay]="500"></i>
+                        tooltip="This site does not inherit its Owner and Admins" [delay]="500"></i>
                     </div>
                     <div class="siteUserColumn">
                         <app-site-tree-user 

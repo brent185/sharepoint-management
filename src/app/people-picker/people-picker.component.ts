@@ -5,6 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
 import { RequestOptions } from '@angular/http';
 import { constants } from './../constants';
+import { searchUsers } from './../mock-userSearch';
 
 @Component({
   selector: 'app-people-picker',
