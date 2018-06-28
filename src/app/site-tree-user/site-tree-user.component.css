@@ -2,7 +2,7 @@
     border: 1px solid;
     width: 215px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 .inherited{
@@ -16,22 +16,31 @@
 .warningRed{
     padding: 0px 8px 0 8px;
     min-width: 200px;
-    background-color: #fffe00;
+    /* background-color: #fffe00; */
     display: inline-flex;
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
 }
 
 .okButton{
     padding: 0px 8px 0 8px;
     min-width: 200px;
-    background-color: #d8efca;
+    /* background-color: #d8efca; */
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
     display: inline-flex;
 }
 
 .confirmPendingButton{
     padding: 0px 8px 0 8px;
     min-width: 200px;
-    background-color: #ddf4ff;
+    /* background-color: #ddf4ff; */
     /* #ddf4ff */
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
     display: inline-flex;
 }
 

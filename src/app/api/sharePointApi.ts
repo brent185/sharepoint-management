@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Response, RequestOptions } from '@angular/http';
+import { Response, RequestOptions, RequestOptionsArgs, Http, Headers, RequestMethod } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpInterceptor } from './interceptor';
 import 'rxjs/add/operator/map';
 import { constants } from './../constants';
+import { AttestationUser } from './../user'
+import { SiteUserStatus, SiteRole } from './../enums';
 
 @Injectable()
 export class SharePointApi {
   constructor (
-    private http: HttpInterceptor
+    private http: HttpInterceptor,
+    private http2: HttpClient
   ) {}
 
   getUser() {
@@ -35,10 +39,26 @@ export class SharePointApi {
     .map((res:Response) => res.json());
   }
 
-
   GetAttestationUsersBySiteId(id: number){
     let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
     return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/SiteCollectionAttestationUsers/${id}`, requestOptions)
     .map((res:Response) => res.json());
+  }
+
+  SaveAttestationUser(user: AttestationUser){
+
+    
+    let httpHeaders = new HttpHeaders({
+      'Content-Type' : 'application/json',
+      'Cache-Control': 'no-cache'
+    }); 
+
+    let options = { withCredentials: true, headers: httpHeaders };
+
+    let url = `${constants.sharePointApiRootUrl}/sharepoint/SaveAttestationUser`;
+    return this.http2.post(url, user, options)
+    .map((res) => {
+      console.info("ID:  " + res);
+    });
   }
 }

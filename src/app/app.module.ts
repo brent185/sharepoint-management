@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AlertModule, TabsModule, ButtonsModule, TooltipModule } from 'ngx-bootstrap';
 import { SiteCollectionComponent } from './site-collection/site-collection.component';
 import { NavigationComponent } from './navigation/navigation.component';
@@ -13,6 +14,8 @@ import { SiteTreeComponent } from './site-tree/site-tree.component';
 import {DialogOverviewExampleDialog} from './site-tree/site-tree-modal.component';
 import { ErrorDialog } from './api/errorModal';
 import { PeoplePickerComponent } from './people-picker/people-picker.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { 
   MatAutocompleteModule, 
   MatFormFieldModule, 
@@ -44,8 +47,9 @@ import {
   MatSnackBarModule,
   MatSortModule,
   MatToolbarModule,
-  MatTooltipModule,
+  // MatTooltipModule,
 } from '@angular/material';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { SiteTreeUserComponent } from './site-tree-user/site-tree-user.component';
@@ -62,6 +66,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { RouterModule, Routes } from '@angular/router';
 import {MatTableDataSource} from '@angular/material';
 import { MySitesComponent } from './my-sites/my-sites.component';
+import 'hammerjs';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'mymessages', pathMatch: 'full'},
@@ -100,9 +105,12 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatButtonModule,
     MatTableModule,
-    // MatTableDataSource,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    BrowserAnimationsModule,
     MatPaginatorModule,
     RouterModule.forRoot(appRoutes),
+    NgbModule.forRoot(),
     MatTabsModule,
     MatSlideToggleModule,
     BrowserModule,

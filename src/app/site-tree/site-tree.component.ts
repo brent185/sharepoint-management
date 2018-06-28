@@ -121,18 +121,18 @@ export class SiteTreeComponent implements OnInit {
     }
   }
 
-  openDialog(): void {
-    let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '500px',
-      height: '500px',
-      data: { name: this.name, animal: this.animal }
-    });
+  // openDialog(): void {
+  //   let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+  //     width: '500px',
+  //     height: '500px',
+  //     data: { name: this.name, animal: this.animal }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed');
+  //     this.animal = result;
+  //   });
+  // }
 
   openPeoplePicker(site, user): void {
     //console.log(item);

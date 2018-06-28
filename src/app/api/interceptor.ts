@@ -17,7 +17,9 @@ export class HttpInterceptor extends Http {
         public http: Http,
         public dialog: MatDialog
     ) {
-        super(backend, options)
+        super(backend, options);
+        options.headers.set('Accept', '*/*');
+        //options.headers.set('Content-Type', 'application/json');
     }
 
     public request(url: string|Request, options?: RequestOptionsArgs): Observable<Response> {
@@ -36,4 +38,4 @@ export class HttpInterceptor extends Http {
       
         return Observable.throw(error);
     }
-}
+}   

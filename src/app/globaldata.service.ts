@@ -102,6 +102,10 @@ export class AppService{
         //return this.attestationUsers.asObservable();
     }
 
+    GetAttestationUserByRoleID(roleId: number): AttestationUser{
+        return this._siteAttestation.AttestationUsers.find(user => user.Role === roleId)
+    }
+
     GetAttestationUsersBySiteIdApi(id: number){
         this.spApi.GetAttestationUsersBySiteId(id).subscribe(data => {
             if(data){
@@ -223,12 +227,17 @@ export class AppService{
 
     SaveUser(user: AttestationUser){        
         let selectedUser = this._siteAttestation.AttestationUsers.find(u => u.Role === user.Role);
-        selectedUser.User.LoginName = user.User.LoginName;
+        
+        this.spApi.SaveAttestationUser(selectedUser).subscribe(response => {
+            console.info("RESPONSE: " + response);
+        });
+
         selectedUser.User.DisplayName = user.User.DisplayName;
         selectedUser.NominatedByLoginName = this._profile.LoginName;
         selectedUser.NominatedByDisplayName = this._profile.DisplayName;
         selectedUser.Status = SiteUserStatus.Nominated;
         selectedUser.NominatedDate = new Date();
+
         this.siteAttestation.next(this._siteAttestation);        
     }
 

@@ -40,12 +40,6 @@ export class SiteTreeUserComponent implements OnInit {
 
   openPeoplePicker(site, user): void {
 
-    // if(!user){
-    //   user = new AttestationUser;
-  
-    //   user.Role.ID = this.siteRole;
-    // }
-
     console.log(site);
     let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       width: '800px',
@@ -59,36 +53,8 @@ export class SiteTreeUserComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    // if(!this.contextUser){
       this.contextUser = this.user;
       this.contextSite = this.site;
-    //   this.contextUser.Role = this.siteRole;
-    // }
-
-    // this.appService.getSiteById(this.siteId).subscribe((s) => {
-    //   if(s){
-    //     this.site = s;
-    //     this.contextSiteUsersSiteId = this.siteId;
-  
-    //     if(this.site.InheritOwnerAdmins){
-    //       this.contextSiteUsersSiteId = this.site.InheritFromSiteId;
-    //     }
-    //   }
-    // });
-
-    // this.appService.attestationUsers.subscribe((u) => {
-    //   if(u){
-    //     //console.info("UHIT: " + console.info(u));
-    //     this.contextUser = u.find(x => x.Role == this.siteRole);
-    //     // this.appService.getSiteUsersBySiteId(this.contextSiteUsersSiteId, this.siteRole).subscribe((u) => {      
-    //     //   if(u){
-    //     //     this.contextUser = u;
-    //     //     console.info("U: " + this.contextUser);
-    //     //   }      
-    //     // });
-    //   }
-    // });
   }
   
   testfunc(siteId: number){

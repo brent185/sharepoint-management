@@ -20,6 +20,10 @@ import { DatePipe } from '@angular/common';
     user;
     draftUser = null;
     loggedInUserLoginName = 'basplun1';
+    isSaving: boolean = false;
+
+    contrastAdminUser: AttestationUser = null;
+    draftUserIsValid: boolean = true;
 
     constructor(private appService: AppService,
       public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
@@ -36,9 +40,11 @@ import { DatePipe } from '@angular/common';
           break;            
           case 3:
             data.user.RoleName = "Primary Administrator";
+            this.contrastAdminUser = this.appService.GetAttestationUserByRoleID(4);
           break;
           case 4:
             data.user.RoleName = "Secondary Administrator";
+            this.contrastAdminUser = this.appService.GetAttestationUserByRoleID(3);
           break;                        
         }
 
@@ -77,6 +83,7 @@ import { DatePipe } from '@angular/common';
       // this.data.user.User.LoginName = null;
       // this.data.user.Status = SiteUserStatus.NotSelected;
       this.draftUser = null;
+      this.draftUserIsValid = true;
     }
 
     DeleteSelectedUser(){
@@ -85,18 +92,37 @@ import { DatePipe } from '@angular/common';
       this.appService.DeleteUser(this.user);
     }
 
+    // SaveUser(){
+    //   this.data.user.User.DisplayName = this.draftUser.DisplayName;
+    //   this.data.user.User.LoginName = this.draftUser.LoginName;
+    //   this.data.user.Status = SiteUserStatus.Nominated;
+    //   this.data.user.NominatedDate = new Date();
+    //   this.data.user.StatusName = this.GetStatusName(this.data.user);
+    //   this.draftUser = null;
+    //   this.appService.SaveUser(this.data.user);
+    //   if(this.data.user.User.LoginName != this.loggedInUserLoginName){
+    //     // this.dialogRef.close();
+    //     this.onNoClick();
+    //   } 
+    // }
+
     SaveUser(){
-      this.data.user.User.DisplayName = this.draftUser.DisplayName;
-      this.data.user.User.LoginName = this.draftUser.LoginName;
-      this.data.user.Status = SiteUserStatus.Nominated;
-      this.data.user.NominatedDate = new Date();
-      this.data.user.StatusName = this.GetStatusName(this.data.user);
-      this.draftUser = null;
-      this.appService.SaveUser(this.data.user);
-      if(this.data.user.User.LoginName != this.loggedInUserLoginName){
-        // this.dialogRef.close();
-        this.onNoClick();
-      } 
+      if(this.contrastAdminUser && this.contrastAdminUser.User.LoginName === this.draftUser.LoginName){
+        this.draftUserIsValid = false;
+      }else{
+        this.isSaving = true;
+        this.data.user.User.DisplayName = this.draftUser.DisplayName;
+        this.data.user.User.LoginName = this.draftUser.LoginName;
+        this.data.user.Status = SiteUserStatus.Nominated;
+        this.data.user.NominatedDate = new Date();
+        this.data.user.StatusName = this.GetStatusName(this.data.user);
+        this.draftUser = null;
+        this.appService.SaveUser(this.data.user);
+        if(this.data.user.User.LoginName != this.loggedInUserLoginName){
+          this.isSaving = false;
+          this.onNoClick();
+        } 
+      }
     }
 
     ConfirmUser(){
