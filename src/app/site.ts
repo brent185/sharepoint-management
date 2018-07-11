@@ -11,6 +11,17 @@ export class Site {
     InheritFromSiteId?: number;
 }
 
+export class SiteCollection {
+    ID: number;
+    SPID: string;
+    Url: string;
+    WebApplication: string;
+    ContentDatabase: string;
+    PrimaryAdminLoginName: string;
+    SecondaryAdminLoginName: string;
+   // Webs: Web
+}
+
 export class Web {
     ID: number;
     Url: string;
@@ -24,7 +35,9 @@ export class Web {
 }
 
 export class SiteAttestation {
+    Site: Site;
     Hierarchy: Web[];
     FlatSites: Web[];
     AttestationUsers: AttestationUser[];
+    ActiveWorkflow: any;
 }

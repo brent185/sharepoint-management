@@ -11,7 +11,7 @@ import { WelcomeUserComponent } from './welcome-user/welcome-user.component';
 import { SiteListComponent } from './site-list/site-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SiteTreeComponent } from './site-tree/site-tree.component';
-import {DialogOverviewExampleDialog} from './site-tree/site-tree-modal.component';
+import {SiteTreeModalComponent} from './site-tree/site-tree-modal.component';
 import { ErrorDialog } from './api/errorModal';
 import { PeoplePickerComponent } from './people-picker/people-picker.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -46,7 +46,7 @@ import {
   MatSliderModule,
   MatSnackBarModule,
   MatSortModule,
-  MatToolbarModule,
+  MatToolbarModule
   // MatTooltipModule,
 } from '@angular/material';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -67,15 +67,16 @@ import { RouterModule, Routes } from '@angular/router';
 import {MatTableDataSource} from '@angular/material';
 import { MySitesComponent } from './my-sites/my-sites.component';
 import 'hammerjs';
+import { AttestationHistoryComponent } from './attestation-history/attestation-history.component';
 
 const appRoutes: Routes = [
-  {path: '', redirectTo: 'mymessages', pathMatch: 'full'},
+  {path: '', redirectTo: 'mysites', pathMatch: 'full'},
   {path: 'mysites', component: MySitesComponent},
   {path: 'mymessages', component: MyMessagesComponent},
-  // {path: 'attestation/:id', component: SiteTreeComponent},
   {path: 'attestation', component: SiteTreeComponent},
-  {path: 'attestation/:siteCollectionSpId/:siteCollectionId', component: SiteTreeComponent},
-  {path: 'attestation/:siteCollectionSpId/:siteCollectionId/:confirmRole',  component: SiteTreeComponent},
+  
+  {path: 'attestation/:siteCollectionSpId', component: SiteTreeComponent},
+  {path: 'attestation/:siteCollectionSpId/:confirmRole',  component: SiteTreeComponent},
   {path: '', component: MyMessagesComponent}
 ];
 
@@ -88,13 +89,14 @@ const appRoutes: Routes = [
     SiteListComponent,
     SiteTreeComponent,
     PeoplePickerComponent,
-    DialogOverviewExampleDialog,
+    SiteTreeModalComponent,
     ErrorDialog,
     SiteTreeUserComponent,
-    // MatPaginatorModule,
+    // MatIcon,
     MyMessagesComponent,
     BulkEditComponent,
-    MySitesComponent
+    MySitesComponent,
+    AttestationHistoryComponent
   ],
   imports: [
     MatAutocompleteModule,
@@ -105,11 +107,12 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatButtonModule,
     MatTableModule,
+    MatIconModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
     BrowserAnimationsModule,
     MatPaginatorModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {useHash: true}),
     NgbModule.forRoot(),
     MatTabsModule,
     MatSlideToggleModule,
@@ -164,7 +167,8 @@ const appRoutes: Routes = [
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    DialogOverviewExampleDialog,
+    SiteTreeModalComponent,
+    AttestationHistoryComponent,
     ErrorDialog
   ]
 })

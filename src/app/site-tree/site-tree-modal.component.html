@@ -13,26 +13,26 @@
                 </div>
                 <div>
                         <mat-form-field style="width: 450px;">
+                                <i *ngIf="data.user.Status==status.Nominated || data.user.Status==status.NotSelected" class="fas fa-exclamation-circle red padRight"></i>
+                                <i *ngIf="data.user.Status==status.Confirmed" class="fas fa-check-circle darkGreen padRight"></i>
                                 <input *ngIf="draftUser" matInput readonly placeholder="Status" value="User must be Saved">
                                 <input *ngIf="!draftUser" matInput readonly placeholder="Status" value="{{ data.user.StatusName }}">
                         </mat-form-field>
                 </div>
         </div>
-
-        <div *ngIf="draftUser" class="inline">
-                <mat-form-field  style="width: 350px;" class="example-full-width">
+        <div *ngIf="draftUser" class="inline" style="margin-top: 10px;">
+                <mat-form-field  style="width: 350px; top:3px;" class="example-full-width">
                                 <input matInput readonly placeholder="User" value="{{ draftUser.DisplayName }}">                        
                 </mat-form-field>        
                 <div *ngIf="draftUser" class="removeButton" (click)="removeSelectedUser()">
                         <i class="far fa-times-circle"></i>
                 </div>
-        </div>
+        </div>  
         <div *ngIf="data.user.Status==status.Nominated || data.user.Status==status.Confirmed" class="inline">
-                <mat-form-field  style="width: 350px;" class="example-full-width">
+                <mat-form-field  style="width: 350px;" class="example-full-width">                                
                                 <input matInput readonly placeholder="User" value="{{ data.user.User.DisplayName }}">                        
                 </mat-form-field>
-                <button class="deleteButton" (click)="DeleteSelectedUser()" mat-raised-button>Delete</button>
-                <!-- <button class="deleteButton" (click)="SaveUser()" mat-raised-button>Delete</button> -->
+                <button class="button" [disabled]="data.user.User.LoginName != loggedInUserLoginName" (click)="DeleteSelectedUser()">Delete</button>     
                 </div>
         <div>
                 <div *ngIf="!draftUser && data.user.Status==status.NotSelected">
@@ -46,28 +46,34 @@
                                 <ngb-alert [type]="'danger'"  [dismissible]="true">The Primary Administrator and Secondary Administrator cannot be the same person.</ngb-alert>
                         </div>
                         <div *ngIf="draftUserIsValid">
-                                <button color="primary" mat-raised-button (click)="SaveUser()" [disabled]="false">Save</button>
+                                <button (click)="SaveUser()" [disabled]="false" class="button">Save</button>
                                 <mat-spinner *ngIf="isSaving" [diameter]="35" class="spinner"></mat-spinner>
-                        </div>
-                </div>
-                
-
-              
+                        </div>                        
+                </div>   
+                <div *ngIf="data.user.Status == status.Confirmed && data.user.User.LoginName != loggedInUserLoginName">
+                        <ngb-alert [type]="'info'" [dismissible]="false">Only the Confirmed user ({{ data.user.User.DisplayName}}) can Delete herself/himself from this role.</ngb-alert>
+                </div>                   
         </div>
         <div class="confirmContainer" *ngIf="data.user.Status==status.Nominated && data.user.User.LoginName === loggedInUserLoginName">
                 <div>
-                        <ngb-alert [type]="'info'">
-                                <strong>Confirmation Required</strong><br>[Confirmation Verbiage is TBD]<br>
-                                <button color="primary" mat-raised-button (click)="ConfirmUser()">Agree and Confirm</button>
-                        </ngb-alert>
+                        <div class="confirmationContainer confirmationRequired">
+                                <div><strong>Confirmation Required</strong></div>                                
+                        </div>
+                        <div class="confirmContainer">
+                                <ng-container [ngSwitch]="data.user.Role">
+                                        <div *ngSwitchCase="2">Site Owner verbiage is TBD</div>
+                                        <div *ngSwitchCase="3">Primary Administrator verbiage is TBD</div>
+                                        <div *ngSwitchCase="4">Secondary Administrator verbiage is TBD</div>
+                                </ng-container>
+                                
+                                <div><button class="button" (click)="ConfirmUser()">Agree and Confirm</button></div> 
+                        </div>
                 </div>
-                <!-- <div *ngIf="data.user.Role.ID === siteRole.SecondaryAdmin">
-                        As a Secondary Admin, I agree to do Secondary Admin stuff for the rest of my life, and love it.
-                </div> -->
         </div>
         <div *ngIf="data.user.Status==status.Nominated && data.user.User.LoginName != loggedInUserLoginName">
-                <ngb-alert [type]="'info'">
-                        <strong>Confirmation Required</strong><br>{{ data.user.User.DisplayName }} must confirm this nomination.                                       
-                </ngb-alert>
+                <div class="confirmationRequired confirmationContainer">
+                        <div><strong>Confirmation Required</strong></div>
+                        <div>Only {{ data.user.User.DisplayName }} can confirm this nomination.</div>                        
+                </div>
         </div>
 </div>

@@ -11,6 +11,10 @@
     width: 12px;
 }
 
+.underline {
+    text-decoration: underline;
+}
+
 .siteHeader{
     width: 100%;
     display: -webkit-inline-box;
@@ -37,6 +41,7 @@
 
 .userContainer>div:nth-child(1){
     width: 40px;
+    margin-right: 22px !important;
 }
 
 .site{
@@ -73,19 +78,28 @@ span.empty{
 }
 
 .peoplePickerLaunch{
-    border: 1px solid;
-    width: 180px;
-    text-align: center;
-    border-radius: 10px;
+    /* border: 1px solid !important; */
+    width: 215px !important;
+    text-align: center !important;
+    border-radius: 3px !important;
 }
 
 .peoplePickerModal>div{
     margin-top: 10px;
 }
 
+:host >>> .peoplePickerModal{
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
+}
+
+:host >>> .mat-input-infix input {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
+}
+
 .siteUserColumn{
-    min-width: 200px;
-    margin-left: 10px;
+    min-width: 220px;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
 }
 
 .siteUserColumnHeader{
@@ -103,11 +117,11 @@ span.empty{
     cursor: pointer;
 }
 
-.deleteButton{
+/* .deleteButton{
     height: 34px;
     margin-left: 10px;
     margin-top: 10px;
-}
+} */
 
 .fieldTitle{
     color: gray;
@@ -150,3 +164,116 @@ span.empty{
   .spinner{
       margin-left: 15px;
   }
+
+  :host >>> .confirmationContainer div{
+    margin-bottom: 10px !important;
+  }
+
+  .confirmContainer>div{
+      margin-top: 10px;
+      margin-bottom: 10px;
+  }
+
+  :host >>> .instructions{
+      text-align: center;
+      font-weight: bold;
+  }
+
+  .searchBox{
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #0c5460;
+    height: 42px;
+    width: 750px;
+    padding-left: 10px;
+    outline: none !important;
+  }
+
+  .searchBoxContainer {
+    margin: 0 auto;
+  text-align:center;
+  }
+
+  .endUserHeader{
+    margin: 0 auto;
+    text-align:center;
+  }
+
+  .fa-history{
+      cursor: pointer;
+  }
+
+  ::ng-deep .tooltip-inner {
+     width: 100% !important;
+
+    }
+
+.siteNotFound{
+    margin: auto;
+    width: 60%;
+}
+
+.instructionsButton {
+    width: 325px; 
+    float: right;
+    cursor: pointer;
+}
+
+.button {
+    cursor: pointer;
+    height: 32px;
+    outline: none; 
+    border: 1px solid; 
+}
+
+.helpItem {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.helpItem>div{
+    margin-bottom: 10px;
+}
+
+.peoplePickerLaunch{
+    border: 1px solid;
+    width: 180px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.warningRed{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    /* background-color: #fffe00; */
+    display: inline-flex;
+    color: #856404;
+    background-color: #fffe00;
+    border-color: #ffeeba;
+}
+
+.confirmationRequired {
+    color: #856404;
+    background-color: #fffe00;
+    border: 1px solid #856404;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.confirmationRequired>div {
+    margin: 10px;
+}
+
+:host >>> .mat-form-field-infix{
+    display: inline-flex !important;
+}
+
+.darkGreen{
+    color: #2c7300;
+}
+
+.padRight{
+    margin-right: 10px !important;
+}

@@ -24,7 +24,7 @@ export class PeoplePickerComponent {
 
   constructor(private http: HttpClient, completerService: CompleterService) {
     let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
-    this.actorDS = completerService.remote(null, 'DisplayName', 'DisplayName');
+    this.actorDS = completerService.remote(null, 'SearchDisplayName', 'SearchDisplayName');
     this.actorDS.requestOptions(requestOptions);
     this.actorDS.urlFormater(term => {          
             return `${constants.sharePointApiRootUrl}/sharepoint/user/search/${term}`;

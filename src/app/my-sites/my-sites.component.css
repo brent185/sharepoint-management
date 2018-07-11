@@ -3,3 +3,67 @@
     left: -35px !important;
     top:8px !important;
 }
+
+.peoplePickerLaunch{
+    border: 1px solid;
+    width: 215px;
+    text-align: center;
+    border-radius: 3px;
+}
+
+.warningRed{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    /* background-color: #fffe00; */
+    display: inline-flex;
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.okButton{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    /* background-color: #d8efca; */
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    display: inline-flex;
+}
+
+.confirmPendingButton{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    display: inline-flex;
+}
+
+.invalidButton{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    display: inline-flex;
+}
+
+i {
+    margin-right: 5px;
+}
+
+.red{
+    color: red;
+}
+
+.darkGreen{
+    color: #2c7300;
+}
+
+.dropdown{
+    border: 0px !important;
+    background-color: #fff !important;
+    width: 210px;
+    text-align: left;
+}

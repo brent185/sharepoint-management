@@ -1,0 +1,13 @@
+<div><b>History for {{siteRoleName}}</b></div>
+<div class="attestationHistory">
+  <div>
+    <div>Date</div>
+    <div>Actvitity</div>
+  </div>
+  <br>
+    <div *ngFor="let h of historyData" [hidden]="!historyData" style="display: inline-flex;">
+      <div style="width:180px">{{h.date}}</div>
+      <div>{{h.desc}}</div><br> 
+    </div>
+  </div> 
+

@@ -7,30 +7,30 @@ import { AttestationUser} from './../user';
 import { DatePipe } from '@angular/common';
 
 @Component({
-    selector: 'dialog-overview-example-dialog',
-    templateUrl: 'dialog-overview-example-dialog.html',
+    selector: 'site-tree-modal-component',
+    templateUrl: 'site-tree-modal.component.html',
     styleUrls: ['./site-tree.component.css']
   })
   
-  export class DialogOverviewExampleDialog {
+  export class SiteTreeModalComponent {
     siteRole = SiteRole;
     siteRoleDescription = null;
     statusName = null;
     status = SiteUserStatus;
     user;
     draftUser = null;
-    loggedInUserLoginName = 'basplun1';
+    loggedInUserLoginName;
     isSaving: boolean = false;
 
     contrastAdminUser: AttestationUser = null;
     draftUserIsValid: boolean = true;
 
     constructor(private appService: AppService,
-      public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+      public dialogRef: MatDialogRef<SiteTreeModalComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any, private datePipe: DatePipe) {         
 
         this.user = data.user;
-
+        console.info("USER: " + console.info(data.user));
         switch(data.user.Role){
           case 1:
             data.user.RoleName = "Business Owner";
@@ -49,6 +49,12 @@ import { DatePipe } from '@angular/common';
         }
 
         data.user.StatusName = this.GetStatusName(data.user);
+
+        this.appService.getLoggedInUser().subscribe(u => { 
+          if(u){
+            this.loggedInUserLoginName = u.LoginName;
+          }      
+        });
       }
       
   
@@ -64,7 +70,7 @@ import { DatePipe } from '@angular/common';
       let status = 'ERROR';
 
       if(this.data.user.Status === SiteUserStatus.NotSelected){
-          status = 'No user selected';
+          status = 'NOMINATION REQUIRED';
           return status;
       }
       if(this.data.user.Status === SiteUserStatus.Nominated){

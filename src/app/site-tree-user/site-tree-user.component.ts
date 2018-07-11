@@ -3,7 +3,7 @@ import { SiteTreeComponent } from './../site-tree/site-tree.component';
 //import { sites } from './../state';
 import { AppService } from './../globaldata.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {DialogOverviewExampleDialog} from './../site-tree/site-tree-modal.component';
+import {SiteTreeModalComponent} from './../site-tree/site-tree-modal.component';
 import { SiteRole } from './../enums';
 import { AttestationUser } from './../user';
 import { Site } from './../site';
@@ -19,20 +19,16 @@ import { SiteUserStatus } from './../enums';
   //providers: [AppService]
 })
 export class SiteTreeUserComponent implements OnInit {
-
-  // @Input() siteRole: SiteRole;
-  // @Input() siteId: number;
   @Input() user: AttestationUser;
   @Input() site: Site;
 
-  // contextSite: Observable<any>;
   contextSite: Site = null;
   url = null;
   role = SiteRole;
-  private contextUser;
-  private contextSiteUsersSiteId;
+  public contextUser;
+  public contextSiteUsersSiteId;
   siteUserStatus = SiteUserStatus;
-
+  public roleName;
 
   constructor(private appService: AppService, public dialog: MatDialog) { 
 
@@ -41,7 +37,7 @@ export class SiteTreeUserComponent implements OnInit {
   openPeoplePicker(site, user): void {
 
     console.log(site);
-    let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+    let dialogRef = this.dialog.open(SiteTreeModalComponent, {
       width: '800px',
       height: '650px',
       data: { site: site, user: user }
@@ -55,6 +51,7 @@ export class SiteTreeUserComponent implements OnInit {
   ngOnInit() {
       this.contextUser = this.user;
       this.contextSite = this.site;
+      this.roleName = this.appService.GetSiteRoleNameByRoleID(this.user.Role);
   }
   
   testfunc(siteId: number){

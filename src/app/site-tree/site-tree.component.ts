@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DialogOverviewExampleDialog } from './site-tree-modal.component';
+import { SiteTreeModalComponent } from './site-tree-modal.component';
 import { Sites } from './../mock-sites';
-// import { users } from './../mock-users';
+import { AttestationHistoryComponent } from './../attestation-history/attestation-history.component';
 import { AppService } from './../globaldata.service';
 import { SiteRole } from './../enums';
 import { Observable } from "rxjs/Rx"
@@ -22,7 +22,7 @@ export class SiteTreeComponent implements OnInit {
   contextUser: Observable<User>;
   list: Site[];
   siteContext: SiteAttestation;
-  // attestationUsers;
+  
   businessOwner: AttestationUser;
   siteOwner: AttestationUser;
   primaryAdmin: AttestationUser;
@@ -32,11 +32,17 @@ export class SiteTreeComponent implements OnInit {
   showModalUserRoleID = null;
   modalHasLoaded = false;
   private i = 0;
-  //public users = users;
+  pastedUrl;
   public siteRole = SiteRole;
   firstName: string = null;
-  animal: string;
   name: string;
+  showInstructions: boolean = false;
+  searchByUrlValue;
+  searchIsValid = true;
+  siteIsLoaded = false;
+  public isAdmin: boolean = false;
+  public workflow;
+  public siteCollectionAttestationStatus;
 
   constructor(private appService: AppService, public dialog: MatDialog, private route: ActivatedRoute) {
     
@@ -47,25 +53,65 @@ export class SiteTreeComponent implements OnInit {
     this.route.params.subscribe(
       params => {
           console.info("PARAMS-FROM-SITE-TREEE: " + console.info(params));
-          const spId = params['siteCollectionSpId'];
-          const id = params['siteCollectionId'];
+          const spId = params['siteCollectionSpId'];      
           const confirm = params['confirm'];
-          //this.getMovie(id);
-          if(id){
-            this.Init(spId, id);
-          }          
+          
+          if(spId){
+            this.Init(spId);
+          }else{
+            let lastSiteSpId = this.appService.GetLastSiteLoadedSPID();
+            if(lastSiteSpId){
+              this.Init(lastSiteSpId);
+            }            
+          }
+
           if(params['confirmRole']){
             this.showModalOnLoad = true;
             this.showModalUserRoleID = params['confirmRole'];
           }
       }
     );
+
+    this.appService.getLoggedInUser().subscribe(u => { 
+      if(u){
+        this.isAdmin = u.IsAdmin;
+      }      
+    });
   }
 
-  Init(spId: string, id: number){
+  Init(spId: string){
 
-    this.appService.GetSiteAttestation(spId, id).subscribe(attestation => {
+    this.appService.GetSiteAttestation(spId).subscribe(attestation => {
       if(attestation){
+        this.siteIsLoaded = true;
+        this.siteContext = attestation;
+        this.list = attestation.Hierarchy;
+        this.businessOwner = attestation.AttestationUsers.find(u => u.Role === 1);
+        this.siteOwner = attestation.AttestationUsers.find(u => u.Role === 2);
+        this.primaryAdmin = attestation.AttestationUsers.find(u => u.Role === 3);
+        this.secondaryAdmin = attestation.AttestationUsers.find(u => u.Role === 4);
+        this.workflow = attestation.ActiveWorkflow;
+        this.siteCollectionAttestationStatus = this.appService.GetSiteCollectionAttestationStatus();
+        console.info("STTAUS: " + this.siteCollectionAttestationStatus);
+        if(this.workflow && this.workflow.DisableDate){
+          this.workflow.DisableDate = this.appService.FormatDate(this.workflow.DisableDate, false);
+        }
+        console.info("ATTEST!: " + console.info(attestation));
+        if(this.showModalOnLoad && !this.modalHasLoaded){
+          let u = attestation.AttestationUsers.find(u => u.Role == this.showModalUserRoleID);
+          this.modalHasLoaded = true;
+          this.openPeoplePicker(this.siteContext.Hierarchy[0], u);
+        }        
+      }
+    });
+  }
+
+  SearchByUrl(url: string){
+    this.appService.GetSiteAttestationByUrl(url).subscribe(attestation => {
+      if(attestation){
+        this.siteIsLoaded = true;
+        this.searchIsValid = true;
+        this.searchByUrlValue = "";
         this.siteContext = attestation;
         this.list = attestation.Hierarchy;
         this.businessOwner = attestation.AttestationUsers.find(u => u.Role === 1);
@@ -77,10 +123,24 @@ export class SiteTreeComponent implements OnInit {
           let u = attestation.AttestationUsers.find(u => u.Role == this.showModalUserRoleID);
           this.modalHasLoaded = true;
           this.openPeoplePicker(this.siteContext.Hierarchy[0], u);
-        }
-        
+        }        
+      }else{
+        this.searchIsValid = false;
       }
     });
+  }
+
+  Search(e){
+    console.info("PASTE: " + e.srcElement.value);
+    this.SearchByUrl(e.srcElement.value);    
+  }
+  
+  ToggleInstructions(): void{
+    if(this.showInstructions){
+      this.showInstructions = false;
+    }else{
+      this.showInstructions = true;
+    }
   }
 
   toggleInheritance(site){
@@ -136,10 +196,25 @@ export class SiteTreeComponent implements OnInit {
 
   openPeoplePicker(site, user): void {
     //console.log(item);
-    let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+    let dialogRef = this.dialog.open(SiteTreeModalComponent, {
       width: '800px',
       height: '650px',
       data: { site: site, user: user }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      dialogRef = null;
+      //this.animal = result;
+    });
+  }
+
+  OpenAttestationHistory(roleId: number): void {
+    //console.log(item);
+    let dialogRef = this.dialog.open(AttestationHistoryComponent, {
+      width: '800px',
+      height: '650px',
+      data: { site: this.siteContext.Site.SiteID, role: roleId }
     });
 
     dialogRef.afterClosed().subscribe(result => {

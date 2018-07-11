@@ -1,37 +1,52 @@
 <div>
   <div class="dataHeader mySitesHeader">
     <div>Url</div>
-    <div>Role</div>
-    <div>Status</div>
-  </div>
-</div>
-<div>
-    <div class="mySitesItem">
-      <div>http://it100/deploy/subsite1</div>
-      <div>Primary Administrator</div>
-      <div>
-          <div class="userStatusButton userNominated" routerLink="/attestation/88D79697-147F-46B8-8C3F-777E75173CF1/2/3">
-              <div>
-                  <i class="fas fa-exclamation-circle red"></i>
-              </div>
-              <div>
-                  Brent Asplund
-              </div>
-      </div>
+    <div>Role
+        <div ngbDropdown class="d-inline-block">
+        <button class="dropdown" ngbDropdownToggle>{{selectedRoleName}}</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button (click)="ApplyFilter(selectedStatus, null)" class="dropdown-item">All</button>
+          <button (click)="ApplyFilter(selectedStatus, 2)" class="dropdown-item">Site Owner</button>
+          <button (click)="ApplyFilter(selectedStatus, 3)" class="dropdown-item">Primary Administrator</button>
+          <button (click)="ApplyFilter(selectedStatus, 4)" class="dropdown-item">Secondary Administrator</button>
+        </div>
       </div>
     </div>
-    <div class="mySitesItem">
-        <div>http://it100/deploy/testsitecollection</div>
-        <div>Secondary Administrator</div>
-        <div>
-            <div class="userStatusButton userConfirmed" routerLink="/attestation/DD1885B9-69AF-469E-8BAE-819EE213DE66/1/4">
-                <div>
-                    <i class="fas fa-check-circle darkGreen"></i>
-                </div>
-                <div>
-                    Brent Asplund
-                </div>
+    <div>Status
+        <div ngbDropdown class="d-inline-block">
+            <button class="dropdown" ngbDropdownToggle>{{selectedStatusName}}</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button (click)="ApplyFilter(null, selectedRole)" class="dropdown-item">All</button>
+                <button (click)="ApplyFilter(1, selectedRole)" class="dropdown-item">Nominated</button>
+                <button (click)="ApplyFilter(2, selectedRole)" class="dropdown-item">Confirmed</button>                
+            </div>
         </div>
-        </div>
-      </div>
+    </div>
+  </div>
 </div>
+<div *ngFor="let item of filteredSites"
+    class="mySitesItem">
+    <div>{{item.Url}}</div>
+    <div>{{GetSiteRoleName(item.Role)}}</div>
+    <div *ngIf="!item.UserIsInvalid && item.Status === siteUserStatus.Confirmed" 
+        class="peoplePickerLaunch okButton"
+        routerLink="/attestation/{{item.SiteCollectionSPID}}/{{item.Role}}">
+        <div>
+            <i class="fas fa-check-circle darkGreen"></i>
+        </div>
+        <div>
+            {{loggedInUserDisplayName}}
+        </div>
+    </div>
+<div *ngIf="!item.UserIsInvalid && item.Status === siteUserStatus.Nominated" 
+    class="peoplePickerLaunch warningRed"
+    routerLink="/attestation/{{item.SiteCollectionSPID}}/{{item.Role}}">
+        <div>
+            <i class="fas fa-exclamation-circle red"></i>
+        </div>
+        <div>
+            {{loggedInUserDisplayName}}
+        </div>
+</div>
+</div>
+<ng-container *ngIf="!filteredSites || filteredSites.length === 0">0 Results<br><br>You are not a Nominated or Confirmed Site Owner, Primary Administrator, or Secondary Administrator on any SharePoint sites.</ng-container>

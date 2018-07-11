@@ -9,7 +9,7 @@ import { AppService } from './../globaldata.service';
 
 export class WelcomeUserComponent implements OnInit {
 
-  private displayName;
+  public displayName;
   
     constructor(private appService: AppService) { 
       this.appService.getLoggedInUser().subscribe(u => { 

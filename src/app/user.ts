@@ -14,6 +14,8 @@ export class AttestationUser {
     SiteID?: number;
     User: User;
     Role: number;
+    SPSiteCollectionID: number;
+    SiteCollectionSPID: number;
     constructor(){
         this.User = new User();
        // this.Role = new Role();

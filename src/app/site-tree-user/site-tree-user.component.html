@@ -1,7 +1,10 @@
 
 
 
-            <div *ngIf="!contextSite.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Confirmed" class="peoplePickerLaunch okButton" (click)="openPeoplePicker(contextSite, contextUser)">
+            <div *ngIf="!contextUser.UserIsInvalid && !contextSite.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Confirmed" 
+                class="peoplePickerLaunch okButton" 
+                (click)="openPeoplePicker(contextSite, contextUser)"
+                placement="bottom" ngbTooltip="Confirmed">
                 <div>
                     <i class="fas fa-check-circle darkGreen"></i>
                 </div>
@@ -9,7 +12,10 @@
                     {{contextUser.User.DisplayName}}
                 </div>
             </div>
-            <div *ngIf="!contextSite.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Nominated" class="peoplePickerLaunch confirmPendingButton" (click)="openPeoplePicker(contextSite, contextUser)">
+            <div *ngIf="!contextUser.UserIsInvalid && !contextSite.InheritOwnerAdmins && contextUser.Status === siteUserStatus.Nominated" 
+                class="peoplePickerLaunch warningRed" 
+                (click)="openPeoplePicker(contextSite, contextUser)"
+                placement="bottom" ngbTooltip="Nomination must be confirmed by {{contextUser.User.DisplayName}}">
                     <div>
                         <i class="fas fa-exclamation-circle red"></i>
                     </div>
@@ -17,14 +23,28 @@
                         {{contextUser.User.DisplayName}}
                     </div>
             </div>
-            <div *ngIf="!contextSite.InheritOwnerAdmins && contextUser.Status === siteUserStatus.NotSelected" class="peoplePickerLaunch warningRed" (click)="openPeoplePicker(contextSite, contextUser)">
+            <div *ngIf="!contextUser.UserIsInvalid && !contextSite.InheritOwnerAdmins && contextUser.Status === siteUserStatus.NotSelected" 
+                class="peoplePickerLaunch warningRed" 
+                (click)="openPeoplePicker(contextSite, contextUser)"
+                placement="bottom" ngbTooltip="Click to select a {{roleName}}">
                     <div>
                         <i class="fas fa-exclamation-circle red"></i>
                     </div>
                     <div>
-                        NOT SELECTED
+                        <i>NOMINATION REQUIRED</i>
                     </div>
             </div>
+            <div *ngIf="contextUser.UserIsInvalid && !contextSite.InheritOwnerAdmins" 
+                class="peoplePickerLaunch invalidButton" 
+                (click)="openPeoplePicker(contextSite, contextUser)"
+                placement="bottom" ngbTooltip="Invalid User. Click to select a valid user.">
+                <div>
+                    <i class="fas fa-exclamation-circle red"></i>
+                </div>
+                <div>
+                    !!{{contextUser.User.DisplayName}}
+                </div>
+        </div>
             <div *ngIf="contextSite.InheritOwnerAdmins && (contextUser.Status === siteUserStatus.Nominated || contextUser.Status === siteUserStatus.Confirmed)" class="inherited">
                     <div>
                         
