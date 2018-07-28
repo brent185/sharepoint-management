@@ -15,25 +15,28 @@
                 <input class="searchBox" type="text" (keyup.enter)="Search($event)" [(ngModel)]="searchByUrlValue" placeholder="Find Site by URL...">
             </div>
             <div *ngIf="!isAdmin" class="endUserHeader">
-                <div>Click the items in yellow to Nominate and Confirm each user: 
-                    <div class="peoplePickerLaunch warningRed">
-                        <div>
-                            <i class="fas fa-exclamation-circle red"></i>
+                <div *ngIf="siteContext" class="urlHeader">{{siteContext.Hierarchy[0].Url}}</div>
+                <div *ngIf="workflow && workflow.DisableDate && siteCollectionAttestationStatus != 2">
+                    <div>Click the items in yellow to Nominate and Confirm each user: 
+                            <div class="peoplePickerLaunch warningRed">
+                                <div>
+                                    <i class="fas fa-exclamation-circle red"></i>
+                                </div>
+                                <div>
+                                    &nbsp;<i>NOMINATE or CONFIRM</i>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            &nbsp;<i>NOMINATE or CONFIRM</i>
+                        <div class="red">
+                            <b>The Site Collection will be disabled on {{workflow.DisableDate}} if the Site Owner, Primary Administrator and Secondary Administrator are not all Confirmed.</b>
                         </div>
-                    </div>
-                </div>
-                <div *ngIf="workflow && workflow.DisableDate && siteCollectionAttestationStatus != 2" class="red">
-                    <b>The Site Collection will be disabled on {{workflow.DisableDate}} if the Site Owner, Primary Administrator and Secondary Administrator are not all Confirmed.</b>
                 </div>
             </div>
-            <div (click)="ToggleInstructions()" class="instructionsButton">
-                    <ngb-alert class="instructions" [type]="'info'" [dismissible]="false">Attestation Instructions & Help</ngb-alert>
+            <div class="instructionsButton">
+                    <ngb-alert class="instructions" [type]="'info'" [dismissible]="false"><a target="_blank" href="http://goto.optum.com/scrc/AttestationHelp">Attestation Instructions & Help</a></ngb-alert>
             </div>        
         </div>
-        <div *ngIf="searchIsValid && siteIsLoaded">
+        <div *ngIf="searchIsValid && siteIsLoaded" style="margin-top: 20px;">
             <div>
                 <div class="siteHeader">
                         <div class="siteUserColumnHeader">Url</div>
@@ -42,6 +45,7 @@
                             <div class="siteUserColumn siteUserColumnHeader">Site Owner<span><i (click)="OpenAttestationHistory(2)" class="fas fa-history"></i></span></div>
                             <div class="siteUserColumn siteUserColumnHeader">Primary Administrator<span><i (click)="OpenAttestationHistory(3)" class="fas fa-history"></i></span></div>
                             <div class="siteUserColumn siteUserColumnHeader">Secondary Administrator<span><i (click)="OpenAttestationHistory(4)" class="fas fa-history"></i></span></div>
+                            <div class="siteUserColumn siteUserColumnHeader">Optional Administrator<span><i (click)="OpenAttestationHistory(5)" class="fas fa-history"></i></span></div>
                         </div>
                 </div>
             </div>
@@ -51,12 +55,13 @@
                     <div class="site" [hidden]="!item.isVisible" [class.selected]="item.isSelected">                
                         <div [style.margin-left]="getWidth(item.level)" (click)="toggleChildren($event, item.ID)"
                         tooltip="{{ item.Url }}" [delay]="500">
-                                <i *ngIf="item.SubSites.length > 0 && item.isOpen" class="fas fa-angle-down"></i>
-                                <i *ngIf="item.SubSites.length > 0 && !item.isOpen" class="fas fa-angle-right"></i>
+                                <i *ngIf="item.SubSites.length > 0 && item.isOpen" class="far fa-minus-square"></i>
+                                <i *ngIf="item.SubSites.length > 0 && !item.isOpen" class="far fa-plus-square"></i>
                                 <span *ngIf="item.SubSites.length === 0" class="empty"></span>   
                                 <ng-container *ngIf="showFullUrls">{{item.Url}}</ng-container>             
                                 <ng-container *ngIf="!showFullUrls">{{item.displayUrl}}</ng-container> 
-                        </div>
+                                <div class="inheritanceMessage" *ngIf="showInheritanceMessage">* Site Owner and Admins are defined at the Site Collection level. All Subsites inherit these values.</div>
+                        </div>                        
                         <div class="userContainer">
                             <div>
                                 <i *ngIf="item.InheritOwnerAdmins" (click)="toggleInheritance(item)" class="fas fa-external-link-square-alt flipped"
@@ -64,12 +69,6 @@
                                 <i *ngIf="!item.InheritOwnerAdmins" (click)="toggleInheritance(item)" class="fas fa-users"
                                 tooltip="Owner & Admins must be Confirmed for this site" [delay]="500"></i>
                             </div>
-                            <!-- <div class="siteUserColumn">
-                                <app-site-tree-user 
-                                    [site]="item"
-                                    [user]="businessOwner">
-                                </app-site-tree-user>                          
-                            </div> -->
                             <div class="siteUserColumn">
                                 <app-site-tree-user 
                                 [site]="item"
@@ -86,6 +85,12 @@
                                     <app-site-tree-user 
                                     [site]="item"
                                     [user]="secondaryAdmin">
+                                </app-site-tree-user>   
+                            </div>
+                            <div class="siteUserColumn">
+                                    <app-site-tree-user 
+                                    [site]="item"
+                                    [user]="admin">
                                 </app-site-tree-user>   
                             </div>
                         </div>

@@ -22,11 +22,12 @@ export class SiteTreeComponent implements OnInit {
   contextUser: Observable<User>;
   list: Site[];
   siteContext: SiteAttestation;
-  
+  siteCollectionUrl: string;
   businessOwner: AttestationUser;
   siteOwner: AttestationUser;
   primaryAdmin: AttestationUser;
   secondaryAdmin: AttestationUser;
+  admin: AttestationUser;
   showFullUrls = false;
   showModalOnLoad = false;
   showModalUserRoleID = null;
@@ -43,6 +44,7 @@ export class SiteTreeComponent implements OnInit {
   public isAdmin: boolean = false;
   public workflow;
   public siteCollectionAttestationStatus;
+  public showInheritanceMessage = true;
 
   constructor(private appService: AppService, public dialog: MatDialog, private route: ActivatedRoute) {
     
@@ -85,11 +87,13 @@ export class SiteTreeComponent implements OnInit {
       if(attestation){
         this.siteIsLoaded = true;
         this.siteContext = attestation;
+        this.siteCollectionUrl = attestation.Site.Url;
         this.list = attestation.Hierarchy;
         this.businessOwner = attestation.AttestationUsers.find(u => u.Role === 1);
         this.siteOwner = attestation.AttestationUsers.find(u => u.Role === 2);
         this.primaryAdmin = attestation.AttestationUsers.find(u => u.Role === 3);
         this.secondaryAdmin = attestation.AttestationUsers.find(u => u.Role === 4);
+        this.admin = attestation.AttestationUsers.find(u => u.Role === 5);
         this.workflow = attestation.ActiveWorkflow;
         this.siteCollectionAttestationStatus = this.appService.GetSiteCollectionAttestationStatus();
         console.info("STTAUS: " + this.siteCollectionAttestationStatus);
@@ -135,13 +139,13 @@ export class SiteTreeComponent implements OnInit {
     this.SearchByUrl(e.srcElement.value);    
   }
   
-  ToggleInstructions(): void{
-    if(this.showInstructions){
-      this.showInstructions = false;
-    }else{
-      this.showInstructions = true;
-    }
-  }
+  // ToggleInstructions(): void{
+  //   if(this.showInstructions){
+  //     this.showInstructions = false;
+  //   }else{
+  //     this.showInstructions = true;
+  //   }
+  // }
 
   toggleInheritance(site){
     if(site.inheritOwnerAdmins){
@@ -231,7 +235,7 @@ export class SiteTreeComponent implements OnInit {
   }
 
   toggleChildren(event, siteId) {
-    // const x = this.list.find(a => a.id === siteId);
+    this.showInheritanceMessage = false;
     const x = this.findDFS(this.list, siteId);
 
     if (x.isOpen) {
@@ -240,8 +244,7 @@ export class SiteTreeComponent implements OnInit {
     } else {
       x.isOpen = true;
       this.showChildren(x);
-    }
-    //this.setEvenOdd(1);
+    }    
   }
 
   hideChildren(parent) {

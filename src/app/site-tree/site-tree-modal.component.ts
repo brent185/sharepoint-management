@@ -3,7 +3,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { SiteRole } from './../enums';
 import { AppService } from './../globaldata.service';
 import { SiteUserStatus } from './../enums';
-import { AttestationUser} from './../user';
+import { AttestationUser, User } from './../user';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -21,6 +21,7 @@ import { DatePipe } from '@angular/common';
     draftUser = null;
     loggedInUserLoginName;
     isSaving: boolean = false;
+    isAdmin: boolean = false;
 
     contrastAdminUser: AttestationUser = null;
     draftUserIsValid: boolean = true;
@@ -45,7 +46,10 @@ import { DatePipe } from '@angular/common';
           case 4:
             data.user.RoleName = "Secondary Administrator";
             this.contrastAdminUser = this.appService.GetAttestationUserByRoleID(3);
-          break;                        
+          break;     
+            case 5:
+            data.user.RoleName = "Optional Administrator";
+        break;                    
         }
 
         data.user.StatusName = this.GetStatusName(data.user);
@@ -53,6 +57,7 @@ import { DatePipe } from '@angular/common';
         this.appService.getLoggedInUser().subscribe(u => { 
           if(u){
             this.loggedInUserLoginName = u.LoginName;
+            this.isAdmin = u.IsAdmin;
           }      
         });
       }
@@ -69,10 +74,18 @@ import { DatePipe } from '@angular/common';
     GetStatusName(user){
       let status = 'ERROR';
 
-      if(this.data.user.Status === SiteUserStatus.NotSelected){
-          status = 'NOMINATION REQUIRED';
+      if(this.data.user.UserIsInvalid){
+        status = 'User cannot be found in Active Directory';
+        return status;
+      }
+      if(this.data.user.Status === SiteUserStatus.NotSelected && user.Role != 5){
+          status = 'Nomination Required';
           return status;
       }
+      if(this.data.user.Status === SiteUserStatus.NotSelected && user.Role === 5){
+        status = 'Nomination Optional';
+        return status;
+    }
       if(this.data.user.Status === SiteUserStatus.Nominated){
         status = 'Nominated on ' + this.datePipe.transform(user.NominatedDate, 'MM/dd/yy') + ' by ' + 'Asplund, Brent'; //user.NominatedByDisplayName;
         return status;
@@ -98,25 +111,11 @@ import { DatePipe } from '@angular/common';
       this.appService.DeleteUser(this.user);
     }
 
-    // SaveUser(){
-    //   this.data.user.User.DisplayName = this.draftUser.DisplayName;
-    //   this.data.user.User.LoginName = this.draftUser.LoginName;
-    //   this.data.user.Status = SiteUserStatus.Nominated;
-    //   this.data.user.NominatedDate = new Date();
-    //   this.data.user.StatusName = this.GetStatusName(this.data.user);
-    //   this.draftUser = null;
-    //   this.appService.SaveUser(this.data.user);
-    //   if(this.data.user.User.LoginName != this.loggedInUserLoginName){
-    //     // this.dialogRef.close();
-    //     this.onNoClick();
-    //   } 
-    // }
-
     SaveUser(){
       if(this.contrastAdminUser && this.contrastAdminUser.User.LoginName === this.draftUser.LoginName){
         this.draftUserIsValid = false;
       }else{
-        this.isSaving = true;
+        //this.isSaving = true;
         this.data.user.User.DisplayName = this.draftUser.DisplayName;
         this.data.user.User.LoginName = this.draftUser.LoginName;
         this.data.user.Status = SiteUserStatus.Nominated;
@@ -124,8 +123,8 @@ import { DatePipe } from '@angular/common';
         this.data.user.StatusName = this.GetStatusName(this.data.user);
         this.draftUser = null;
         this.appService.SaveUser(this.data.user);
-        if(this.data.user.User.LoginName != this.loggedInUserLoginName){
-          this.isSaving = false;
+        if(!this.isAdmin || (this.data.user.User.LoginName != this.loggedInUserLoginName)){
+          //this.isSaving = false;
           this.onNoClick();
         } 
       }

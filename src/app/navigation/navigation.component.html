@@ -4,5 +4,6 @@
 <div class="tabContainer">
     <div routerLink="mysites" [routerLinkActive]="['tabActive']">My Sites</div>
     <div routerLink="attestation" [routerLinkActive]="['tabActive']">Attestation</div>
+    <div *ngIf="isAdmin" routerLink="admin" [routerLinkActive]="['tabActive']">Admin</div>
 </div>
 <router-outlet></router-outlet>

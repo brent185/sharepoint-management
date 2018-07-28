@@ -23,6 +23,7 @@ import {
   MatSlideToggleModule,
   MatPaginatorModule,
   MatTable,
+  MatDatepicker,
   MatDialogModule, 
   MatDialogRef, 
   MAT_DIALOG_DATA,
@@ -68,13 +69,14 @@ import {MatTableDataSource} from '@angular/material';
 import { MySitesComponent } from './my-sites/my-sites.component';
 import 'hammerjs';
 import { AttestationHistoryComponent } from './attestation-history/attestation-history.component';
+import { AdminComponent } from './admin/admin.component';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'mysites', pathMatch: 'full'},
   {path: 'mysites', component: MySitesComponent},
   {path: 'mymessages', component: MyMessagesComponent},
   {path: 'attestation', component: SiteTreeComponent},
-  
+  {path: 'admin', component: AdminComponent},
   {path: 'attestation/:siteCollectionSpId', component: SiteTreeComponent},
   {path: 'attestation/:siteCollectionSpId/:confirmRole',  component: SiteTreeComponent},
   {path: '', component: MyMessagesComponent}
@@ -92,11 +94,12 @@ const appRoutes: Routes = [
     SiteTreeModalComponent,
     ErrorDialog,
     SiteTreeUserComponent,
-    // MatIcon,
+    // MatDatepickerModule,
     MyMessagesComponent,
     BulkEditComponent,
     MySitesComponent,
-    AttestationHistoryComponent
+    AttestationHistoryComponent,
+    AdminComponent
   ],
   imports: [
     MatAutocompleteModule,
@@ -108,6 +111,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatTableModule,
     MatIconModule,
+    MatDatepickerModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
     BrowserAnimationsModule,

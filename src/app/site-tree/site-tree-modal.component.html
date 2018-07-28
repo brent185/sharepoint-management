@@ -13,8 +13,8 @@
                 </div>
                 <div>
                         <mat-form-field style="width: 450px;">
-                                <i *ngIf="data.user.Status==status.Nominated || data.user.Status==status.NotSelected" class="fas fa-exclamation-circle red padRight"></i>
-                                <i *ngIf="data.user.Status==status.Confirmed" class="fas fa-check-circle darkGreen padRight"></i>
+                                <i *ngIf="data.user.Role != 5 && (data.user.Status==status.Nominated || data.user.Status==status.NotSelected || data.user.UserIsInvalid)" class="fas fa-exclamation-circle red padRight"></i>
+                                <i *ngIf="data.user.Status==status.Confirmed && !data.user.UserIsInvalid" class="fas fa-check-circle darkGreen padRight"></i>
                                 <input *ngIf="draftUser" matInput readonly placeholder="Status" value="User must be Saved">
                                 <input *ngIf="!draftUser" matInput readonly placeholder="Status" value="{{ data.user.StatusName }}">
                         </mat-form-field>
@@ -28,11 +28,17 @@
                         <i class="far fa-times-circle"></i>
                 </div>
         </div>  
-        <div *ngIf="data.user.Status==status.Nominated || data.user.Status==status.Confirmed" class="inline">
+        <div *ngIf="data.user.Status==status.Nominated" class="inline">
                 <mat-form-field  style="width: 350px;" class="example-full-width">                                
                                 <input matInput readonly placeholder="User" value="{{ data.user.User.DisplayName }}">                        
                 </mat-form-field>
-                <button class="button" [disabled]="data.user.User.LoginName != loggedInUserLoginName" (click)="DeleteSelectedUser()">Delete</button>     
+                <button class="button" (click)="DeleteSelectedUser()">Delete</button>     
+        </div>
+        <div *ngIf="data.user.Status==status.Confirmed || data.user.Status==status.Invalid" class="inline">
+                        <mat-form-field  style="width: 350px;" class="example-full-width">                                
+                                        <input matInput readonly placeholder="User" value="{{ data.user.User.DisplayName }}">                        
+                        </mat-form-field>
+                        <button class="button" [disabled]="!isAdmin && (data.user.User.LoginName != loggedInUserLoginName && !data.user.UserIsInvalid)" (click)="DeleteSelectedUser()">Delete</button>     
                 </div>
         <div>
                 <div *ngIf="!draftUser && data.user.Status==status.NotSelected">
@@ -50,27 +56,62 @@
                                 <mat-spinner *ngIf="isSaving" [diameter]="35" class="spinner"></mat-spinner>
                         </div>                        
                 </div>   
-                <div *ngIf="data.user.Status == status.Confirmed && data.user.User.LoginName != loggedInUserLoginName">
+                <div *ngIf="data.user.Status == status.Confirmed && (data.user.User.LoginName != loggedInUserLoginName) && !data.user.UserIsInvalid">
                         <ngb-alert [type]="'info'" [dismissible]="false">Only the Confirmed user ({{ data.user.User.DisplayName}}) can Delete herself/himself from this role.</ngb-alert>
-                </div>                   
+                </div>       
+                <div *ngIf="data.user.Status == status.NotSelected && data.user.Role === 2">
+                                <br>
+                                <ngb-alert [type]="'info'" [dismissible]="false">The Site Owner's G/L will be charged for the Site Collection</ngb-alert>
+                        </div>        
+                <div *ngIf="data.user.UserIsInvalid">                        
+                        <ngb-alert [type]="'danger'" [dismissible]="false"  [dismissible]="true">This user cannot be found in Active Directory and therefore is no longer a valid {{ data.user.RoleName }}.<br><br>This user must be Deleted, and a new user Nominated and Confirmed</ngb-alert>                                            
+                </div>        
         </div>
-        <div class="confirmContainer" *ngIf="data.user.Status==status.Nominated && data.user.User.LoginName === loggedInUserLoginName">
+        <div class="confirmContainer" *ngIf="data.user.Status==status.Nominated && (isAdmin || data.user.User.LoginName === loggedInUserLoginName)">
                 <div>
                         <div class="confirmationContainer confirmationRequired">
                                 <div><strong>Confirmation Required</strong></div>                                
                         </div>
                         <div class="confirmContainer">
                                 <ng-container [ngSwitch]="data.user.Role">
-                                        <div *ngSwitchCase="2">Site Owner verbiage is TBD</div>
-                                        <div *ngSwitchCase="3">Primary Administrator verbiage is TBD</div>
-                                        <div *ngSwitchCase="4">Secondary Administrator verbiage is TBD</div>
+                                        <div *ngSwitchCase="2" class="confirmContainerText">As the Site Owner, I understand that my G/L will be charged for the continued use of this Site Collection.</div>
+                                        <div *ngSwitchCase="3" class="confirmContainerText">
+                                                <div>
+                                                        <div>As the Primary Administrator, I understand that I am responsible for the following:</div>
+                                                        <ul>
+                                                                <li>Getting <a target="_blank" href="http://goto.optum.com/SP2013LearningResources/SCA_learningmap">Trained</a></li>
+                                                                <li>Following <a target="_blank" href="http://goto.optum.com/SPGov">Governance</a> and <a target="_blank" href="http://goto.optum.com/SCRCNews/BestPractice">Best Practices</a></li>
+                                                                <li>Educating site owners on governance plan policies and standards</li>
+                                                                <li>Managing/supporting users of the site collection to remediate issues *The HelpDesk will be referring users who call in to you.  You will need to assist or have other admins or full control owners assist them</li>
+                                                                <li>Opening helpdesk tickets to the SharePoint Collaboration team for any issues that cannot be resolved by you or your other Admins</li>
+                                                                <li>Assisting our migration team on timing of any needed migrations</li>
+                                                                <li>Communicating to all owners/users messages received from our SharePoint team</li>
+                                                        </ul>
+                                                        <div>For more details, go <a target="_blank" href="http://goto.optum.com/scrc/SiteAdminGuide">here</a></div>
+                                                </div>
+                                        </div>
+                                        <div *ngSwitchCase="4" class="confirmContainerText">
+                                                <div>
+                                                        <div>As the Secondary Administrator, I understand that I am responsible for the following:</div>
+                                                        <ul>
+                                                                <li>Getting <a target="_blank" href="http://goto.optum.com/SP2013LearningResources/SCA_learningmap">Trained</a></li>
+                                                                <li>Following <a target="_blank" href="http://goto.optum.com/SPGov">Governance</a> and <a target="_blank" href="http://goto.optum.com/SCRCNews/BestPractice">Best Practices</a></li>
+                                                                <li>Educating site owners on governance plan policies and standards</li>
+                                                                <li>Managing/supporting users of the site collection to remediate issues *The HelpDesk will be referring users who call in to you.  You will need to assist or have other admins or full control owners assist them</li>
+                                                                <li>Opening helpdesk tickets to the SharePoint Collaboration team for any issues that cannot be resolved by you or your other Admins</li>
+                                                                <li>Assisting our migration team on timing of any needed migrations</li>
+                                                                <li>Communicating to all owners/users messages received from our SharePoint team</li>
+                                                        </ul>
+                                                        <div>For more details, go <a target="_blank" href="http://goto.optum.com/scrc/SiteAdminGuide">here</a></div>
+                                                </div>
+                                        </div>
                                 </ng-container>
                                 
                                 <div><button class="button" (click)="ConfirmUser()">Agree and Confirm</button></div> 
                         </div>
                 </div>
         </div>
-        <div *ngIf="data.user.Status==status.Nominated && data.user.User.LoginName != loggedInUserLoginName">
+        <div *ngIf="!isAdmin && (data.user.Status==status.Nominated && data.user.User.LoginName != loggedInUserLoginName)">
                 <div class="confirmationRequired confirmationContainer">
                         <div><strong>Confirmation Required</strong></div>
                         <div>Only {{ data.user.User.DisplayName }} can confirm this nomination.</div>                        

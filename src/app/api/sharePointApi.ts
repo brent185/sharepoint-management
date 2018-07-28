@@ -75,6 +75,12 @@ export class SharePointApi {
     .map((res:Response) => res.json());
   }
 
+  GetSiteCollectionWorkflowItems(spSiteCollectionId: number){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/sitecollectionworkflows/${spSiteCollectionId}`, requestOptions)
+    .map((res:Response) => res.json());
+  }
+
   SaveAttestationUser(user: AttestationUser){
     let httpHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',

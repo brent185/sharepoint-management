@@ -64,3 +64,13 @@ i {
 .darkGreen{
     color: #2c7300;
 }
+
+.optional{
+    padding: 0px 8px 0 8px;
+    min-width: 200px;    
+    display: inline-flex;
+    color: #856404;
+    background-color: #fff;
+    border-color: #dedbd3;
+}
+

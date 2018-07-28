@@ -1,0 +1,44 @@
+.workflowHeader>div{
+    display: inline-flex;
+    font-weight: bold;
+    width: 180px;
+}
+
+.workflowHeader>div:nth-child(1){
+    width: 130px;
+}
+
+.workflowHeader>div:nth-child(2){
+    width: 80px;
+}
+
+.workflowHeader>div:nth-child(8){
+    width: 230px;
+}
+
+.workflowItems>div{
+    display: inline-flex;
+    width: 180px;
+    margin-top: 10px;
+}
+
+.workflowItems>div:nth-child(2){
+    width: 80px;
+}
+
+.workflowItems>div:nth-child(1){
+    width: 130px;
+}
+
+.workflowItems>div:nth-child(8){
+    width: 230px;
+}
+
+input{
+    border: 0px !important;
+    cursor: pointer;
+}
+
+input:focus{
+    outline: none;
+}

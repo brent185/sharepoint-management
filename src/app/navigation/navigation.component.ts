@@ -12,7 +12,7 @@ import { ViewChild } from '@angular/core'
 })
 export class NavigationComponent implements OnInit {
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
-  private isAdmin: boolean = false;
+  public isAdmin: boolean = false;
   private myMessagesCount;
   private selectedTab = 0;
 
@@ -54,12 +54,6 @@ export class NavigationComponent implements OnInit {
   get
 
   ngOnInit() {
-
-    // this.router.events.subscribe((e: any) => {
-    //   if(event instanceof NavigationStart) {
-    //     console.info("EVENT: " + event);
-    //   }
-    // });
     this.router.events
     .filter(event=> event instanceof NavigationStart)
     .subscribe((event:NavigationStart)=>{

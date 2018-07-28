@@ -25,6 +25,7 @@ export class AppService{
     private _lastSiteLoadedSpId;
     private _attestationHistory;
     private _attestationWorkflow;
+    private _siteCollectionWorkflowItems;
     
     private _siteAttestation: SiteAttestation;
 
@@ -46,6 +47,17 @@ export class AppService{
     public siteAttestation = new Subject<SiteAttestation>();
     public attestationHistory = new BehaviorSubject<any[]>(null);
     public attestationWorkflow = new BehaviorSubject<any>(null);
+    public siteCollectionWorkflowItems = new BehaviorSubject<any>(null);
+
+    GetSiteCollectionWorkflowItems(spSiteCollectionId){
+        this.spApi.GetSiteCollectionWorkflowItems(spSiteCollectionId).subscribe(data => {
+            if(data){
+                this._siteCollectionWorkflowItems = data;
+                this.siteCollectionWorkflowItems.next(this._siteCollectionWorkflowItems);
+            }
+        });
+        return this.siteCollectionWorkflowItems.asObservable();
+    }
 
     GetLastSiteLoadedSPID(){
         return this._lastSiteLoadedSpId;
@@ -92,6 +104,10 @@ export class AppService{
         this._siteAttestation.AttestationUsers.forEach(u => {
             if(u.Status == SiteUserStatus.NotSelected || u.Status == SiteUserStatus.Nominated){
                 status = SiteUserStatus.NotSelected;
+                return status;
+            }
+            if(u.Status == SiteUserStatus.Invalid){
+                status = SiteUserStatus.Invalid;
                 return status;
             }
         });
@@ -151,7 +167,10 @@ export class AppService{
             break;
             case 4:
             roleName = "Secondary Administrator";              
-            break;                        
+            break;                 
+            case 5:
+            roleName = "Optional Administrator";              
+            break;                 
           }
 
         return roleName;
@@ -185,7 +204,7 @@ export class AppService{
                     user.LastName = data.LastName;
                     user.DisplayName = user.FirstName + ' ' + user.LastName;
                     user.LoginName = data.LoginName;
-                    user.IsAdmin = false;
+                    user.IsAdmin = data.IsAdmin;
                     this._loggedInUser = user;
                     this.loggedInUser.next(this._loggedInUser);
                 }                
@@ -218,9 +237,13 @@ export class AppService{
                 hours = hours % 12;
                 hours = hours ? hours : 12; // the hour '0' should be '12'
                 minutes = minutes < 10 ? 0 + minutes : minutes;
-                var strTime = hours + ':' + minutes + ' ' + ampm;
+                var mins = minutes.toString();
+                if(mins.length === 1){
+                    mins = "0" + mins;
+                }
+                var strTime = hours + ':' + mins + ' ' + ampm;
                 if(includeTime){
-                    formattedDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + hours + ":" + minutes + ampm;
+                    formattedDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + strTime;
                 }else{
                     formattedDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
                 }
@@ -271,7 +294,7 @@ export class AppService{
                 user.LastName = data.LastName;
                 user.DisplayName = user.FirstName + ' ' + user.LastName;
                 user.LoginName = data.LoginName;
-                user.IsAdmin = true;
+                user.IsAdmin = data.IsAdmin;
                 this._loggedInUser = user;
                 this.loggedInUser.next(this._loggedInUser);
             }
@@ -368,6 +391,7 @@ export class AppService{
     SaveUser(user: AttestationUser){        
         let selectedUser = this._siteAttestation.AttestationUsers.find(u => u.Role === user.Role);
         selectedUser.SPSiteCollectionID = this._siteCollection.ID;
+        selectedUser.Url = this._siteCollection.Url;
         this.spApi.SaveAttestationUser(selectedUser).subscribe(response => {
             //let id = parseInt(response);
             selectedUser.ID = <number>response;
@@ -448,23 +472,18 @@ export class AppService{
           s.level = level;
           s.InheritOwnerAdmins = true;
           s.displayUrl = s.Url;
-          s.isVisible = true;
+          s.isVisible = false;
           s.isOpen = true;
 
           if(level === 1){         
             s.InheritOwnerAdmins = false;
             s.displayUrl = s.Url;
+            s.isOpen = false;
+            s.isVisible = true;
           }else{
             let urlParts = s.Url.split('/');
             s.displayUrl = "/" + urlParts[urlParts.length - 1];
           }
-    
-        //   if(level === 2){
-        //     s.isOpen = false;
-        //   }else{
-        //     s.isOpen = true;
-        //   }
-
 
           if(s.SubSites){              
               this.initSites(s.SubSites, level + 1);

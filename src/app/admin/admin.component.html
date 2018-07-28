@@ -1,0 +1,38 @@
+
+<div class="workflowHeader">
+  <div>Workflow Type</div>
+  <div>Active</div>
+  <div>Start Date</div>
+  <div>End Date</div>
+  <div>Disable Date</div>
+  <div>Completed Date</div>
+  <div>Invoked Date</div>
+  <div>Owner/Admins Only End Date</div>
+  <div></div>
+</div>
+<div class="workflowItems" *ngIf="activeWorkflowItem">
+    <div>{{activeWorkflowItem.Name}}</div>
+    <div>{{activeWorkflowItem.Enabled}}</div>
+    <div>            
+        <input spellcheck="false" (click)="d.toggle()" value="{{appService.FormatDate(activeWorkflowItem.StartDate, true)}}" type="text" ngbDatepicker #d="ngbDatepicker" (dateSelect)="OnStartDateChange($event)"/>
+    </div>
+    <div>
+        <input spellcheck="false" (click)="e.toggle()" value="{{appService.FormatDate(activeWorkflowItem.EndDate, true)}}" type="text" ngbDatepicker #e="ngbDatepicker" (dateSelect)="OnDateSelect($event)"/>
+    </div>
+    <div>{{appService.FormatDate(activeWorkflowItem.DisableDate, true)}}</div>
+    <div>{{appService.FormatDate(activeWorkflowItem.CompletedDate, true)}}</div>
+    <div>{{appService.FormatDate(activeWorkflowItem.InvokedDate, true)}}</div>
+    <div>{{appService.FormatDate(activeWorkflowItem.OwnerAdminOnlyEndDate, true)}}</div>
+</div>
+<div class="workflowItems" *ngFor="let item of workflowItems">
+    <ng-container *ngIf="!item.Enabled">
+        <div>{{item.Name}}</div>
+        <div>{{item.Enabled}}</div>
+        <div>{{appService.FormatDate(item.StartDate, true)}}</div>
+        <div>{{appService.FormatDate(item.EndDate, true)}}</div>
+        <div>{{appService.FormatDate(item.DisableDate, true)}}</div>
+        <div>{{appService.FormatDate(item.CompletedDate, true)}}</div>
+        <div>{{appService.FormatDate(item.InvokedDate, true)}}</div>
+        <div>{{appService.FormatDate(item.OwnerAdminOnlyEndDate, true)}}</div>
+    </ng-container>
+</div>  

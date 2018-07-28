@@ -17,7 +17,5 @@ export enum SiteUserStatus{
     NotSelected = 0,
     Nominated = 1,
     Confirmed = 2,
-    Draft = 3,
-    PendingAPISave = 4,
-    PendingAPIDelete = 5
+    Invalid = 3
 }
