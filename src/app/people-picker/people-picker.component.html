@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <ng2-completer 
     [inputClass]="'brentTest'" 
     [placeholder]="'Begin typing...'"
@@ -8,4 +8,8 @@
     [minSearchLength]="3"     
     [autofocus]="true"
     (selected)="onActorSelected($event)"></ng2-completer>
+  </div> -->
+  <div class="brentTest">
+    <input autofocus id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatMatches" (selectItem)="selectedItem($event)"/>
   </div>
+  

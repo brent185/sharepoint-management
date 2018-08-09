@@ -66,9 +66,9 @@ export class AttestationHistoryComponent implements OnInit {
             var ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12;
             hours = hours ? hours : 12; // the hour '0' should be '12'
-            minutes = minutes < 10 ? 0 + minutes : minutes;
-            var strTime = hours + ':' + minutes + ' ' + ampm;
-            formattedDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + hours + ":" + minutes + ampm;
+            var strMinutes = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+            var strTime = hours + ':' + strMinutes + ' ' + ampm;
+            formattedDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + hours + ":" + strMinutes + ampm;
         }
     }
     return formattedDate;

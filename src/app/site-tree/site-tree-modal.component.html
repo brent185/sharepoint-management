@@ -1,4 +1,4 @@
-<div class="modalCloseButton" (click)="onNoClick()">X</div>
+<div class="modalCloseButton" (click)="onNoClick()"><i class="fas fa-times"></i></div>
 <div class="peoplePickerModal">
         <div>
                 <mat-form-field style="width: 100%" class="example-full-width">
@@ -32,13 +32,23 @@
                 <mat-form-field  style="width: 350px;" class="example-full-width">                                
                                 <input matInput readonly placeholder="User" value="{{ data.user.User.DisplayName }}">                        
                 </mat-form-field>
-                <button class="button" (click)="DeleteSelectedUser()">Delete</button>     
+                <button *ngIf="!deleteConfirmIsVisible" class="button" (click)="deleteConfirmIsVisible = true">Delete</button>    
+                <div *ngIf="deleteConfirmIsVisible" style="position:relative; top: -24px;">
+                                <div class="red">Are you sure you want to delete this user?</div>
+                                <button class="button" (click)="deleteConfirmIsVisible = false">Cancel</button>
+                                <button class="button" (click)="DeleteSelectedUser()">Delete</button>
+                </div> 
         </div>
-        <div *ngIf="data.user.Status==status.Confirmed || data.user.Status==status.Invalid" class="inline">
+        <div *ngIf="data.user.Status==status.Confirmed || data.user.Status==status.Invalid" class="inline" style="position: relative;">
                         <mat-form-field  style="width: 350px;" class="example-full-width">                                
                                         <input matInput readonly placeholder="User" value="{{ data.user.User.DisplayName }}">                        
                         </mat-form-field>
-                        <button class="button" [disabled]="!isAdmin && (data.user.User.LoginName != loggedInUserLoginName && !data.user.UserIsInvalid)" (click)="DeleteSelectedUser()">Delete</button>     
+                        <button *ngIf="!deleteConfirmIsVisible" class="button" [disabled]="!isAdmin && (data.user.User.LoginName != loggedInUserLoginName && !data.user.UserIsInvalid)" (click)="deleteConfirmIsVisible = true">Delete</button>     
+                        <div *ngIf="deleteConfirmIsVisible" style="position:relative; top: -24px;">
+                                <div class="red">Are you sure you want to delete this user?</div>
+                                <button class="button" (click)="deleteConfirmIsVisible = false">Cancel</button>
+                                <button class="button" (click)="DeleteSelectedUser()">Delete</button>
+                        </div>
                 </div>
         <div>
                 <div *ngIf="!draftUser && data.user.Status==status.NotSelected">
@@ -49,7 +59,7 @@
                 </div>
                 <div *ngIf="draftUser" style="display: inline-flex">
                         <div *ngIf="!draftUserIsValid">
-                                <ngb-alert [type]="'danger'"  [dismissible]="true">The Primary Administrator and Secondary Administrator cannot be the same person.</ngb-alert>
+                                <ngb-alert [type]="'danger'"  [dismissible]="false">The Primary Administrator and Secondary Administrator cannot be the same person.</ngb-alert>
                         </div>
                         <div *ngIf="draftUserIsValid">
                                 <button (click)="SaveUser()" [disabled]="false" class="button">Save</button>
@@ -66,47 +76,57 @@
                 <div *ngIf="data.user.UserIsInvalid">                        
                         <ngb-alert [type]="'danger'" [dismissible]="false"  [dismissible]="true">This user cannot be found in Active Directory and therefore is no longer a valid {{ data.user.RoleName }}.<br><br>This user must be Deleted, and a new user Nominated and Confirmed</ngb-alert>                                            
                 </div>        
+                <div class="confirmContainer" *ngIf="data.user.Status != status.Nominated && (isAdmin || data.user.User.LoginName === loggedInUserLoginName)">
+                        <ng-container [ngSwitch]="data.user.Role">                                
+                                <div *ngSwitchCase="3" class="confirmContainerText">
+                                        <div>
+                                                <div>The Primary Administrator is responsible for the following:</div>
+                                                <app-admin-tc></app-admin-tc>
+                                        </div>
+                                </div>
+                                <div *ngSwitchCase="4" class="confirmContainerText">
+                                        <div>
+                                                <div>The Secondary Administrator is responsible for the following:</div>
+                                                <app-admin-tc></app-admin-tc>                                                
+                                        </div>
+                                </div>
+                                <div *ngSwitchCase="5" class="confirmContainerText">
+                                        <div>
+                                                <div>An Optional Administrator is responsible for the following:</div>
+                                                <app-admin-tc></app-admin-tc>                                                
+                                        </div>
+                                </div>
+                        </ng-container>                        
+                </div>
+
         </div>
         <div class="confirmContainer" *ngIf="data.user.Status==status.Nominated && (isAdmin || data.user.User.LoginName === loggedInUserLoginName)">
                 <div>
                         <div class="confirmationContainer confirmationRequired">
                                 <div><strong>Confirmation Required</strong></div>                                
                         </div>
-                        <div class="confirmContainer">
+                        <div class="confirmContainer" #confirmContainer>
                                 <ng-container [ngSwitch]="data.user.Role">
                                         <div *ngSwitchCase="2" class="confirmContainerText">As the Site Owner, I understand that my G/L will be charged for the continued use of this Site Collection.</div>
                                         <div *ngSwitchCase="3" class="confirmContainerText">
                                                 <div>
                                                         <div>As the Primary Administrator, I understand that I am responsible for the following:</div>
-                                                        <ul>
-                                                                <li>Getting <a target="_blank" href="http://goto.optum.com/SP2013LearningResources/SCA_learningmap">Trained</a></li>
-                                                                <li>Following <a target="_blank" href="http://goto.optum.com/SPGov">Governance</a> and <a target="_blank" href="http://goto.optum.com/SCRCNews/BestPractice">Best Practices</a></li>
-                                                                <li>Educating site owners on governance plan policies and standards</li>
-                                                                <li>Managing/supporting users of the site collection to remediate issues *The HelpDesk will be referring users who call in to you.  You will need to assist or have other admins or full control owners assist them</li>
-                                                                <li>Opening helpdesk tickets to the SharePoint Collaboration team for any issues that cannot be resolved by you or your other Admins</li>
-                                                                <li>Assisting our migration team on timing of any needed migrations</li>
-                                                                <li>Communicating to all owners/users messages received from our SharePoint team</li>
-                                                        </ul>
-                                                        <div>For more details, go <a target="_blank" href="http://goto.optum.com/scrc/SiteAdminGuide">here</a></div>
+                                                        <app-admin-tc></app-admin-tc>     
                                                 </div>
                                         </div>
                                         <div *ngSwitchCase="4" class="confirmContainerText">
                                                 <div>
                                                         <div>As the Secondary Administrator, I understand that I am responsible for the following:</div>
-                                                        <ul>
-                                                                <li>Getting <a target="_blank" href="http://goto.optum.com/SP2013LearningResources/SCA_learningmap">Trained</a></li>
-                                                                <li>Following <a target="_blank" href="http://goto.optum.com/SPGov">Governance</a> and <a target="_blank" href="http://goto.optum.com/SCRCNews/BestPractice">Best Practices</a></li>
-                                                                <li>Educating site owners on governance plan policies and standards</li>
-                                                                <li>Managing/supporting users of the site collection to remediate issues *The HelpDesk will be referring users who call in to you.  You will need to assist or have other admins or full control owners assist them</li>
-                                                                <li>Opening helpdesk tickets to the SharePoint Collaboration team for any issues that cannot be resolved by you or your other Admins</li>
-                                                                <li>Assisting our migration team on timing of any needed migrations</li>
-                                                                <li>Communicating to all owners/users messages received from our SharePoint team</li>
-                                                        </ul>
-                                                        <div>For more details, go <a target="_blank" href="http://goto.optum.com/scrc/SiteAdminGuide">here</a></div>
+                                                        <app-admin-tc></app-admin-tc>     
                                                 </div>
                                         </div>
-                                </ng-container>
-                                
+                                        <div *ngSwitchCase="5" class="confirmContainerText">
+                                                <div>
+                                                        <div>As an Optional Administrator, I understand that I am responsible for the following:</div>
+                                                        <app-admin-tc></app-admin-tc>     
+                                                </div>
+                                        </div>
+                                </ng-container>                                
                                 <div><button class="button" (click)="ConfirmUser()">Agree and Confirm</button></div> 
                         </div>
                 </div>

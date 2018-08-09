@@ -39,7 +39,7 @@ export class SiteTreeUserComponent implements OnInit {
     console.log(site);
     let dialogRef = this.dialog.open(SiteTreeModalComponent, {
       width: '800px',
-      height: '650px',
+      height: '700px',
       data: { site: site, user: user }
     });
 

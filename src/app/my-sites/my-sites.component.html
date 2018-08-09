@@ -5,23 +5,34 @@
         <div ngbDropdown class="d-inline-block">
         <button class="dropdown" ngbDropdownToggle>{{selectedRoleName}}</button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button (click)="ApplyFilter(selectedStatus, null)" class="dropdown-item">All</button>
-          <button (click)="ApplyFilter(selectedStatus, 2)" class="dropdown-item">Site Owner</button>
-          <button (click)="ApplyFilter(selectedStatus, 3)" class="dropdown-item">Primary Administrator</button>
-          <button (click)="ApplyFilter(selectedStatus, 4)" class="dropdown-item">Secondary Administrator</button>
+          <button (click)="ApplyFilter(selectedStatus, null, selectedSiteStatus)" class="dropdown-item">All</button>
+          <button (click)="ApplyFilter(selectedStatus, 2, selectedSiteStatus)" class="dropdown-item">Site Owner</button>
+          <button (click)="ApplyFilter(selectedStatus, 3, selectedSiteStatus)" class="dropdown-item">Primary Administrator</button>
+          <button (click)="ApplyFilter(selectedStatus, 4, selectedSiteStatus)" class="dropdown-item">Secondary Administrator</button>
+          <button (click)="ApplyFilter(selectedStatus, 5, selectedSiteStatus)" class="dropdown-item">Optional Administrator</button>
         </div>
       </div>
     </div>
-    <div>Status
+    <div>My Status
         <div ngbDropdown class="d-inline-block">
             <button class="dropdown" ngbDropdownToggle>{{selectedStatusName}}</button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                <button (click)="ApplyFilter(null, selectedRole)" class="dropdown-item">All</button>
-                <button (click)="ApplyFilter(1, selectedRole)" class="dropdown-item">Nominated</button>
-                <button (click)="ApplyFilter(2, selectedRole)" class="dropdown-item">Confirmed</button>                
+                <button (click)="ApplyFilter(null, selectedRole, selectedSiteStatus)" class="dropdown-item">All</button>
+                <button (click)="ApplyFilter(1, selectedRole, selectedSiteStatus)" class="dropdown-item">Nominated</button>
+                <button (click)="ApplyFilter(2, selectedRole, selectedSiteStatus)" class="dropdown-item">Confirmed</button>                
             </div>
         </div>
     </div>
+    <div>Site Status
+            <div ngbDropdown class="d-inline-block">
+                <button class="dropdown" ngbDropdownToggle>{{selectedSiteStatusName}}</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button (click)="ApplyFilter(selectedStatus, selectedRole, null)" class="dropdown-item">All</button>
+                    <button (click)="ApplyFilter(selectedStatus, selectedRole, true)" class="dropdown-item">Confirmed</button>
+                    <button (click)="ApplyFilter(selectedStatus, selectedRole, false)" class="dropdown-item">Confirmation(s) Required</button>                
+                </div>
+            </div>
+        </div>
   </div>
 </div>
 <div *ngFor="let item of filteredSites"
@@ -48,5 +59,27 @@
             {{loggedInUserDisplayName}}
         </div>
 </div>
+    <div>
+        <div *ngIf="item.SiteAllConfirmed" 
+        class="peoplePickerLaunch okButton"
+        routerLink="/attestation/{{item.SiteCollectionSPID}}">
+        <div>
+            <i class="fas fa-check-circle darkGreen"></i>
+        </div>
+        <div>
+            Confirmed
+        </div>
+    </div>
+    <div *ngIf="!item.SiteAllConfirmed" 
+    class="peoplePickerLaunch warningRed"
+    routerLink="/attestation/{{item.SiteCollectionSPID}}">
+        <div>
+            <i class="fas fa-exclamation-circle red"></i>
+        </div>
+        <div>
+            Confirmation(s) Required
+        </div>
+    </div>
 </div>
-<ng-container *ngIf="!filteredSites || filteredSites.length === 0">0 Results<br><br>You are not a Nominated or Confirmed Site Owner, Primary Administrator, or Secondary Administrator on any SharePoint sites.</ng-container>
+</div>
+<ng-container *ngIf="!filteredSites || filteredSites.length === 0">0 Results<br><br>You are not a Nominated or Confirmed Site Owner, Primary Administrator, or Secondary Administrator on any SharePoint sites (filters may be applied).</ng-container>

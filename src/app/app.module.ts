@@ -70,6 +70,7 @@ import { MySitesComponent } from './my-sites/my-sites.component';
 import 'hammerjs';
 import { AttestationHistoryComponent } from './attestation-history/attestation-history.component';
 import { AdminComponent } from './admin/admin.component';
+import { AdminTcComponent } from './admin-tc/admin-tc.component';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'mysites', pathMatch: 'full'},
@@ -99,7 +100,8 @@ const appRoutes: Routes = [
     BulkEditComponent,
     MySitesComponent,
     AttestationHistoryComponent,
-    AdminComponent
+    AdminComponent,
+    AdminTcComponent
   ],
   imports: [
     MatAutocompleteModule,

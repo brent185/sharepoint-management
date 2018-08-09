@@ -22,6 +22,8 @@ export class MySitesComponent implements OnInit {
   selectedRoleName: string = "All";
   selectedStatus: number = null;
   selectedStatusName: string = "All";
+  selectedSiteStatus: number = null;
+  selectedSiteStatusName: string = "All";
 
   constructor(private appService: AppService, private route: ActivatedRoute) {
 
@@ -58,11 +60,14 @@ export class MySitesComponent implements OnInit {
     }    
   }
 
-  ApplyFilter(status, role){
+  ApplyFilter(status, role, siteStatus){
     this.selectedRole = role;
     this.selectedStatus = status;
+    this.selectedSiteStatus = siteStatus;
     this.selectedRoleName = this.GetSiteRoleName(role);
     this.selectedStatusName = this.GetStatusName(status);
+    this.selectedSiteStatusName = this.GetSiteStatusName(siteStatus);
+
     let s = null;
 
     if(!role){
@@ -74,6 +79,11 @@ export class MySitesComponent implements OnInit {
     if(status){
       s = s.filter(site => site.Status === status);
     }    
+
+    if(siteStatus != null){
+      s = s.filter(site => site.SiteAllConfirmed === siteStatus);
+    }
+
     this.filteredSites = s;
   }
 
@@ -95,6 +105,21 @@ export class MySitesComponent implements OnInit {
             return roleName;
   }
 
+  GetSiteStatusName(status: boolean){
+    if(status === null){
+      return "All";
+    }
+    let siteStatusName = null;
+    
+    if(status === true){
+      siteStatusName = "Confirmed";
+    }else{
+      siteStatusName = "Confirmation(s) Required";
+    }
+    
+    return siteStatusName;
+  }
+
   GetSiteRoleName(role: SiteRole){
     if(!role){
       return "All";
@@ -113,7 +138,10 @@ export class MySitesComponent implements OnInit {
                 break;
                 case 4:
                 roleName = "Secondary Administrator";              
-                break;                        
+                break;        
+                case 5:
+                roleName = "Optional Administrator";              
+                break;                      
               }
     
             return roleName;

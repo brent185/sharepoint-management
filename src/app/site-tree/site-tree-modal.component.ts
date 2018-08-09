@@ -22,6 +22,7 @@ import { DatePipe } from '@angular/common';
     loggedInUserLoginName;
     isSaving: boolean = false;
     isAdmin: boolean = false;
+    deleteConfirmIsVisible = false;
 
     contrastAdminUser: AttestationUser = null;
     draftUserIsValid: boolean = true;
@@ -87,11 +88,11 @@ import { DatePipe } from '@angular/common';
         return status;
     }
       if(this.data.user.Status === SiteUserStatus.Nominated){
-        status = 'Nominated on ' + this.datePipe.transform(user.NominatedDate, 'MM/dd/yy') + ' by ' + 'Asplund, Brent'; //user.NominatedByDisplayName;
+        status = 'Nominated on ' + this.datePipe.transform(user.NominatedDate, 'MM/dd/yy') + ' by ' + user.NominatedByDisplayName;
         return status;
       }
       if(this.data.user.Status === SiteUserStatus.Confirmed){
-        status = 'Confirmed on ' + this.datePipe.transform(user.ConfirmedDate, 'MM/dd/yy') + ' by ' + 'Asplund, Brent'; //user.NominatedByDisplayName;
+        status = 'Confirmed on ' + this.datePipe.transform(user.ConfirmedDate, 'MM/dd/yy') + ' by ' + user.NominatedByDisplayName;
         return status;
       }
     return status;
@@ -109,6 +110,7 @@ import { DatePipe } from '@angular/common';
       this.data.user.Status = SiteUserStatus.NotSelected;
       this.data.user.StatusName = this.GetStatusName(this.data.user);
       this.appService.DeleteUser(this.user);
+      this.deleteConfirmIsVisible = false;
     }
 
     SaveUser(){

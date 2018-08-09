@@ -5,8 +5,17 @@
     border-radius: 3px;
 }
 
+.peoplePickerLaunch div:nth-child(2) {
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+
 .inherited{
     color: gray;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
 }
 
 .inherited>div:nth-child(2){

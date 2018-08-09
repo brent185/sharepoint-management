@@ -26,7 +26,6 @@ export class AppService{
     private _attestationHistory;
     private _attestationWorkflow;
     private _siteCollectionWorkflowItems;
-    
     private _siteAttestation: SiteAttestation;
 
     constructor(private spApi: SharePointApi){
@@ -49,13 +48,19 @@ export class AppService{
     public attestationWorkflow = new BehaviorSubject<any>(null);
     public siteCollectionWorkflowItems = new BehaviorSubject<any>(null);
 
-    GetSiteCollectionWorkflowItems(spSiteCollectionId){
-        this.spApi.GetSiteCollectionWorkflowItems(spSiteCollectionId).subscribe(data => {
-            if(data){
-                this._siteCollectionWorkflowItems = data;
-                this.siteCollectionWorkflowItems.next(this._siteCollectionWorkflowItems);
-            }
-        });
+    GetSiteCollectionWorkflowItems(){
+        let spSiteCollectionId;
+
+        if(this._siteAttestation){
+            spSiteCollectionId = this._siteAttestation.Site.SiteID;
+
+            this.spApi.GetSiteCollectionWorkflowItems(spSiteCollectionId).subscribe(data => {
+                if(data){
+                    this._siteCollectionWorkflowItems = data;
+                    this.siteCollectionWorkflowItems.next(this._siteCollectionWorkflowItems);
+                }
+            });            
+        }
         return this.siteCollectionWorkflowItems.asObservable();
     }
 
@@ -89,8 +94,6 @@ export class AppService{
                         }
                         this.siteAttestation.next(this._siteAttestation);   
                     });
-
-                    //this.siteAttestation.next(this._siteAttestation); 
                 });
             }
          });
@@ -122,16 +125,24 @@ export class AppService{
                 this._lastSiteLoadedSpId = data.SPID;
                 this.lastSiteLoadedSpId.next(this._lastSiteLoadedSpId);
                 this._siteCollection = data;
+                this._siteAttestation.Site = new Site;
+                this._siteAttestation.Site.SiteID = data.ID;
                 this._siteAttestation.Hierarchy = [data.Webs];
                 this.initSites(this._siteAttestation.Hierarchy, 1);
                 this.setInheritance(this._siteAttestation.Hierarchy, null);
                 this._siteAttestation.FlatSites = this.flattenSites(this._siteAttestation.Hierarchy, []);
-
-                this.spApi.GetAttestationUsersBySiteId(data.ID).subscribe(users => {
-                    if(users){
-                        this._siteAttestation.AttestationUsers = users;
+                             
+                this.spApi.GetActiveWorkflow(data.Url).subscribe(workflow => {
+                    if(workflow){
+                        this._siteAttestation.ActiveWorkflow = workflow;                        
                     }
-                    this.siteAttestation.next(this._siteAttestation);   
+
+                    this.spApi.GetAttestationUsersBySiteId(data.ID).subscribe(users => {
+                        if(users){
+                            this._siteAttestation.AttestationUsers = users;
+                        }
+                        this.siteAttestation.next(this._siteAttestation);   
+                    });
                 });
                                 
             }else{
@@ -224,6 +235,10 @@ export class AppService{
         // }
 
         //return this.attestationUsers.asObservable();
+    }
+
+    GetUsersBySearchTerm(term: string){
+        //http://sharepointapi-test.mhars1.optum.com/v1/sharepoint/user/search/brochh
     }
 
     FormatDate(date, includeTime) {
@@ -348,7 +363,7 @@ export class AppService{
 
     GetUserByNameSearch(term: string){
 
-        return this.spApi.getUserByNameSearch(term).map(data => {
+        return this.spApi.GetUserByNameSearch(term).map(data => {
             return data;
         });
 
@@ -405,6 +420,12 @@ export class AppService{
         selectedUser.NominatedDate = new Date();
 
         this.siteAttestation.next(this._siteAttestation);        
+    }
+
+    SaveWorkflowInstanceItem(item){
+        this.spApi.SaveWorkflowItem(item).subscribe(response => {
+            console.info("SAVED");
+        });
     }
 
     ConfirmUser(user: AttestationUser){

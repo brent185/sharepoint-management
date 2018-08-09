@@ -114,14 +114,20 @@ export class SiteTreeComponent implements OnInit {
     this.appService.GetSiteAttestationByUrl(url).subscribe(attestation => {
       if(attestation){
         this.siteIsLoaded = true;
-        this.searchIsValid = true;
-        this.searchByUrlValue = "";
         this.siteContext = attestation;
+        this.siteCollectionUrl = attestation.Site.Url;
         this.list = attestation.Hierarchy;
         this.businessOwner = attestation.AttestationUsers.find(u => u.Role === 1);
         this.siteOwner = attestation.AttestationUsers.find(u => u.Role === 2);
         this.primaryAdmin = attestation.AttestationUsers.find(u => u.Role === 3);
         this.secondaryAdmin = attestation.AttestationUsers.find(u => u.Role === 4);
+        this.admin = attestation.AttestationUsers.find(u => u.Role === 5);
+        this.workflow = attestation.ActiveWorkflow;
+        this.siteCollectionAttestationStatus = this.appService.GetSiteCollectionAttestationStatus();
+        console.info("STTAUS: " + this.siteCollectionAttestationStatus);
+        if(this.workflow && this.workflow.DisableDate){
+          this.workflow.DisableDate = this.appService.FormatDate(this.workflow.DisableDate, false);
+        }
         console.info("ATTEST!: " + console.info(attestation));
         if(this.showModalOnLoad && !this.modalHasLoaded){
           let u = attestation.AttestationUsers.find(u => u.Role == this.showModalUserRoleID);
@@ -201,13 +207,13 @@ export class SiteTreeComponent implements OnInit {
   openPeoplePicker(site, user): void {
     //console.log(item);
     let dialogRef = this.dialog.open(SiteTreeModalComponent, {
-      width: '800px',
-      height: '650px',
+      width: '850px',
+      height: '700px',
       data: { site: site, user: user }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('The dialog was closed1');
       dialogRef = null;
       //this.animal = result;
     });
@@ -216,13 +222,13 @@ export class SiteTreeComponent implements OnInit {
   OpenAttestationHistory(roleId: number): void {
     //console.log(item);
     let dialogRef = this.dialog.open(AttestationHistoryComponent, {
-      width: '800px',
-      height: '650px',
+      width: '850px',
+      height: '700px',
       data: { site: this.siteContext.Site.SiteID, role: roleId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('The dialog was closed2');
       dialogRef = null;
       //this.animal = result;
     });

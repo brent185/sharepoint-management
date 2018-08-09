@@ -11,11 +11,13 @@ export class AdminComponent implements OnInit {
   workflowItems;
   activeWorkflowItem;
   startDate;
+  activeSite;
+  allSites;
 
   constructor(private appService: AppService) { }
 
   ngOnInit() {
-    this.appService.GetSiteCollectionWorkflowItems(3).subscribe(data => {
+    this.appService.GetSiteCollectionWorkflowItems().subscribe(data => {
       if(data){
         this.workflowItems = data;
         this.activeWorkflowItem = this.workflowItems.find(i => i.Enabled == true);
@@ -26,7 +28,25 @@ export class AdminComponent implements OnInit {
 
   OnStartDateChange(val){    
     this.activeWorkflowItem.StartDate = val.month + "/" + val.day + "/" + val.year;
+    this.appService.SaveWorkflowInstanceItem(this.activeWorkflowItem);
     console.info(this.activeWorkflowItem.StartDate);
   }
 
+  OnEndDateChange(val){    
+    this.activeWorkflowItem.EndDate = val.month + "/" + val.day + "/" + val.year;
+    this.appService.SaveWorkflowInstanceItem(this.activeWorkflowItem);
+    console.info(this.activeWorkflowItem.EndDate);
+  }
+
+  OnDisableDateChange(val){    
+    this.activeWorkflowItem.DisableDate = val.month + "/" + val.day + "/" + val.year;
+    this.appService.SaveWorkflowInstanceItem(this.activeWorkflowItem);
+    console.info(this.activeWorkflowItem.DisableDate);
+  }
+
+  OnOwnerAdminOnlyDateChange(val){    
+    this.activeWorkflowItem.OwnerAdminOnlyEndDate = val.month + "/" + val.day + "/" + val.year;
+    this.appService.SaveWorkflowInstanceItem(this.activeWorkflowItem);
+    console.info(this.activeWorkflowItem.OwnerAdminOnlyEndDate);
+  }
 }
