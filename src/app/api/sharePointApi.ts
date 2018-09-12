@@ -14,6 +14,12 @@ export class SharePointApi {
     private http2: HttpClient
   ) {}
 
+  XX(){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.get('http://apsed5356/sites/test1/_layouts/SharePointProject1/class2.ashx', requestOptions)
+    .map((res:Response) => res.json());
+  }
+  
   getUser() {
     let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
     return this.http.get(constants.sharePointApiRootUrl + '/sharepoint/user', requestOptions)
@@ -69,6 +75,12 @@ export class SharePointApi {
     .map((res:Response) => res.json());
   }
 
+  GetAdmins(){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/admins`, requestOptions)
+    .map((res:Response) => res.json());
+  }
+
   GetAttestationUsersBySiteId(id: number){
     let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
     return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/SiteCollectionAttestationUsers/${id}`, requestOptions)
@@ -93,6 +105,18 @@ export class SharePointApi {
     return this.http2.post(url, user, options);
   }
 
+  SaveAdmin(loginName: string){
+    let httpHeaders = new HttpHeaders({
+      'Content-Type' : 'application/json',
+      'Cache-Control': 'no-cache'
+    }); 
+
+    let options = { withCredentials: true, headers: httpHeaders };
+
+    let url = `${constants.sharePointApiRootUrl}/sharepoint/SaveAdmin`;
+    return this.http2.post(url, { LoginName: loginName }, options);
+  }
+
   SaveWorkflowItem(item){
     let httpHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',
@@ -107,6 +131,11 @@ export class SharePointApi {
   DeleteAttestationUser(id: number){
     let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
     return this.http.delete(constants.sharePointApiRootUrl + `/sharepoint/DeleteAttestationUser/${id}`, requestOptions);
+  }
+
+  DeleteAdmin(loginName: string){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.delete(constants.sharePointApiRootUrl + `/sharepoint/DeleteAdmin/${loginName}`, requestOptions);
   }
 
   ConfirmAttestationUser(id: number){

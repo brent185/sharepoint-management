@@ -1,47 +1,86 @@
 
-<div *ngIf="workflowItems">
-    <div class="workflowHeader">
-    <div>Workflow Type</div>
-    <div>Active</div>
-    <div>Start Date</div>
-    <div>End Date</div>
-    <div>Disable Date</div>
-    <div>Completed Date</div>
-    <div>Invoked Date</div>
-    <div>Owner/Admins Only End Date</div>
-    <div></div>
+<div>
+    <div class="adminNav">
+        <div [class.adminNavSelected]="showWorkflow" (click)="ShowWorkflow()">Workflow</div>
+        <div [class.adminNavSelected]="showAdmins" (click)="ShowAdmins()">Admins</div>
     </div>
-    <div class="workflowItems" *ngIf="activeWorkflowItem">
-        <div>{{activeWorkflowItem.Name}}</div>
-        <div>{{activeWorkflowItem.Enabled}}</div>
-        <div>            
-            <input spellcheck="false" (click)="d.toggle()" value="{{appService.FormatDate(activeWorkflowItem.StartDate, true)}}" type="text" ngbDatepicker #d="ngbDatepicker" (dateSelect)="OnStartDateChange($event)"/>
+    <div>
+        <div *ngIf="showWorkflow" style="margin-top: 17px; margin-left: 15px;">
+            <div *ngIf="workflowItems">
+                <div class="workflowHeader">
+                <div>Workflow Type</div>
+                <div>Active</div>
+                <div>Start Date</div>
+                <div>End Date</div>
+                <div>Disable Date</div>
+                <div>Completed Date</div>
+                <div>Invoked Date</div>
+                <div>Owner/Admins Only End Date</div>
+                <div></div>
+                </div>
+                <div class="workflowItems" *ngIf="activeWorkflowItem">
+                    <div>{{activeWorkflowItem.Name}}</div>
+                    <div>{{activeWorkflowItem.Enabled}}</div>
+                    <div>            
+                        <input spellcheck="false" (click)="d.toggle()" value="{{appService.FormatDate(activeWorkflowItem.StartDate, true)}}" type="text" ngbDatepicker #d="ngbDatepicker" (dateSelect)="OnStartDateChange($event)"/>
+                    </div>
+                    <div>
+                        <input spellcheck="false" (click)="e.toggle()" value="{{appService.FormatDate(activeWorkflowItem.EndDate, true)}}" type="text" ngbDatepicker #e="ngbDatepicker" (dateSelect)="OnEndDateChange($event)"/>
+                    </div>
+                    <div>
+                        <input spellcheck="false" (click)="f.toggle()" value="{{appService.FormatDate(activeWorkflowItem.DisableDate, true)}}" type="text" ngbDatepicker #f="ngbDatepicker" (dateSelect)="OnDisableDateChange($event)"/>
+                    </div>
+                    <div>{{appService.FormatDate(activeWorkflowItem.CompletedDate, true)}}</div>
+                    <div>{{appService.FormatDate(activeWorkflowItem.InvokedDate, true)}}</div>
+                    <div>        
+                        <input spellcheck="false" (click)="g.toggle()" value="{{appService.FormatDate(activeWorkflowItem.OwnerAdminOnlyEndDate, true)}}" type="text" ngbDatepicker #g="ngbDatepicker" (dateSelect)="OnOwnerAdminOnlyDateChange($event)"/>
+                    </div>
+                </div>
+                <div class="workflowItems" *ngFor="let item of workflowItems">
+                    <ng-container *ngIf="!item.Enabled">
+                        <div>{{item.Name}}</div>
+                        <div>{{item.Enabled}}</div>
+                        <div>{{appService.FormatDate(item.StartDate, true)}}</div>
+                        <div>{{appService.FormatDate(item.EndDate, true)}}</div>
+                        <div>{{appService.FormatDate(item.DisableDate, true)}}</div>
+                        <div>{{appService.FormatDate(item.CompletedDate, true)}}</div>
+                        <div>{{appService.FormatDate(item.InvokedDate, true)}}</div>
+                        <div>{{appService.FormatDate(item.OwnerAdminOnlyEndDate, true)}}</div>
+                    </ng-container>
+                </div>  
+            </div>
+            <div *ngIf="!workflowItems" style="margin-top: 17px; margin-left: 15px;">
+            A site must be selected from the My Sites tab or the Attestation tab.
+            </div>
         </div>
-        <div>
-            <input spellcheck="false" (click)="e.toggle()" value="{{appService.FormatDate(activeWorkflowItem.EndDate, true)}}" type="text" ngbDatepicker #e="ngbDatepicker" (dateSelect)="OnEndDateChange($event)"/>
-        </div>
-        <div>
-            <input spellcheck="false" (click)="f.toggle()" value="{{appService.FormatDate(activeWorkflowItem.DisableDate, true)}}" type="text" ngbDatepicker #f="ngbDatepicker" (dateSelect)="OnDisableDateChange($event)"/>
-        </div>
-        <div>{{appService.FormatDate(activeWorkflowItem.CompletedDate, true)}}</div>
-        <div>{{appService.FormatDate(activeWorkflowItem.InvokedDate, true)}}</div>
-        <div>        
-            <input spellcheck="false" (click)="g.toggle()" value="{{appService.FormatDate(activeWorkflowItem.OwnerAdminOnlyEndDate, true)}}" type="text" ngbDatepicker #g="ngbDatepicker" (dateSelect)="OnOwnerAdminOnlyDateChange($event)"/>
+        <div *ngIf="showAdmins">
+            <div class="adminManager">
+                <div>
+                    <div>
+                        <div><b>Add an Admin</b></div>
+                        <ng-container *ngIf="!userIsSelected"><app-people-picker (onUserSelected)="UserSelected($event)"></app-people-picker></ng-container>
+                        <div class="userSelected">
+                            <div *ngIf="userIsSelected">
+                                <span>{{selectedUser.DisplayName}}</span>
+                                <div class="removeSelectedUser" (click)="RemoveSelectedUser()"><i class="fas fa-times-circle"></i></div>
+                                <div><button class="button" (click)="SaveAdmin()">Save</button></div>
+                            </div>
+                        </div>
+                    </div>
+
+                <div>
+                    <div><b>Delete an Admin</b></div>
+                    <div *ngFor="let admin of admins">
+                            <div>
+                                <div (click)="DeleteAdmin(admin)"><i class="fas fa-times-circle"></i></div>
+                                <div>{{admin}}</div>
+                            </div>            
+                        </div>
+                </div>
+            </div>
+
         </div>
     </div>
-    <div class="workflowItems" *ngFor="let item of workflowItems">
-        <ng-container *ngIf="!item.Enabled">
-            <div>{{item.Name}}</div>
-            <div>{{item.Enabled}}</div>
-            <div>{{appService.FormatDate(item.StartDate, true)}}</div>
-            <div>{{appService.FormatDate(item.EndDate, true)}}</div>
-            <div>{{appService.FormatDate(item.DisableDate, true)}}</div>
-            <div>{{appService.FormatDate(item.CompletedDate, true)}}</div>
-            <div>{{appService.FormatDate(item.InvokedDate, true)}}</div>
-            <div>{{appService.FormatDate(item.OwnerAdminOnlyEndDate, true)}}</div>
-        </ng-container>
-    </div>  
+
 </div>
-<div *ngIf="!workflowItems">
-A site must be selected from the My Sites tab or the Attestation tab.
-</div>
+

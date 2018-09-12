@@ -9,7 +9,19 @@
     [autofocus]="true"
     (selected)="onActorSelected($event)"></ng2-completer>
   </div> -->
-  <div class="brentTest">
-    <input autofocus id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatMatches" (selectItem)="selectedItem($event)"/>
+  <div class="brentTest" style="position:relative">
+    <input 
+      autofocus 
+      id="typeahead-basic" 
+      type="text" 
+      class="form-control" 
+      [(ngModel)]="model" 
+      [ngbTypeahead]="search" 
+      [resultFormatter]="formatMatches" 
+      (selectItem)="selectedItem($event)"/>
+      <div style="position:absolute; top:-6px;right:40px;">
+        <div style="color:#007bff;font-weight:bold;margin-top:10px" *ngIf="searching">Searching...</div>
+        <div style="color:red;font-weight:bold;margin-top:10px" *ngIf="noResults">No Results</div>
+      </div>
   </div>
   

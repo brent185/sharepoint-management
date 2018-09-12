@@ -42,3 +42,58 @@ input{
 input:focus{
     outline: none;
 }
+
+.adminManager>div{
+    display: inline-flex;
+    margin: 20px;
+}
+
+.adminManager>div>div {
+    min-width: 750px !important;
+    margin-right: 40px;
+}
+
+.adminManager>div:nth-child(1){
+    width: 600px;
+}
+
+.adminManager>div>div:nth-child(2)>div>div{
+   display: inline-flex;
+}
+
+.adminManager>div>div:nth-child(2)>div>div div{
+    margin-right: 10px;
+    margin-top: 10px;
+ }
+
+.userSelected>div {
+    display: inline-flex;
+}
+
+.userSelected>div>span{
+    width: 400px;
+}
+
+.userSelected>div>div{
+    margin-left: 10px;
+}
+
+.removeSelectedUser{
+    font-size: 20px;
+}
+
+.adminNav{
+    display: inline-flex;
+}
+
+.adminNav>div{
+    cursor: pointer;
+   padding: 10px;
+}
+
+.adminNavSelected{
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    border-radius: 5px;
+}

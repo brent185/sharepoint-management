@@ -27,6 +27,7 @@ export class AppService{
     private _attestationWorkflow;
     private _siteCollectionWorkflowItems;
     private _siteAttestation: SiteAttestation;
+    private _admins: string[];
 
     constructor(private spApi: SharePointApi){
 
@@ -47,6 +48,7 @@ export class AppService{
     public attestationHistory = new BehaviorSubject<any[]>(null);
     public attestationWorkflow = new BehaviorSubject<any>(null);
     public siteCollectionWorkflowItems = new BehaviorSubject<any>(null);
+    public admins = new BehaviorSubject<string[]>(null);
 
     GetSiteCollectionWorkflowItems(){
         let spSiteCollectionId;
@@ -161,6 +163,16 @@ export class AppService{
             }
         });
         return this.attestationHistory.asObservable();
+    }
+    
+    GetAdmins(){
+        this.spApi.GetAdmins().subscribe(data => {
+            if(data){
+                this._admins = data;
+                this.admins.next(this._admins);
+            }
+        });
+        return this.admins.asObservable();
     }
 
     GetSiteRoleNameByRoleID(roleId: number){
@@ -362,7 +374,7 @@ export class AppService{
     }
 
     GetUserByNameSearch(term: string){
-
+        //if(term)
         return this.spApi.GetUserByNameSearch(term).map(data => {
             return data;
         });
@@ -428,6 +440,20 @@ export class AppService{
         });
     }
 
+    SaveAdmin(loginName: string){
+        this.spApi.SaveAdmin(loginName).subscribe(response => {
+            //if(response){
+                this.GetAdmins();
+            //}
+        });
+    }
+
+    DeleteAdmin(loginName: string){
+        this.spApi.DeleteAdmin(loginName).subscribe(response => {
+            this.GetAdmins();
+        });
+    }
+
     ConfirmUser(user: AttestationUser){
         let selectedUser = this._siteAttestation.AttestationUsers.find(u => u.Role === user.Role);
         this.spApi.ConfirmAttestationUser(selectedUser.ID).subscribe(d => {
@@ -435,6 +461,7 @@ export class AppService{
             selectedUser.ConfirmedDate = new Date();
             this.siteAttestation.next(this._siteAttestation);
         });
+        //this.spApi.XX().subscribe(x=>{});
     }
     
     DeleteUser(user: AttestationUser){
