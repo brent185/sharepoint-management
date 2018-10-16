@@ -3,6 +3,7 @@
     <div class="adminNav">
         <div [class.adminNavSelected]="showWorkflow" (click)="ShowWorkflow()">Workflow</div>
         <div [class.adminNavSelected]="showAdmins" (click)="ShowAdmins()">Admins</div>
+        <div [class.adminNavSelected]="showReporting" (click)="ShowReporting()">Reporting</div>
     </div>
     <div>
         <div *ngIf="showWorkflow" style="margin-top: 17px; margin-left: 15px;">
@@ -81,6 +82,8 @@
 
         </div>
     </div>
-
+    <div *ngIf="showReporting">
+        <app-reporting></app-reporting>
+    </div>
 </div>
 

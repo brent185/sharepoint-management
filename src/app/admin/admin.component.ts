@@ -15,6 +15,7 @@ export class AdminComponent implements OnInit {
   allSites;
   public showWorkflow = true;
   public showAdmins = false;
+  public showReporting = false;
   public admins;
   public userIsSelected = false;
   public selectedUser;
@@ -34,12 +35,20 @@ export class AdminComponent implements OnInit {
   ShowWorkflow(){
     this.showWorkflow = true;
     this.showAdmins = false;
+    this.showReporting = false;
   }
 
   ShowAdmins(){
     this.showWorkflow = false;
     this.showAdmins = true;
+    this.showReporting = false;
     this.GetAdmins();
+  }
+
+  ShowReporting(){
+    this.showWorkflow = false;
+    this.showAdmins = false;
+    this.showReporting = true;
   }
 
   GetAdmins(){

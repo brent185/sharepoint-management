@@ -28,6 +28,7 @@ export class AppService{
     private _siteCollectionWorkflowItems;
     private _siteAttestation: SiteAttestation;
     private _admins: string[];
+    private _siteCollectionReport;
 
     constructor(private spApi: SharePointApi){
 
@@ -49,6 +50,7 @@ export class AppService{
     public attestationWorkflow = new BehaviorSubject<any>(null);
     public siteCollectionWorkflowItems = new BehaviorSubject<any>(null);
     public admins = new BehaviorSubject<string[]>(null);
+    public siteCollectionReport = new BehaviorSubject<any>(null);
 
     GetSiteCollectionWorkflowItems(){
         let spSiteCollectionId;
@@ -71,7 +73,6 @@ export class AppService{
     }
 
     GetSiteAttestation(siteSpId: string): Observable<SiteAttestation> {
-
         this._siteAttestation = new SiteAttestation;
         this.spApi.GetSiteCollectionBySiteSpId(siteSpId).subscribe(data => {        
             if(data) {
@@ -119,8 +120,7 @@ export class AppService{
         return status;
     }
 
-    GetSiteAttestationByUrl(url: string): Observable<SiteAttestation> {
-        
+    GetSiteAttestationByUrl(url: string): Observable<SiteAttestation> {        
         this._siteAttestation = new SiteAttestation;
         this.spApi.GetSiteCollectionByUrl(url).subscribe(data => {        
             if(data && data.Url) {
@@ -163,6 +163,16 @@ export class AppService{
             }
         });
         return this.attestationHistory.asObservable();
+    }
+
+    GetSiteCollectionReport(){
+        this.spApi.GetSiteCollectionReport().subscribe(data => {
+            if(data){
+                this._siteCollectionReport = data;
+                this.siteCollectionReport.next(this._siteCollectionReport);
+            }
+        });
+        return this.siteCollectionReport.asObservable();
     }
     
     GetAdmins(){

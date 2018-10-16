@@ -27,6 +27,7 @@
     "@ngrx/core": "^1.2.0",
     "@ngrx/store": "^6.0.1",
     "angular-tree-component": "^7.2.0",
+    "angular5-csv": "^0.2.10",
     "bootstrap": "^4.1.1",
     "core-js": "^2.5.7",
     "font-awesome": "^4.7.0",

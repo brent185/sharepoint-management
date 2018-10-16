@@ -71,6 +71,7 @@ import 'hammerjs';
 import { AttestationHistoryComponent } from './attestation-history/attestation-history.component';
 import { AdminComponent } from './admin/admin.component';
 import { AdminTcComponent } from './admin-tc/admin-tc.component';
+import { ReportingComponent } from './reporting/reporting.component';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'mysites', pathMatch: 'full'},
@@ -101,7 +102,8 @@ const appRoutes: Routes = [
     MySitesComponent,
     AttestationHistoryComponent,
     AdminComponent,
-    AdminTcComponent
+    AdminTcComponent,
+    ReportingComponent
   ],
   imports: [
     MatAutocompleteModule,

@@ -54,7 +54,6 @@ export class SiteTreeComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(
       params => {
-          console.info("PARAMS-FROM-SITE-TREEE: " + console.info(params));
           const spId = params['siteCollectionSpId'];      
           const confirm = params['confirm'];
           
@@ -82,7 +81,6 @@ export class SiteTreeComponent implements OnInit {
   }
 
   Init(spId: string){
-
     this.appService.GetSiteAttestation(spId).subscribe(attestation => {
       if(attestation){
         this.siteIsLoaded = true;
@@ -96,11 +94,9 @@ export class SiteTreeComponent implements OnInit {
         this.admin = attestation.AttestationUsers.find(u => u.Role === 5);
         this.workflow = attestation.ActiveWorkflow;
         this.siteCollectionAttestationStatus = this.appService.GetSiteCollectionAttestationStatus();
-        console.info("STTAUS: " + this.siteCollectionAttestationStatus);
         if(this.workflow && this.workflow.DisableDate){
           this.workflow.DisableDate = this.appService.FormatDate(this.workflow.DisableDate, false);
-        }
-        console.info("ATTEST!: " + console.info(attestation));
+        }    
         if(this.showModalOnLoad && !this.modalHasLoaded){
           let u = attestation.AttestationUsers.find(u => u.Role == this.showModalUserRoleID);
           this.modalHasLoaded = true;
@@ -124,11 +120,11 @@ export class SiteTreeComponent implements OnInit {
         this.admin = attestation.AttestationUsers.find(u => u.Role === 5);
         this.workflow = attestation.ActiveWorkflow;
         this.siteCollectionAttestationStatus = this.appService.GetSiteCollectionAttestationStatus();
-        console.info("STTAUS: " + this.siteCollectionAttestationStatus);
+        
         if(this.workflow && this.workflow.DisableDate){
           this.workflow.DisableDate = this.appService.FormatDate(this.workflow.DisableDate, false);
         }
-        console.info("ATTEST!: " + console.info(attestation));
+        
         if(this.showModalOnLoad && !this.modalHasLoaded){
           let u = attestation.AttestationUsers.find(u => u.Role == this.showModalUserRoleID);
           this.modalHasLoaded = true;
