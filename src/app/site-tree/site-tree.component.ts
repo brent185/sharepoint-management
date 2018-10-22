@@ -14,7 +14,6 @@ import { ActivatedRoute} from '@angular/router';
   selector: 'app-site-tree',
   templateUrl: './site-tree.component.html',
   styleUrls: ['./site-tree.component.css']
-    //providers: [AppService]
 })
 
 export class SiteTreeComponent implements OnInit {
@@ -46,10 +45,7 @@ export class SiteTreeComponent implements OnInit {
   public siteCollectionAttestationStatus;
   public showInheritanceMessage = true;
 
-  constructor(private appService: AppService, public dialog: MatDialog, private route: ActivatedRoute) {
-    
-
-  }
+  constructor(private appService: AppService, public dialog: MatDialog, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -137,17 +133,8 @@ export class SiteTreeComponent implements OnInit {
   }
 
   Search(e){
-    console.info("PASTE: " + e.srcElement.value);
     this.SearchByUrl(e.srcElement.value);    
   }
-  
-  // ToggleInstructions(): void{
-  //   if(this.showInstructions){
-  //     this.showInstructions = false;
-  //   }else{
-  //     this.showInstructions = true;
-  //   }
-  // }
 
   toggleInheritance(site){
     if(site.inheritOwnerAdmins){
@@ -155,8 +142,6 @@ export class SiteTreeComponent implements OnInit {
     }else{
       site.inheritOwnerAdmins = true;
     }
-    
-    //this.setInheritance(this.list, null);
   }
 
   setSelectedSite(siteId){
@@ -172,10 +157,6 @@ export class SiteTreeComponent implements OnInit {
     }
   }
 
-  openParent(parentSPID){
-
-  }
-
   getParents(childSPID){
     const parents = [];
     const context = this.getSiteBySPID(this.list, childSPID);
@@ -187,21 +168,7 @@ export class SiteTreeComponent implements OnInit {
     }
   }
 
-  // openDialog(): void {
-  //   let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-  //     width: '500px',
-  //     height: '500px',
-  //     data: { name: this.name, animal: this.animal }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed');
-  //     this.animal = result;
-  //   });
-  // }
-
   openPeoplePicker(site, user): void {
-    //console.log(item);
     let dialogRef = this.dialog.open(SiteTreeModalComponent, {
       width: '850px',
       height: '700px',
@@ -209,31 +176,27 @@ export class SiteTreeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed1');
       dialogRef = null;
-      //this.animal = result;
     });
   }
 
   OpenAttestationHistory(roleId: number): void {
-    //console.log(item);
+    
     let dialogRef = this.dialog.open(AttestationHistoryComponent, {
       width: '850px',
       height: '700px',
       data: { site: this.siteContext.Site.SiteID, role: roleId }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed2');
+    dialogRef.afterClosed().subscribe(result => {  
       dialogRef = null;
-      //this.animal = result;
+    
     });
   }
 
   getWidth(level) {
     const newLevel = level * 20;
     return newLevel + 'px';
-    // console.log(newLevel);
   }
 
   toggleChildren(event, siteId) {

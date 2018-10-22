@@ -100,8 +100,6 @@ import { DatePipe } from '@angular/common';
     }
 
     removeSelectedUser(){
-      // this.data.user.User.LoginName = null;
-      // this.data.user.Status = SiteUserStatus.NotSelected;
       this.draftUser = null;
       this.draftUserIsValid = true;
     }
@@ -117,7 +115,6 @@ import { DatePipe } from '@angular/common';
       if(this.contrastAdminUser && this.contrastAdminUser.User.LoginName === this.draftUser.LoginName){
         this.draftUserIsValid = false;
       }else{
-        //this.isSaving = true;
         this.data.user.User.DisplayName = this.draftUser.DisplayName;
         this.data.user.User.LoginName = this.draftUser.LoginName;
         this.data.user.Status = SiteUserStatus.Nominated;
@@ -126,7 +123,6 @@ import { DatePipe } from '@angular/common';
         this.draftUser = null;
         this.appService.SaveUser(this.data.user);
         if(!this.isAdmin || (this.data.user.User.LoginName != this.loggedInUserLoginName)){
-          //this.isSaving = false;
           this.onNoClick();
         } 
       }
@@ -137,7 +133,6 @@ import { DatePipe } from '@angular/common';
       this.data.user.StatusName = this.GetStatusName(this.data.user);
       this.data.user.ConfirmedDate = new Date();
       this.appService.ConfirmUser(this.data.user);
-      // this.dialogRef.close();
       this.onNoClick();
     }
   

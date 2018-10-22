@@ -19,7 +19,6 @@ export class HttpInterceptor extends Http {
     ) {
         super(backend, options);
         options.headers.set('Accept', '*/*');
-        //options.headers.set('Content-Type', 'application/json');
     }
 
     public request(url: string|Request, options?: RequestOptionsArgs): Observable<Response> {
@@ -27,9 +26,7 @@ export class HttpInterceptor extends Http {
             .catch(this.handleError)
     }
 
-    public handleError = (error: any) => {
-            
-        // Do messaging and error handling here
+    public handleError = (error: any) => {                    
         this.dialog.open(ErrorDialog, {
             width: '500px',
             height: '500px',

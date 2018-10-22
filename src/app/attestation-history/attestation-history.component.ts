@@ -17,7 +17,6 @@ export class AttestationHistoryComponent implements OnInit {
   constructor(private appService: AppService,
     public dialogRef: MatDialogRef<AttestationHistoryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private datePipe: DatePipe) {  
-      console.info("SITEID: " + data.site + " - ROLEID:" + data.role);
       this.siteId = data.site;
       this.roleId = data.role;
       this.siteRoleName = this.appService.GetSiteRoleNameByRoleID(data.role);

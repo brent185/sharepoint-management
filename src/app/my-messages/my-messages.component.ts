@@ -56,9 +56,3 @@ export interface UserMessage {
   Action: string;
   ActionUrl: string;
 }
-
-//   TestClick(){
-//     this.appService.SetMyMessagesCount(2);
-//   }
-
-// }

@@ -13,12 +13,6 @@ export class SharePointApi {
     private http: HttpInterceptor,
     private http2: HttpClient
   ) {}
-
-  XX(){
-    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
-    return this.http.get('http://apsed5356/sites/test1/_layouts/SharePointProject1/class2.ashx', requestOptions)
-    .map((res:Response) => res.json());
-  }
   
   getUser() {
     let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
@@ -27,7 +21,6 @@ export class SharePointApi {
   }
 
   GetUserByNameSearch(term){
-    //http://sharepointapi-test.mhars1.optum.com/v1/sharepoint/user/search/asp
     let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
     return this.http.get(constants.sharePointApiRootUrl + '/sharepoint/user/search/' + term, requestOptions)
     .map((res:Response) => res.json());

@@ -1,13 +1,11 @@
 import {Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 import {Observable} from 'rxjs';
-//import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { AppService } from './../globaldata.service';
 import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-people-picker',
   templateUrl: './people-picker.component.html',
-  //styles: [`.form-control { width: 300px; }`],
   styleUrls: ['./people-picker.component.css']
 })
 export class PeoplePickerComponent implements OnInit {
@@ -36,7 +34,6 @@ export class PeoplePickerComponent implements OnInit {
   search = (text$: Observable<string>) => 
   text$.pipe(
     debounceTime(300),
-    //distinctUntilChanged(),
     tap(() => {
       this.searching = true;
       this.noResults = false;

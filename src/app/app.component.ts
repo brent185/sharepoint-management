@@ -18,7 +18,6 @@ export class AppComponent  implements OnInit{
   }
 
   ngOnInit(){
-    //this.spApi.getUser().subscribe(data => this.profile = data);
   }
 }
 

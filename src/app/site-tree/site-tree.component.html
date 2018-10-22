@@ -4,13 +4,6 @@
 
     <div *ngIf="!showInstructions">
         <div style="display: inline-flex; width: 100%">
-            <!-- <div *ngIf="searchIsValid && siteIsLoaded">
-                <div>Show Full Url
-                    <mat-slide-toggle
-                        color="primary" (change)="toggleFullUrls($event)">
-                    </mat-slide-toggle>
-                </div>                
-            </div> -->
             <div *ngIf="isAdmin" class="searchBoxContainer">
                 <input class="searchBox" type="text" (keyup.enter)="Search($event)" [(ngModel)]="searchByUrlValue" placeholder="Find Site by URL...">
             </div>
@@ -95,8 +88,7 @@
                             </div>
                         </div>
                     </div>      
-                <div *ngIf="item.SubSites.length > 0">
-                        <!-- <div *ngIf="item.SubSites.length > 0 && item.isOpen"> -->
+                <div *ngIf="item.SubSites.length > 0">                        
                     <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.SubSites }"></ng-container>
                 </div>
                 </div>

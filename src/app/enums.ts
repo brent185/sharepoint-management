@@ -6,13 +6,6 @@ export enum SiteRole {
     Admin = 5
 }
 
-// export enum SPAStatus{
-//     None = 0,
-//     Draft = 1,
-//     PendingAPISave = 2,
-//     PendingAPIDelete = 3
-// }
-
 export enum SiteUserStatus{
     NotSelected = 0,
     Nominated = 1,

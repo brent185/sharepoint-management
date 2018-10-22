@@ -31,7 +31,6 @@ export class NavigationComponent implements OnInit {
   }
   selectTab(tab_id: number) {
     this.staticTabs.tabs[tab_id].active = true;
-    //this.router.navigate(['./attestation']);
   }
 
   changeTab() {
@@ -40,18 +39,8 @@ export class NavigationComponent implements OnInit {
   }
 
   onLinkClick(e){
-    console.info("E: " + console.info(e));
     e.active = true;
   }
-
-  tabClick(){}
-
-  fuho(){
-    console.info("HO");
-    this.router.navigate(['./attestation']);
-  }
-   
-  get
 
   ngOnInit() {
     this.router.events
@@ -60,7 +49,5 @@ export class NavigationComponent implements OnInit {
        console.info(event.url);
     });
 
-  }
-
-  
+  }  
 }
