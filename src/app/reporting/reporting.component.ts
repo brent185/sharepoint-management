@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {Sort} from '@angular/material';
 import { AppService } from './../globaldata.service';
-import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 
 @Component({
   selector: 'app-reporting',

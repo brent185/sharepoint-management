@@ -15,7 +15,7 @@ import {SiteTreeModalComponent} from './site-tree/site-tree-modal.component';
 import { ErrorDialog } from './api/errorModal';
 import { PeoplePickerComponent } from './people-picker/people-picker.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { HttpModule } from '@angular/http';
 import { 
   MatAutocompleteModule, 
   MatFormFieldModule, 
@@ -136,7 +136,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     NoopAnimationsModule,
-    Ng2CompleterModule
+    Ng2CompleterModule,
+    HttpModule
   ],
   exports: [
     MatAutocompleteModule,

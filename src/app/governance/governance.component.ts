@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from './../globaldata.service';
 import { ActivatedRoute} from '@angular/router';
-import {}
+// import { KeyValuePipe } from '@angular/common';
 @Component({
   selector: 'app-governance',
   templateUrl: './governance.component.html',
@@ -37,6 +37,7 @@ export class GovernanceComponent implements OnInit {
         data.forEach(e => {
           e.ComplianceData.forEach(d => {
             console.info("D: " + d);
+            // object: {[key: string]: string = {}
           });
         });
         this.siteComplianceData = data;

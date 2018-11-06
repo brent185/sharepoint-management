@@ -7,7 +7,7 @@ import {SiteTreeModalComponent} from './../site-tree/site-tree-modal.component';
 import { SiteRole } from './../enums';
 import { AttestationUser } from './../user';
 import { Site } from './../site';
-import { IAppState } from './../store';
+// import { IAppState } from './../store';
 import { Observable } from "rxjs/Rx";
 import { createSelector } from 'reselect';
 import { SiteUserStatus } from './../enums';
