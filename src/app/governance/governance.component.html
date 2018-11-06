@@ -1,0 +1,11 @@
+<div>
+  Site Collection: is non-compliance in the following areas:
+</div>
+<div *ngFor="let compliance of siteComplianceData, let i = index">
+  <div>{{i+1}}. {{compliance.Title}}</div>
+  <div *ngFor="let item of compliance.ComplianceData">
+     <!-- <div *ngFor="let prop in item | keyvalue">
+        {{prop.key}} - {{prop.value}}
+     </div> -->
+  </div>
+</div>

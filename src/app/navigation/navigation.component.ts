@@ -24,9 +24,9 @@ export class NavigationComponent implements OnInit {
       }      
     });
 
-    this.appService.GetMyMessagesCount().subscribe(c => {
-      this.myMessagesCount = c;
-    });
+    // this.appService.GetMyMessagesCount().subscribe(c => {
+    //   this.myMessagesCount = c;
+    // });
 
   }
   selectTab(tab_id: number) {

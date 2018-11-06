@@ -29,6 +29,7 @@ export class AppService{
     private _siteAttestation: SiteAttestation;
     private _admins: string[];
     private _siteCollectionReport;
+    private _siteComplianceData;
 
     constructor(private spApi: SharePointApi){
 
@@ -51,6 +52,7 @@ export class AppService{
     public siteCollectionWorkflowItems = new BehaviorSubject<any>(null);
     public admins = new BehaviorSubject<string[]>(null);
     public siteCollectionReport = new BehaviorSubject<any>(null);
+    public siteComplianceData = new BehaviorSubject<any>(null);
 
     GetSiteCollectionWorkflowItems(){
         let spSiteCollectionId;
@@ -118,6 +120,17 @@ export class AppService{
             }
         });
         return status;
+    }
+
+    GetAllComplianceData(spSiteCollectionId: number){
+        this.spApi.GetAllComplianceDetails(spSiteCollectionId).subscribe(data => {
+            if(data){
+                this._siteComplianceData = data;
+                this.siteComplianceData.next(this._siteComplianceData);
+            }
+        });
+        
+        return this.siteComplianceData.asObservable();
     }
 
     GetSiteAttestationByUrl(url: string): Observable<SiteAttestation> {        

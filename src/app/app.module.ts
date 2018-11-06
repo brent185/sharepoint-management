@@ -72,6 +72,7 @@ import { AttestationHistoryComponent } from './attestation-history/attestation-h
 import { AdminComponent } from './admin/admin.component';
 import { AdminTcComponent } from './admin-tc/admin-tc.component';
 import { ReportingComponent } from './reporting/reporting.component';
+import { GovernanceComponent } from './governance/governance.component';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'mysites', pathMatch: 'full'},
@@ -81,7 +82,9 @@ const appRoutes: Routes = [
   {path: 'admin', component: AdminComponent},
   {path: 'attestation/:siteCollectionSpId', component: SiteTreeComponent},
   {path: 'attestation/:siteCollectionSpId/:confirmRole',  component: SiteTreeComponent},
-  {path: '', component: MyMessagesComponent}
+  {path: 'governance',  component: GovernanceComponent},
+  {path: 'governance/:siteCollectionSpId',  component: GovernanceComponent},
+  // {path: '', component: MyMessagesComponent}
 ];
 
 @NgModule({
@@ -103,7 +106,8 @@ const appRoutes: Routes = [
     AttestationHistoryComponent,
     AdminComponent,
     AdminTcComponent,
-    ReportingComponent
+    ReportingComponent,
+    GovernanceComponent
   ],
   imports: [
     MatAutocompleteModule,
