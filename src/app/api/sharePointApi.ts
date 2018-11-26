@@ -98,6 +98,24 @@ export class SharePointApi {
     .map((res:Response) => res.json());
   }
 
+  GetFarmWebAppHierarchy(){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/FarmWebAppHierarchy`, requestOptions)
+    .map((res:Response) => res.json());
+  }
+
+  GetSiteCollections(webApplicationId: number){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/WebApplication/${webApplicationId}/SiteCollections`, requestOptions)
+    .map((res:Response) => res.json());
+  }
+
+  IsValidAttestationSite(spId: string){
+    let requestOptions = new RequestOptions({ headers:null, withCredentials: true });
+    return this.http.get(constants.sharePointApiRootUrl + `/sharepoint/isvalidattestationsite/${spId}`, requestOptions)
+    .map((res:Response) => res.json());
+  }
+
   SaveAttestationUser(user: AttestationUser){
     let httpHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',

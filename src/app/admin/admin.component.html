@@ -2,6 +2,7 @@
 <div>
     <div class="adminNav">
         <div [class.adminNavSelected]="showWorkflow" (click)="ShowWorkflow()">Workflow</div>
+        <div [class.adminNavSelected]="showBulkEdit" (click)="ShowBulkEdit()">Manage Banners</div>
         <div [class.adminNavSelected]="showAdmins" (click)="ShowAdmins()">Admins</div>
         <div [class.adminNavSelected]="showReporting" (click)="ShowReporting()">Reporting</div>
     </div>
@@ -85,5 +86,50 @@
     <div *ngIf="showReporting">
         <app-reporting></app-reporting>
     </div>
-</div>
+    <div *ngIf="showBulkEdit">
+        <div>
+            <div *ngFor="let farm of farmsWebApps" class="farm">
+                <i (click)="farm.IsOpen ? farm.IsOpen = false : farm.IsOpen = true" *ngIf="farm.IsOpen" class="far fa-minus-square"></i>
+                <i (click)="farm.IsOpen ? farm.IsOpen = false : farm.IsOpen = true" *ngIf="!farm.IsOpen" class="far fa-plus-square"></i>
+                
+                <span>
+                        <mat-checkbox [indeterminate]="farm.IsIndeterminate" [checked]="farm.IsChecked" (change)="ClickCheckbox($event, farm)" class="green"></mat-checkbox>{{farm.Number}} ({{farm.WebApplications.length}})</span>
+                <div *ngIf="farm.WebApplications.length > 0">                    
+                    <div [style.margin-left]="GetWidth(webApp.Level)" *ngFor="let webApp of farm.WebApplications" [hidden]="!farm.IsOpen">
+                        <i (click)="webApp.IsOpen ? webApp.IsOpen = false : webApp.IsOpen = true" *ngIf="webApp.IsOpen" class="far fa-minus-square"></i>
+                        <i (click)="webApp.IsOpen ? webApp.IsOpen = false : webApp.IsOpen = true; GetSiteCollections(webApp)" *ngIf="!webApp.IsOpen" class="far fa-plus-square"></i>
+                        <span><mat-checkbox (change)="ClickCheckbox($event, webApp)" [indeterminate]="webApp.IsIndeterminate" [checked]="webApp.IsChecked" class="green"></mat-checkbox>{{webApp.Name}}  ({{webApp.SiteCount}})</span>
+                        <!-- <div (click)="GetSiteCollections(webApp)" [style.margin-left]="GetWidth(webApp.Level)" (click)="webApp.IsOpen ? webApp.IsOpen = false : webApp.IsOpen = true"><span>{{webApp.Name}}  ({{webApp.SiteCount}})</span></div> -->
+                        
+                        <!-- <div *ngFor="let site of webApp.Sites | async">
+                            <div [style.margin-left]="GetWidth(site.Level)">{{site.Url}}</div>
+                        </div> -->
 
+                        <ng-template #recursiveList let-list>
+                                <div *ngFor="let item of list" [hidden]="!webApp.IsOpen">
+                                    <div (click)="GetSiteCollections(webApp)" [style.margin-left]="GetWidth(item.Level)"><span><mat-checkbox class="green"></mat-checkbox>{{item.Url}}</span></div>
+                                  
+                                  <!-- <div *ngIf="item.Webs.length > 0">
+                                    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.Webs }"></ng-container>
+                                  </div> -->
+                                </div>
+                        </ng-template>
+                        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: webApp.Sites | async }"></ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <ul>
+                <ng-template #recursiveList let-list>
+                  <li *ngFor="let item of list">
+                    {{item.name}}
+                    <ul *ngIf="item.subnodes.length > 0">
+                      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"></ng-container>
+                    </ul>
+                  </li>
+                </ng-template>
+                <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: list }"></ng-container>
+        </ul> -->
+
+    </div>
+</div>

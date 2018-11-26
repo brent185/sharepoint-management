@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, KeyValuePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -73,6 +73,10 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminTcComponent } from './admin-tc/admin-tc.component';
 import { ReportingComponent } from './reporting/reporting.component';
 import { GovernanceComponent } from './governance/governance.component';
+import { TreeModule } from 'primeng/tree';
+import {TreeNode} from 'primeng/api';
+
+
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'mysites', pathMatch: 'full'},
@@ -99,7 +103,6 @@ const appRoutes: Routes = [
     SiteTreeModalComponent,
     ErrorDialog,
     SiteTreeUserComponent,
-    // MatDatepickerModule,
     MyMessagesComponent,
     BulkEditComponent,
     MySitesComponent,
@@ -110,6 +113,7 @@ const appRoutes: Routes = [
     GovernanceComponent
   ],
   imports: [
+    TreeModule,
     MatAutocompleteModule,
     MatFormFieldModule,
     ButtonsModule,
@@ -118,6 +122,7 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatButtonModule,
     MatTableModule,
+    MatCheckboxModule,
     MatIconModule,
     MatDatepickerModule,
     MatProgressSpinnerModule,

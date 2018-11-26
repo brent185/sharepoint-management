@@ -1,7 +1,6 @@
 
 <div>
-
-
+    <div *ngIf="!isValidAttestationSite">This Site Collection is not configured for Attestation. Email notifications will be sent to the Site Owner, Primary Administrator, and Secondary Administrator when Attestation is available.</div>
     <div *ngIf="!showInstructions">
         <div style="display: inline-flex; width: 100%">
             <div *ngIf="isAdmin" class="searchBoxContainer">

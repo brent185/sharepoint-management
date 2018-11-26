@@ -97,3 +97,27 @@ input:focus{
     border-color: #bee5eb;
     border-radius: 5px;
 }
+
+div.farm i{
+    margin-right: 10px;
+}
+
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+    border-color: rgb(92, 92, 92);
+    border-radius: 10px !important;
+  }
+  
+  ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+    background-color: green !important;
+    border-radius: 10px !important;
+  }
+
+  ::ng-deep .mat-ripple-element {
+    background-color: rgb(141, 141, 141) !important;
+    border-radius: 10px !important;
+  }
+
+  ::ng-deep .mat-checkbox-inner-container {
+    margin-top: 6px !important;
+    margin-right: 8px !important;
+  }

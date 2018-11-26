@@ -3,9 +3,8 @@ import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { User } from './user';
 import { Site } from './site';
 import { SharePointApi } from './api/sharePointApi';
-import { Sites } from './mock-sites';
 import { AttestationUser } from './user';
-// import { users } from './mock-users';
+import * as _ from "lodash";
 import { SiteUserStatus, SiteRole } from './enums';
 import { Web, SiteAttestation } from './site';
 
@@ -30,6 +29,8 @@ export class AppService{
     private _admins: string[];
     private _siteCollectionReport;
     private _siteComplianceData;
+    private _govSiteCollection;
+    private _farmWebAppHierarchy;
 
     constructor(private spApi: SharePointApi){
 
@@ -53,6 +54,8 @@ export class AppService{
     public admins = new BehaviorSubject<string[]>(null);
     public siteCollectionReport = new BehaviorSubject<any>(null);
     public siteComplianceData = new BehaviorSubject<any>(null);
+    public govSiteCollection = new BehaviorSubject<any>(null);
+    public farmWebAppHierarchy = new BehaviorSubject<any>(null);
 
     GetSiteCollectionWorkflowItems(){
         let spSiteCollectionId;
@@ -74,6 +77,38 @@ export class AppService{
         return this._lastSiteLoadedSpId;
     }
 
+    GetSiteCollectionBySpId(spId: string){
+        return this._siteAttestation.Site;    
+    }
+
+    GetFarmWebAppHierarchy(){
+        this.spApi.GetFarmWebAppHierarchy().subscribe(data => {
+            data = _.orderBy(data, [x => x.Number], ['asc']);
+            this._farmWebAppHierarchy = data;
+            this.farmWebAppHierarchy.next(this._farmWebAppHierarchy);
+        });
+        return this.farmWebAppHierarchy.asObservable();
+    }
+
+    GetSiteCollections(webApplicationId: number){
+        let site = new BehaviorSubject<any>(null);
+        this.spApi.GetSiteCollections(webApplicationId).subscribe(data => {
+            if(data){
+                site.next(data);
+            }
+        });
+        return site.asObservable();
+    }
+
+    IsValidAttestationSite(spId: string){
+        let isValid = new BehaviorSubject<any>(null);
+        this.spApi.IsValidAttestationSite(spId).subscribe(data => {
+            if(data){
+                isValid.next(data);
+            }
+        });
+        return isValid.asObservable();
+    }
     GetSiteAttestation(siteSpId: string): Observable<SiteAttestation> {
         this._siteAttestation = new SiteAttestation;
         this.spApi.GetSiteCollectionBySiteSpId(siteSpId).subscribe(data => {        
@@ -122,7 +157,7 @@ export class AppService{
         return status;
     }
 
-    GetAllComplianceData(spSiteCollectionId: number){
+    GetAllComplianceData(spSiteCollectionId: number){    
         this.spApi.GetAllComplianceDetails(spSiteCollectionId).subscribe(data => {
             if(data){
                 this._siteComplianceData = data;
@@ -484,7 +519,6 @@ export class AppService{
             selectedUser.ConfirmedDate = new Date();
             this.siteAttestation.next(this._siteAttestation);
         });
-        //this.spApi.XX().subscribe(x=>{});
     }
     
     DeleteUser(user: AttestationUser){

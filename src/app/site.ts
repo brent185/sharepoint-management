@@ -9,6 +9,7 @@ export class Site {
     SPParentID: string;
     InheritOwnerAdmins?: boolean;
     InheritFromSiteId?: number;
+    ID: number;
 }
 
 export class SiteCollection {

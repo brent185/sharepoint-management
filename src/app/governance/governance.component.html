@@ -1,11 +1,22 @@
-<div>
-  Site Collection: is non-compliance in the following areas:
+<div *ngIf="nonCompliantCount > 0">
+  Site Collection is noncompliant in the following areas:
+</div>
+<div *ngIf="nonCompliantCount === 0">
+  Site Collection is compliant
 </div>
 <div *ngFor="let compliance of siteComplianceData, let i = index">
-  <div>{{i+1}}. {{compliance.Title}}</div>
-  <div *ngFor="let item of compliance.ComplianceData">
-     <!-- <div *ngFor="let prop in item | keyvalue">
-        {{prop.key}} - {{prop.value}}
-     </div> -->
+  <div *ngIf="!compliance.IsCompliant"><br>
+      <div><b>{{compliance.Title}}</b></div>
+      <table style="display:inline-block;" border="1" style="width: 100%;">
+        <thead>
+          <tr>
+            <th *ngFor="let c of compliance.DisplayData[0]">{{c.Name}}</th>
+          </tr>
+          <tr *ngFor="let d of compliance.DisplayData">
+            <td *ngFor="let e of d">{{e.Value}}</td>
+          </tr>
+        </thead>
+      </table>
   </div>
+
 </div>

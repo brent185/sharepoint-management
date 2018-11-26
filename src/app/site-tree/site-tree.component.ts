@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SiteTreeModalComponent } from './site-tree-modal.component';
-import { Sites } from './../mock-sites';
 import { AttestationHistoryComponent } from './../attestation-history/attestation-history.component';
 import { AppService } from './../globaldata.service';
 import { SiteRole } from './../enums';
@@ -44,6 +43,7 @@ export class SiteTreeComponent implements OnInit {
   public workflow;
   public siteCollectionAttestationStatus;
   public showInheritanceMessage = true;
+  public isValidAttestationSite = false;
 
   constructor(private appService: AppService, public dialog: MatDialog, private route: ActivatedRoute) {}
 
@@ -77,27 +77,34 @@ export class SiteTreeComponent implements OnInit {
   }
 
   Init(spId: string){
-    this.appService.GetSiteAttestation(spId).subscribe(attestation => {
-      if(attestation){
-        this.siteIsLoaded = true;
-        this.siteContext = attestation;
-        this.siteCollectionUrl = attestation.Site.Url;
-        this.list = attestation.Hierarchy;
-        this.businessOwner = attestation.AttestationUsers.find(u => u.Role === 1);
-        this.siteOwner = attestation.AttestationUsers.find(u => u.Role === 2);
-        this.primaryAdmin = attestation.AttestationUsers.find(u => u.Role === 3);
-        this.secondaryAdmin = attestation.AttestationUsers.find(u => u.Role === 4);
-        this.admin = attestation.AttestationUsers.find(u => u.Role === 5);
-        this.workflow = attestation.ActiveWorkflow;
-        this.siteCollectionAttestationStatus = this.appService.GetSiteCollectionAttestationStatus();
-        if(this.workflow && this.workflow.DisableDate){
-          this.workflow.DisableDate = this.appService.FormatDate(this.workflow.DisableDate, false);
-        }    
-        if(this.showModalOnLoad && !this.modalHasLoaded){
-          let u = attestation.AttestationUsers.find(u => u.Role == this.showModalUserRoleID);
-          this.modalHasLoaded = true;
-          this.openPeoplePicker(this.siteContext.Hierarchy[0], u);
-        }        
+    this.appService.IsValidAttestationSite(spId).subscribe(isValid => {
+      if(isValid && isValid == true){
+        this.isValidAttestationSite = true;
+        this.appService.GetSiteAttestation(spId).subscribe(attestation => {
+          if(attestation){
+            this.siteIsLoaded = true;
+            this.siteContext = attestation;
+            this.siteCollectionUrl = attestation.Site.Url;
+            this.list = attestation.Hierarchy;
+            this.businessOwner = attestation.AttestationUsers.find(u => u.Role === 1);
+            this.siteOwner = attestation.AttestationUsers.find(u => u.Role === 2);
+            this.primaryAdmin = attestation.AttestationUsers.find(u => u.Role === 3);
+            this.secondaryAdmin = attestation.AttestationUsers.find(u => u.Role === 4);
+            this.admin = attestation.AttestationUsers.find(u => u.Role === 5);
+            this.workflow = attestation.ActiveWorkflow;
+            this.siteCollectionAttestationStatus = this.appService.GetSiteCollectionAttestationStatus();
+            if(this.workflow && this.workflow.DisableDate){
+              this.workflow.DisableDate = this.appService.FormatDate(this.workflow.DisableDate, false);
+            }    
+            if(this.showModalOnLoad && !this.modalHasLoaded){
+              let u = attestation.AttestationUsers.find(u => u.Role == this.showModalUserRoleID);
+              this.modalHasLoaded = true;
+              this.openPeoplePicker(this.siteContext.Hierarchy[0], u);
+            }        
+          }
+        });
+      }else{
+        this.siteIsLoaded = false;
       }
     });
   }
